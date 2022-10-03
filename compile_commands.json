@@ -1,0 +1,52 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/riscv64-linux-gnu-gcc",
+      "-Wall",
+      "-Werror",
+      "-O",
+      "-fno-omit-frame-pointer",
+      "-ggdb",
+      "-gdwarf-2",
+      "-mcmodel=medany",
+      "-ffreestanding",
+      "-fno-common",
+      "-mno-relax",
+      "-I.",
+      "-fno-stack-protector",
+      "-fno-pie",
+      "-c",
+      "-o",
+      "kernel/main.o",
+      "kernel/main.c"
+    ],
+    "directory": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv",
+    "file": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv/kernel/main.c",
+    "output": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv/kernel/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/riscv64-linux-gnu-gcc",
+      "-Wall",
+      "-Werror",
+      "-O",
+      "-fno-omit-frame-pointer",
+      "-ggdb",
+      "-gdwarf-2",
+      "-mcmodel=medany",
+      "-ffreestanding",
+      "-fno-common",
+      "-mno-relax",
+      "-I.",
+      "-fno-stack-protector",
+      "-fno-pie",
+      "-c",
+      "-o",
+      "user/sh.o",
+      "user/sh.c"
+    ],
+    "directory": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv",
+    "file": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv/user/sh.c",
+    "output": "/home/pyrole/IIIT-Hyderabad/Sem3/Operating Systems & Networks/Assignments/Ass4/xv7-riscv/user/sh.o"
+  }
+]
