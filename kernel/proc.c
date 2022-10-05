@@ -145,6 +145,10 @@ found:
   memset(&p->context, 0, sizeof(p->context));
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
+  
+  //By default, no tracing is set.
+  p->mask = 0;
+  // p->mask = (1 << 23)  - 1 ;
 
   return p;
 }
@@ -169,6 +173,7 @@ freeproc(struct proc *p)
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+  p->mask = 0;
 }
 
 // Create a user page table for a given process, with no user memory,
