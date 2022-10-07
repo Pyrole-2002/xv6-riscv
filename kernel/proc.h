@@ -92,6 +92,10 @@ struct proc {
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
 
+  int alarm;                   // Whether the program has called sigalarm or not.
+  int tickCount;               // Current number of ticks used by the process.
+  int alarmTime;               // The nunmber of ticks after which handler should be called.
+  uint64 interruptFunction;    // What is the handler function in sigalarm.
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 

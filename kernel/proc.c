@@ -154,6 +154,10 @@ found:
   
   //By default, no tracing is set.
   p->mask = 0;
+  p->alarm = 0;
+  p->alarmTime = 0;
+  p->interruptFunction = 0;
+  p->tickCount = -1;
   // p->mask = (1 << 23)  - 1 ;
 
   return p;

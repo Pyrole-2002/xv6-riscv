@@ -102,18 +102,26 @@ sys_trace(void)
 uint64
 sys_sigalarm(void)
 {
-    myproc()->Sigtrapframe = myproc()->trapframe;
-    
-    int numticks;
-    void *func(void);
-    argint( 0, &numticks);
-    argaddr( 1, (void*)func);
-    
-    int cputicks = ticks;
+    int timeInterval;
+    uint64 functionPointer;
 
-    while( ticks-cputicks != numticks );
-    func();
-    // Perioically call the function in the second argument.
+    myproc()->Sigtrapframe = myproc()->trapframe;
+
+    argint( 0, &timeInterval );
+    argaddr( 1, &functionPointer );
+    
+    if ( myproc()->alarm == 0 )
+    {
+        myproc()->alarm = 1;
+        myproc()->alarmTime = timeInterval; 
+    }
+
+    // if( ticks == myproc()->alarmTime );
+    //     myproc()->trapframe->epc = functionPointer;
+    // The execution of the program woould start from the address in functionPointer.
+    // Since the handler does not consist of any arguments or return value, registers need not be updated.
+
+    // After this, the function would anyways go to sigreturn where it would reset the program counter.
     return 0;
 }
 
