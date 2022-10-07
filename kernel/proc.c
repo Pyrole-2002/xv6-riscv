@@ -131,6 +131,12 @@ found:
     release(&p->lock);
     return 0;
   }
+  if((p->Sigtrapframe = (struct trapframe *)kalloc()) == 0)
+  {
+      freeproc(p);
+      release(&p->lock);
+      return 0;
+  }
 
   // An empty user page table.
   p->pagetable = proc_pagetable(p);
@@ -161,7 +167,11 @@ freeproc(struct proc *p)
 {
   if(p->trapframe)
     kfree((void*)p->trapframe);
+  if(p->Sigtrapframe)
+    kfree((void*)p->Sigtrapframe);
   p->trapframe = 0;
+  p->Sigtrapframe = 0;
+
   if(p->pagetable)
     proc_freepagetable(p->pagetable, p->sz);
   p->pagetable = 0;
@@ -303,7 +313,9 @@ fork(void)
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
-
+  
+  //*(np->Sigtrapframe) = *(p->Sigtrapframe);
+  
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
 
@@ -664,12 +676,12 @@ void
 procdump(void)
 {
   static char *states[] = {
-  [UNUSED]    "unused",
-  [USED]      "used",
-  [SLEEPING]  "sleep ",
-  [RUNNABLE]  "runble",
-  [RUNNING]   "run   ",
-  [ZOMBIE]    "zombie"
+  [UNUSED]   =  "unused",
+  [USED]     =  "used",
+  [SLEEPING] =  "sleep ",
+  [RUNNABLE] =  "runble",
+  [RUNNING]  =  "run   ",
+  [ZOMBIE]   =  "zombie"
   };
   struct proc *p;
   char *state;

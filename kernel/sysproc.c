@@ -95,7 +95,32 @@ sys_trace(void)
 {
     Bitmask mask;
     argint( 0, &mask);
-
     myproc()->mask = mask;
-    return 1;
+    return 0;
+}
+
+uint64
+sys_sigalarm(void)
+{
+    myproc()->Sigtrapframe = myproc()->trapframe;
+    
+    int numticks;
+    void *func(void);
+    argint( 0, &numticks);
+    argaddr( 1, (void*)func);
+    
+    int cputicks = ticks;
+
+    while( ticks-cputicks != numticks );
+    func();
+    // Perioically call the function in the second argument.
+    return 0;
+}
+
+uint64
+sys_sigreturn(void)
+{
+    myproc()->trapframe = myproc()->Sigtrapframe;
+    // Returns the state of the registers to before the call of handler function.
+    return 0;
 }
