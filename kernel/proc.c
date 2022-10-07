@@ -32,30 +32,34 @@ struct spinlock wait_lock;
 void
 proc_mapstacks(pagetable_t kpgtbl)
 {
-  struct proc *p;
-  
-  for(p = proc; p < &proc[NPROC]; p++) {
-    char *pa = kalloc();
-    if(pa == 0)
-      panic("kalloc");
-    uint64 va = KSTACK((int) (p - proc));
-    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-  }
+    struct proc *p;
+
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        char *pa = kalloc();
+        if(pa == 0)
+        {
+            panic("kalloc");
+        }
+        uint64 va = KSTACK((int) (p - proc));
+        kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+    }
 }
 
-// initialize the proc table.
+// initialize the proc table at boot time
 void
 procinit(void)
 {
-  struct proc *p;
-  
-  initlock(&pid_lock, "nextpid");
-  initlock(&wait_lock, "wait_lock");
-  for(p = proc; p < &proc[NPROC]; p++) {
-      initlock(&p->lock, "proc");
-      p->state = UNUSED;
-      p->kstack = KSTACK((int) (p - proc));
-  }
+    struct proc *p;
+
+    initlock(&pid_lock, "nextpid");
+    initlock(&wait_lock, "wait_lock");
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        initlock(&p->lock, "proc");
+        p->state = UNUSED;
+        p->kstack = KSTACK((int) (p - proc));
+    }
 }
 
 // Must be called with interrupts disabled,
@@ -64,8 +68,8 @@ procinit(void)
 int
 cpuid()
 {
-  int id = r_tp();
-  return id;
+    int id = r_tp();
+    return id;
 }
 
 // Return this CPU's cpu struct.
@@ -73,33 +77,33 @@ cpuid()
 struct cpu*
 mycpu(void)
 {
-  int id = cpuid();
-  struct cpu *c = &cpus[id];
-  return c;
+    int id = cpuid();
+    struct cpu *c = &cpus[id];
+    return c;
 }
 
 // Return the current struct proc *, or zero if none.
 struct proc*
 myproc(void)
 {
-  push_off();
-  struct cpu *c = mycpu();
-  struct proc *p = c->proc;
-  pop_off();
-  return p;
+    push_off();
+    struct cpu *c = mycpu();
+    struct proc *p = c->proc;
+    pop_off();
+    return p;
 }
 
 int
 allocpid()
 {
-  int pid;
-  
-  acquire(&pid_lock);
-  pid = nextpid;
-  nextpid = nextpid + 1;
-  release(&pid_lock);
+    int pid;
 
-  return pid;
+    acquire(&pid_lock);
+    pid = nextpid;
+    nextpid = nextpid + 1;
+    release(&pid_lock);
+
+    return pid;
 }
 
 // Look in the process table for an UNUSED proc.
@@ -109,44 +113,50 @@ allocpid()
 static struct proc*
 allocproc(void)
 {
-  struct proc *p;
+    struct proc *p;
 
-  for(p = proc; p < &proc[NPROC]; p++) {
-    acquire(&p->lock);
-    if(p->state == UNUSED) {
-      goto found;
-    } else {
-      release(&p->lock);
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        acquire(&p->lock);
+        if(p->state == UNUSED)
+        {
+            goto found;
+        }
+        else
+        {
+            release(&p->lock);
+        }
     }
-  }
-  return 0;
+    return 0;
 
 found:
-  p->pid = allocpid();
-  p->state = USED;
+    p->pid = allocpid();
+    p->state = USED;
 
-  // Allocate a trapframe page.
-  if((p->trapframe = (struct trapframe *)kalloc()) == 0){
-    freeproc(p);
-    release(&p->lock);
-    return 0;
-  }
+    // Allocate a trapframe page.
+    if((p->trapframe = (struct trapframe *)kalloc()) == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
 
-  // An empty user page table.
-  p->pagetable = proc_pagetable(p);
-  if(p->pagetable == 0){
-    freeproc(p);
-    release(&p->lock);
-    return 0;
-  }
+    // An empty user page table.
+    p->pagetable = proc_pagetable(p);
+    if(p->pagetable == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
 
-  // Set up new context to start executing at forkret,
-  // which returns to user space.
-  memset(&p->context, 0, sizeof(p->context));
-  p->context.ra = (uint64)forkret;
-  p->context.sp = p->kstack + PGSIZE;
+    // Set up new context to start executing at forkret,
+    // which returns to user space.
+    memset(&p->context, 0, sizeof(p->context));
+    p->context.ra = (uint64)forkret;
+    p->context.sp = p->kstack + PGSIZE;
 
-  return p;
+    return p;
 }
 
 // free a proc structure and the data hanging from it,
@@ -155,20 +165,24 @@ found:
 static void
 freeproc(struct proc *p)
 {
-  if(p->trapframe)
-    kfree((void*)p->trapframe);
-  p->trapframe = 0;
-  if(p->pagetable)
-    proc_freepagetable(p->pagetable, p->sz);
-  p->pagetable = 0;
-  p->sz = 0;
-  p->pid = 0;
-  p->parent = 0;
-  p->name[0] = 0;
-  p->chan = 0;
-  p->killed = 0;
-  p->xstate = 0;
-  p->state = UNUSED;
+    if(p->trapframe)
+    {
+        kfree((void*)p->trapframe);
+    }
+    p->trapframe = 0;
+    if(p->pagetable)
+    {
+        proc_freepagetable(p->pagetable, p->sz);
+    }
+    p->pagetable = 0;
+    p->sz = 0;
+    p->pid = 0;
+    p->parent = 0;
+    p->name[0] = 0;
+    p->chan = 0;
+    p->killed = 0;
+    p->xstate = 0;
+    p->state = UNUSED;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -210,9 +224,9 @@ proc_pagetable(struct proc *p)
 void
 proc_freepagetable(pagetable_t pagetable, uint64 sz)
 {
-  uvmunmap(pagetable, TRAMPOLINE, 1, 0);
-  uvmunmap(pagetable, TRAPFRAME, 1, 0);
-  uvmfree(pagetable, sz);
+    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+    uvmunmap(pagetable, TRAPFRAME, 1, 0);
+    uvmfree(pagetable, sz);
 }
 
 // a user program that calls exec("/init")
@@ -659,12 +673,12 @@ void
 procdump(void)
 {
   static char *states[] = {
-  [UNUSED]    "unused",
-  [USED]      "used",
-  [SLEEPING]  "sleep ",
-  [RUNNABLE]  "runble",
-  [RUNNING]   "run   ",
-  [ZOMBIE]    "zombie"
+  [UNUSED]    ="unused",
+  [USED]      ="used",
+  [SLEEPING]  ="sleep ",
+  [RUNNABLE]  ="runble",
+  [RUNNING]   ="run   ",
+  [ZOMBIE]    ="zombie"
   };
   struct proc *p;
   char *state;
