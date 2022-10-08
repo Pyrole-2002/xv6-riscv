@@ -118,9 +118,11 @@ struct proc
     char name[16];               // Process name (debugging)
 
     // Scheduler Modifications
-    int in_tick;
+    int in_tick;                    // Tick value when process is added
 
-#ifndef FCFS
+
+
+#ifdef FCFS
     // ok
 #endif
 };
