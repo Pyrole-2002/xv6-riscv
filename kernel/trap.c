@@ -79,14 +79,14 @@ usertrap(void)
   // give up the CPU if this is a timer interrupt.
   if(which_dev == 2)
   {
-      if ( myproc()->alarm == 1 )
+      if ( p->alarm == 1 )
       {
-          myproc()->tickCount++;
+          p->tickCount++;
 
-          if ( myproc()->tickCount == myproc()->alartTime )
+          if ( p->tickCount == p->alarmTime )
           {
-            myproc()->tickCount = 0;
-            myproc()->trapframe->epc = myproc()->interruptFunction;
+            p->tickCount = 0;
+            p->trapframe->epc = p->interruptFunction;
             // Function execution is passed on to the interrupt function.
           }
       }

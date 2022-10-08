@@ -110,11 +110,8 @@ sys_sigalarm(void)
     argint( 0, &timeInterval );
     argaddr( 1, &functionPointer );
     
-    if ( myproc()->alarm == 0 )
-    {
-        myproc()->alarm = 1;
-        myproc()->alarmTime = timeInterval; 
-    }
+    myproc()->alarm = 1;
+    myproc()->alarmTime = timeInterval; 
 
     // if( ticks == myproc()->alarmTime );
     //     myproc()->trapframe->epc = functionPointer;
