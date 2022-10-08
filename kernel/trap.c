@@ -91,7 +91,6 @@ usertrap(void)
     // give up the CPU if this is a timer interrupt.
     if(which_dev == 2)
     {
-#ifdef RR
         if ( p->alarm == 1 )
         {
             p->tickCount++;
@@ -105,6 +104,7 @@ usertrap(void)
                 // Function execution is passed on to the interrupt function.
             }
         }
+#ifdef RR
         yield();
 #endif
 
