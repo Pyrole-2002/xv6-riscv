@@ -71,6 +71,33 @@ ifneq ($(shell $(CC) -dumpspecs 2>/dev/null | grep -e '[^f]nopie'),)
 CFLAGS += -fno-pie -nopie
 endif
 
+
+
+# Arguments to Assign Scheduler
+# Default is Round-Robin
+SCHEDULER_MACRO = -D RR
+
+ifeq ($(SCHEDULER), RR)
+	SCHEDULER_MACRO = -D RR
+endif
+ifeq ($(SCHEDULER), FCFS)
+	SCHEDULER_MACRO = -D FCFS
+endif
+ifeq ($(SCHEDULER), LBS)
+	SCHEDULER_MACRO = -D LBS
+endif
+ifeq ($(SCHEDULER), PBS)
+	SCHEDULER_MACRO = -D PBS
+endif
+ifeq ($(SCHEDULER), MLFQ)
+	SCHEDULER_MACRO = -D MLFQ
+endif
+
+CFLAGS += $(SCHEDULER_MACRO)
+# Example compile syntax: `make qemu SCHEDULER=FCFS`
+
+
+
 LDFLAGS = -z max-page-size=4096
 
 $K/kernel: $(OBJS) $K/kernel.ld $U/initcode

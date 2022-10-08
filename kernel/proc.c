@@ -32,30 +32,34 @@ struct spinlock wait_lock;
 void
 proc_mapstacks(pagetable_t kpgtbl)
 {
-  struct proc *p;
-  
-  for(p = proc; p < &proc[NPROC]; p++) {
-    char *pa = kalloc();
-    if(pa == 0)
-      panic("kalloc");
-    uint64 va = KSTACK((int) (p - proc));
-    kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
-  }
+    struct proc *p;
+
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        char *pa = kalloc();
+        if(pa == 0)
+        {
+            panic("kalloc");
+        }
+        uint64 va = KSTACK((int) (p - proc));
+        kvmmap(kpgtbl, va, (uint64)pa, PGSIZE, PTE_R | PTE_W);
+    }
 }
 
-// initialize the proc table.
+// initialize the proc table at boot time
 void
 procinit(void)
 {
-  struct proc *p;
-  
-  initlock(&pid_lock, "nextpid");
-  initlock(&wait_lock, "wait_lock");
-  for(p = proc; p < &proc[NPROC]; p++) {
-      initlock(&p->lock, "proc");
-      p->state = UNUSED;
-      p->kstack = KSTACK((int) (p - proc));
-  }
+    struct proc *p;
+
+    initlock(&pid_lock, "nextpid");
+    initlock(&wait_lock, "wait_lock");
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        initlock(&p->lock, "proc");
+        p->state = UNUSED;
+        p->kstack = KSTACK((int) (p - proc));
+    }
 }
 
 // Must be called with interrupts disabled,
@@ -64,8 +68,8 @@ procinit(void)
 int
 cpuid()
 {
-  int id = r_tp();
-  return id;
+    int id = r_tp();
+    return id;
 }
 
 // Return this CPU's cpu struct.
@@ -73,33 +77,33 @@ cpuid()
 struct cpu*
 mycpu(void)
 {
-  int id = cpuid();
-  struct cpu *c = &cpus[id];
-  return c;
+    int id = cpuid();
+    struct cpu *c = &cpus[id];
+    return c;
 }
 
 // Return the current struct proc *, or zero if none.
 struct proc*
 myproc(void)
 {
-  push_off();
-  struct cpu *c = mycpu();
-  struct proc *p = c->proc;
-  pop_off();
-  return p;
+    push_off();
+    struct cpu *c = mycpu();
+    struct proc *p = c->proc;
+    pop_off();
+    return p;
 }
 
 int
 allocpid()
 {
-  int pid;
-  
-  acquire(&pid_lock);
-  pid = nextpid;
-  nextpid = nextpid + 1;
-  release(&pid_lock);
+    int pid;
 
-  return pid;
+    acquire(&pid_lock);
+    pid = nextpid;
+    nextpid = nextpid + 1;
+    release(&pid_lock);
+
+    return pid;
 }
 
 // Look in the process table for an UNUSED proc.
@@ -109,42 +113,49 @@ allocpid()
 static struct proc*
 allocproc(void)
 {
-  struct proc *p;
+    struct proc *p;
 
-  for(p = proc; p < &proc[NPROC]; p++) {
-    acquire(&p->lock);
-    if(p->state == UNUSED) {
-      goto found;
-    } else {
-      release(&p->lock);
+    for(p = proc; p < &proc[NPROC]; p++)
+    {
+        acquire(&p->lock);
+        if(p->state == UNUSED)
+        {
+            goto found;
+        }
+        else
+        {
+            release(&p->lock);
+        }
     }
-  }
-  return 0;
+    return 0;
 
 found:
-  p->pid = allocpid();
-  p->state = USED;
+    p->pid = allocpid();
+    p->state = USED;
+    p->in_tick = ticks;
 
-  // Allocate a trapframe page.
-  if((p->trapframe = (struct trapframe *)kalloc()) == 0){
-    freeproc(p);
-    release(&p->lock);
-    return 0;
-  }
-  if((p->Sigtrapframe = (struct trapframe *)kalloc()) == 0)
-  {
-      freeproc(p);
-      release(&p->lock);
-      return 0;
-  }
-
-  // An empty user page table.
-  p->pagetable = proc_pagetable(p);
-  if(p->pagetable == 0){
-    freeproc(p);
-    release(&p->lock);
-    return 0;
-  }
+    // Allocate a trapframe page.
+    if((p->trapframe = (struct trapframe *)kalloc()) == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
+    if((p->Sigtrapframe = (struct trapframe *)kalloc()) == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
+    
+    // An empty user page table.
+    p->pagetable = proc_pagetable(p);
+    if(p->pagetable == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
 
   // Set up new context to start executing at forkret,
   // which returns to user space.
@@ -163,7 +174,7 @@ found:
   //Initially, there is no interrupt function.
   p->interruptFunction = 0;
 
-  return p;
+    return p;
 }
 
 // free a proc structure and the data hanging from it,
@@ -236,9 +247,9 @@ proc_pagetable(struct proc *p)
 void
 proc_freepagetable(pagetable_t pagetable, uint64 sz)
 {
-  uvmunmap(pagetable, TRAMPOLINE, 1, 0);
-  uvmunmap(pagetable, TRAPFRAME, 1, 0);
-  uvmfree(pagetable, sz);
+    uvmunmap(pagetable, TRAMPOLINE, 1, 0);
+    uvmunmap(pagetable, TRAPFRAME, 1, 0);
+    uvmfree(pagetable, sz);
 }
 
 // a user program that calls exec("/init")
@@ -472,31 +483,80 @@ wait(uint64 addr)
 void
 scheduler(void)
 {
-  struct proc *p;
-  struct cpu *c = mycpu();
-  
-  c->proc = 0;
-  for(;;){
-    // Avoid deadlock by ensuring that devices can interrupt.
-    intr_on();
+    // Commented out below line becaus of warning:
+    // Unused variable "p"
+    // struct proc *p;
+    struct cpu *c = mycpu();
 
-    for(p = proc; p < &proc[NPROC]; p++) {
-      acquire(&p->lock);
-      if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
+    c->proc = 0;
+    for(;;)
+    {
+        // Avoid deadlock by ensuring that devices can interrupt.
+        intr_on();
 
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-      }
-      release(&p->lock);
+
+
+#ifdef RR
+        for(struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            acquire(&p->lock);
+            if(p->state == RUNNABLE)
+            {
+                // Switch to chosen process.  It is the process's job
+                // to release its lock and then reacquire it
+                // before jumping back to us.
+                p->state = RUNNING;
+                c->proc = p;
+                swtch(&c->context, &p->context);
+
+                // Process is done running for now.
+                // It should have changed its p->state before coming back.
+                c->proc = 0;
+            }
+            release(&p->lock);
+        }
+#endif
+
+
+
+#ifdef FCFS
+        struct proc* to_run = 0;
+        for (struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            // Hold the process so no other core can access it
+            acquire(&p->lock);
+            if (p->state == RUNNABLE)
+            {
+                if (to_run == 0)
+                {
+                    to_run = p;
+                    continue;
+                }
+                else if (p->in_tick < to_run->in_tick)
+                {
+                    // to_run is no longer useful so release it
+                    release(&to_run->lock);
+                    to_run = p;
+                    continue;
+                }
+            }
+            release(&p->lock);
+        }
+        if (to_run == 0)
+        {
+            // No process is RUNNABLE
+            continue;
+        }
+        else
+        {
+            to_run->state = RUNNING;
+            c->proc = to_run;
+            swtch(&c->context, &to_run->context);
+            c->proc = 0;
+            release(&to_run->lock);
+        }
+#endif
     }
-  }
 }
 
 // Switch to scheduler.  Must hold only p->lock
