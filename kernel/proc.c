@@ -132,6 +132,7 @@ allocproc(void)
 found:
     p->pid = allocpid();
     p->state = USED;
+    p->in_tick = ticks;
 
     // Allocate a trapframe page.
     if((p->trapframe = (struct trapframe *)kalloc()) == 0)
@@ -458,31 +459,80 @@ wait(uint64 addr)
 void
 scheduler(void)
 {
-  struct proc *p;
-  struct cpu *c = mycpu();
-  
-  c->proc = 0;
-  for(;;){
-    // Avoid deadlock by ensuring that devices can interrupt.
-    intr_on();
+    // Commented out below line becaus of warning:
+    // Unused variable "p"
+    // struct proc *p;
+    struct cpu *c = mycpu();
 
-    for(p = proc; p < &proc[NPROC]; p++) {
-      acquire(&p->lock);
-      if(p->state == RUNNABLE) {
-        // Switch to chosen process.  It is the process's job
-        // to release its lock and then reacquire it
-        // before jumping back to us.
-        p->state = RUNNING;
-        c->proc = p;
-        swtch(&c->context, &p->context);
+    c->proc = 0;
+    for(;;)
+    {
+        // Avoid deadlock by ensuring that devices can interrupt.
+        intr_on();
 
-        // Process is done running for now.
-        // It should have changed its p->state before coming back.
-        c->proc = 0;
-      }
-      release(&p->lock);
+
+
+#ifdef RR
+        for(struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            acquire(&p->lock);
+            if(p->state == RUNNABLE)
+            {
+                // Switch to chosen process.  It is the process's job
+                // to release its lock and then reacquire it
+                // before jumping back to us.
+                p->state = RUNNING;
+                c->proc = p;
+                swtch(&c->context, &p->context);
+
+                // Process is done running for now.
+                // It should have changed its p->state before coming back.
+                c->proc = 0;
+            }
+            release(&p->lock);
+        }
+#endif
+
+
+
+#ifdef FCFS
+        struct proc* to_run = 0;
+        for (struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            // Hold the process so no other core can access it
+            acquire(&p->lock);
+            if (p->state == RUNNABLE)
+            {
+                if (to_run == 0)
+                {
+                    to_run = p;
+                    continue;
+                }
+                else if (p->in_tick < to_run->in_tick)
+                {
+                    // to_run is no longer useful so release it
+                    release(&to_run->lock);
+                    to_run = p;
+                    continue;
+                }
+            }
+            release(&p->lock);
+        }
+        if (to_run == 0)
+        {
+            // No process is RUNNABLE
+            continue;
+        }
+        else
+        {
+            to_run->state = RUNNING;
+            c->proc = to_run;
+            swtch(&c->context, &to_run->context);
+            c->proc = 0;
+            release(&to_run->lock);
+        }
+#endif
     }
-  }
 }
 
 // Switch to scheduler.  Must hold only p->lock

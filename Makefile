@@ -77,6 +77,9 @@ endif
 # Default is Round-Robin
 SCHEDULER_MACRO = -D RR
 
+ifeq ($(SCHEDULER), RR)
+	SCHEDULER_MACRO = -D RR
+endif
 ifeq ($(SCHEDULER), FCFS)
 	SCHEDULER_MACRO = -D FCFS
 endif
