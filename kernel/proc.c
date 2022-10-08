@@ -154,11 +154,14 @@ found:
   
   //By default, no tracing is set.
   p->mask = 0;
+  //Initially, the alarm timers are all initialized to 0.
   p->alarm = 0;
+  //Initially, no goal for time should be set.
   p->alarmTime = 0;
+  //Initially no ticks are recorded.
+  p->tickCount = 0;
+  //Initially, there is no interrupt function.
   p->interruptFunction = 0;
-  p->tickCount = -1;
-  // p->mask = (1 << 23)  - 1 ;
 
   return p;
 }
@@ -188,6 +191,10 @@ freeproc(struct proc *p)
   p->xstate = 0;
   p->state = UNUSED;
   p->mask = 0;
+  p->alarm = 0;
+  p->alarmTime = 0;
+  p->interruptFunction = 0;
+  p->tickCount = 0;
 }
 
 // Create a user page table for a given process, with no user memory,

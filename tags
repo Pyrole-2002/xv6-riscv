@@ -1152,47 +1152,47 @@ a0	user/stressfs.asm	/^  a0:	00000097          	auipc	ra,0x0$/;"	l
 a0	user/usertests.asm	/^      a0:	e426                	sd	s1,8(sp)$/;"	l
 a0	user/wc.asm	/^  a0:	86ea                	mv	a3,s10$/;"	l
 a0	user/zombie.asm	/^  a0:	fff7c703          	lbu	a4,-1(a5)$/;"	l
-a00	user/alarmtests.asm	/^ a00:	02500593          	li	a1,37$/;"	l
 a00	user/grep.asm	/^ a00:	74a2                	ld	s1,40(sp)$/;"	l
 a00	user/grind.asm	/^     a00:	45a080e7          	jalr	1114(ra) # e56 <close>$/;"	l
 a00	user/ls.asm	/^ a00:	02e48c63          	beq	s1,a4,a38 <malloc+0xa8>$/;"	l
 a00	user/usertests.asm	/^     a00:	f04a                	sd	s2,32(sp)$/;"	l
+a02	user/alarmtests.asm	/^ a02:	8556                	mv	a0,s5$/;"	l
 a02	user/grep.asm	/^ a02:	7902                	ld	s2,32(sp)$/;"	l
 a02	user/sh.asm	/^     a02:	1d4080e7          	jalr	468(ra) # bd2 <strlen>$/;"	l
 a02	user/usertests.asm	/^     a02:	ec4e                	sd	s3,24(sp)$/;"	l
-a04	user/alarmtests.asm	/^ a04:	8556                	mv	a0,s5$/;"	l
+a04	user/alarmtests.asm	/^ a04:	00000097          	auipc	ra,0x0$/;"	l
 a04	user/grep.asm	/^ a04:	69e2                	ld	s3,24(sp)$/;"	l
 a04	user/grind.asm	/^     a04:	00001797          	auipc	a5,0x1$/;"	l
 a04	user/ls.asm	/^ a04:	4137073b          	subw	a4,a4,s3$/;"	l
 a04	user/usertests.asm	/^     a04:	e852                	sd	s4,16(sp)$/;"	l
-a06	user/alarmtests.asm	/^ a06:	00000097          	auipc	ra,0x0$/;"	l
 a06	user/grep.asm	/^ a06:	6a42                	ld	s4,16(sp)$/;"	l
 a06	user/sh.asm	/^     a06:	1502                	slli	a0,a0,0x20$/;"	l
 a06	user/usertests.asm	/^     a06:	e456                	sd	s5,8(sp)$/;"	l
+a08	user/alarmtests.asm	/^ a08:	dc2080e7          	jalr	-574(ra) # 7c6 <putc>$/;"	l
 a08	user/grep.asm	/^ a08:	6aa2                	ld	s5,8(sp)$/;"	l
 a08	user/grind.asm	/^     a08:	bdc78793          	addi	a5,a5,-1060 # 15e0 <malloc+0x37a>$/;"	l
 a08	user/ls.asm	/^ a08:	c798                	sw	a4,8(a5)$/;"	l
 a08	user/sh.asm	/^     a08:	9101                	srli	a0,a0,0x20$/;"	l
 a08	user/usertests.asm	/^     a08:	e05a                	sd	s6,0(sp)$/;"	l
-a0a	user/alarmtests.asm	/^ a0a:	d9c080e7          	jalr	-612(ra) # 7a2 <putc>$/;"	l
 a0a	user/grep.asm	/^ a0a:	6b02                	ld	s6,0(sp)$/;"	l
 a0a	user/ls.asm	/^ a0a:	02071693          	slli	a3,a4,0x20$/;"	l
 a0a	user/sh.asm	/^     a0a:	94aa                	add	s1,s1,a0$/;"	l
 a0a	user/usertests.asm	/^     a0a:	0080                	addi	s0,sp,64$/;"	l
+a0c	user/alarmtests.asm	/^ a0c:	8bca                	mv	s7,s2$/;"	l
 a0c	user/grep.asm	/^ a0c:	6121                	addi	sp,sp,64$/;"	l
 a0c	user/grind.asm	/^     a0c:	faf43423          	sd	a5,-88(s0)$/;"	l
 a0c	user/sh.asm	/^     a0c:	85a6                	mv	a1,s1$/;"	l
 a0c	user/usertests.asm	/^     a0c:	8b2a                	mv	s6,a0$/;"	l
-a0e	user/alarmtests.asm	/^ a0e:	85ca                	mv	a1,s2$/;"	l
+a0e	user/alarmtests.asm	/^ a0e:	4981                	li	s3,0$/;"	l
 a0e	user/grep.asm	/^ a0e:	8082                	ret$/;"	l
 a0e	user/ls.asm	/^ a0e:	01c6d713          	srli	a4,a3,0x1c$/;"	l
 a0e	user/sh.asm	/^     a0e:	fd840513          	addi	a0,s0,-40$/;"	l
 a0e	user/usertests.asm	/^     a0e:	20200593          	li	a1,514$/;"	l
 a1	kernel/proc.h	/^  \/* 120 *\/ uint64 a1;$/;"	m	struct:trapframe	typeref:typename:uint64
-a10	user/alarmtests.asm	/^ a10:	8556                	mv	a0,s5$/;"	l
+a10	user/alarmtests.asm	/^ a10:	b5e1                	j	8d8 <vprintf+0x44>$/;"	l
 a10	user/grep.asm	/^ a10:	6398                	ld	a4,0(a5)$/;"	l
 a10	user/grind.asm	/^     a10:	fa043823          	sd	zero,-80(s0)$/;"	l
-a12	user/alarmtests.asm	/^ a12:	00000097          	auipc	ra,0x0$/;"	l
+a12	user/alarmtests.asm	/^ a12:	02500593          	li	a1,37$/;"	l
 a12	user/grep.asm	/^ a12:	e118                	sd	a4,0(a0)$/;"	l
 a12	user/ls.asm	/^ a12:	97ba                	add	a5,a5,a4$/;"	l
 a12	user/sh.asm	/^     a12:	00000097          	auipc	ra,0x0$/;"	l
@@ -1200,25 +1200,24 @@ a12	user/usertests.asm	/^     a12:	00006517          	auipc	a0,0x6$/;"	l
 a14	user/grep.asm	/^ a14:	bff1                	j	9f0 <malloc+0x88>$/;"	l
 a14	user/grind.asm	/^     a14:	fa840593          	addi	a1,s0,-88$/;"	l
 a14	user/ls.asm	/^ a14:	0137a423          	sw	s3,8(a5)$/;"	l
-a16	user/alarmtests.asm	/^ a16:	d90080e7          	jalr	-624(ra) # 7a2 <putc>$/;"	l
+a16	user/alarmtests.asm	/^ a16:	8556                	mv	a0,s5$/;"	l
 a16	user/grep.asm	/^ a16:	01652423          	sw	s6,8(a0)$/;"	l
 a16	user/sh.asm	/^     a16:	df6080e7          	jalr	-522(ra) # 808 <parseline>$/;"	l
 a16	user/usertests.asm	/^     a16:	9f650513          	addi	a0,a0,-1546 # 6408 <malloc+0x442>$/;"	l
+a18	user/alarmtests.asm	/^ a18:	00000097          	auipc	ra,0x0$/;"	l
 a18	user/grind.asm	/^     a18:	00001517          	auipc	a0,0x1$/;"	l
 a18	user/ls.asm	/^ a18:	00000717          	auipc	a4,0x0$/;"	l
-a1a	user/alarmtests.asm	/^ a1a:	4981                	li	s3,0$/;"	l
 a1a	user/grep.asm	/^ a1a:	0541                	addi	a0,a0,16$/;"	l
 a1a	user/sh.asm	/^     a1a:	892a                	mv	s2,a0$/;"	l
 a1a	user/usertests.asm	/^     a1a:	00005097          	auipc	ra,0x5$/;"	l
-a1c	user/alarmtests.asm	/^ a1c:	bd61                	j	8b4 <vprintf+0x44>$/;"	l
+a1c	user/alarmtests.asm	/^ a1c:	dae080e7          	jalr	-594(ra) # 7c6 <putc>$/;"	l
 a1c	user/grep.asm	/^ a1c:	00000097          	auipc	ra,0x0$/;"	l
 a1c	user/grind.asm	/^     a1c:	bd050513          	addi	a0,a0,-1072 # 15e8 <malloc+0x382>$/;"	l
 a1c	user/ls.asm	/^ a1c:	5ea73423          	sd	a0,1512(a4) # 1000 <freep>$/;"	l
 a1c	user/sh.asm	/^     a1c:	00001617          	auipc	a2,0x1$/;"	l
-a1e	user/alarmtests.asm	/^ a1e:	8bce                	mv	s7,s3$/;"	l
 a1e	user/usertests.asm	/^     a1e:	1b4080e7          	jalr	436(ra) # 5bce <open>$/;"	l
 a2	kernel/proc.h	/^  \/* 128 *\/ uint64 a2;$/;"	m	struct:trapframe	typeref:typename:uint64
-a2	user/alarmtests.asm	/^  a2:	b7a50513          	addi	a0,a0,-1158 # c18 <malloc+0xf6>$/;"	l
+a2	user/alarmtests.asm	/^  a2:	b9a50513          	addi	a0,a0,-1126 # c38 <malloc+0xf2>$/;"	l
 a2	user/cat.asm	/^  a2:	ffe5099b          	addiw	s3,a0,-2$/;"	l
 a2	user/forktest.asm	/^  a2:	f8e5                	bnez	s1,92 <forktest+0x64>$/;"	l
 a2	user/grep.asm	/^  a2:	c691                	beqz	a3,ae <matchhere+0x60>$/;"	l
@@ -1233,68 +1232,63 @@ a20	user/grep.asm	/^ a20:	eca080e7          	jalr	-310(ra) # 8e6 <free>$/;"	l
 a20	user/grind.asm	/^     a20:	00000097          	auipc	ra,0x0$/;"	l
 a20	user/ls.asm	/^ a20:	01078513          	addi	a0,a5,16$/;"	l
 a20	user/sh.asm	/^     a20:	9e460613          	addi	a2,a2,-1564 # 1400 <malloc+0x1d2>$/;"	l
-a22	user/alarmtests.asm	/^ a22:	bd49                	j	8b4 <vprintf+0x44>$/;"	l
+a22	user/alarmtests.asm	/^ a22:	bd5d                	j	8d8 <vprintf+0x44>$/;"	l
 a22	user/usertests.asm	/^     a22:	0a054d63          	bltz	a0,adc <writetest+0xe4>$/;"	l
-a24	user/alarmtests.asm	/^ a24:	60a6                	ld	ra,72(sp)$/;"	l
+a24	user/alarmtests.asm	/^ a24:	02500593          	li	a1,37$/;"	l
 a24	user/grep.asm	/^ a24:	00093503          	ld	a0,0(s2)$/;"	l
 a24	user/grind.asm	/^     a24:	446080e7          	jalr	1094(ra) # e66 <exec>$/;"	l
 a24	user/ls.asm	/^ a24:	70e2                	ld	ra,56(sp)$/;"	l
 a24	user/sh.asm	/^     a24:	85a6                	mv	a1,s1$/;"	l
-a26	user/alarmtests.asm	/^ a26:	6406                	ld	s0,64(sp)$/;"	l
 a26	user/ls.asm	/^ a26:	7442                	ld	s0,48(sp)$/;"	l
 a26	user/sh.asm	/^     a26:	fd840513          	addi	a0,s0,-40$/;"	l
 a26	user/usertests.asm	/^     a26:	892a                	mv	s2,a0$/;"	l
-a28	user/alarmtests.asm	/^ a28:	74e2                	ld	s1,56(sp)$/;"	l
+a28	user/alarmtests.asm	/^ a28:	8556                	mv	a0,s5$/;"	l
 a28	user/grep.asm	/^ a28:	d971                	beqz	a0,9fc <malloc+0x94>$/;"	l
 a28	user/grind.asm	/^     a28:	00001597          	auipc	a1,0x1$/;"	l
 a28	user/ls.asm	/^ a28:	74a2                	ld	s1,40(sp)$/;"	l
 a28	user/usertests.asm	/^     a28:	4481                	li	s1,0$/;"	l
-a2a	user/alarmtests.asm	/^ a2a:	7942                	ld	s2,48(sp)$/;"	l
+a2a	user/alarmtests.asm	/^ a2a:	00000097          	auipc	ra,0x0$/;"	l
 a2a	user/grep.asm	/^ a2a:	611c                	ld	a5,0(a0)$/;"	l
 a2a	user/ls.asm	/^ a2a:	7902                	ld	s2,32(sp)$/;"	l
 a2a	user/sh.asm	/^     a2a:	00000097          	auipc	ra,0x0$/;"	l
 a2a	user/usertests.asm	/^     a2a:	00006997          	auipc	s3,0x6$/;"	l
-a2c	user/alarmtests.asm	/^ a2c:	79a2                	ld	s3,40(sp)$/;"	l
 a2c	user/grep.asm	/^ a2c:	4798                	lw	a4,8(a5)$/;"	l
 a2c	user/grind.asm	/^     a2c:	bc858593          	addi	a1,a1,-1080 # 15f0 <malloc+0x38a>$/;"	l
 a2c	user/ls.asm	/^ a2c:	69e2                	ld	s3,24(sp)$/;"	l
-a2e	user/alarmtests.asm	/^ a2e:	7a02                	ld	s4,32(sp)$/;"	l
+a2e	user/alarmtests.asm	/^ a2e:	d9c080e7          	jalr	-612(ra) # 7c6 <putc>$/;"	l
 a2e	user/grep.asm	/^ a2e:	fa9775e3          	bgeu	a4,s1,9d8 <malloc+0x70>$/;"	l
 a2e	user/ls.asm	/^ a2e:	6a42                	ld	s4,16(sp)$/;"	l
 a2e	user/sh.asm	/^     a2e:	b00080e7          	jalr	-1280(ra) # 52a <peek>$/;"	l
 a2e	user/usertests.asm	/^     a2e:	a0698993          	addi	s3,s3,-1530 # 6430 <malloc+0x46a>$/;"	l
 a3	kernel/proc.h	/^  \/* 136 *\/ uint64 a3;$/;"	m	struct:trapframe	typeref:typename:uint64
-a30	user/alarmtests.asm	/^ a30:	6ae2                	ld	s5,24(sp)$/;"	l
 a30	user/grind.asm	/^     a30:	4509                	li	a0,2$/;"	l
 a30	user/ls.asm	/^ a30:	6aa2                	ld	s5,8(sp)$/;"	l
-a32	user/alarmtests.asm	/^ a32:	6b42                	ld	s6,16(sp)$/;"	l
+a32	user/alarmtests.asm	/^ a32:	85ca                	mv	a1,s2$/;"	l
 a32	user/grep.asm	/^ a32:	00093703          	ld	a4,0(s2)$/;"	l
 a32	user/grind.asm	/^     a32:	00000097          	auipc	ra,0x0$/;"	l
 a32	user/ls.asm	/^ a32:	6b02                	ld	s6,0(sp)$/;"	l
 a32	user/sh.asm	/^     a32:	fd843603          	ld	a2,-40(s0)$/;"	l
 a32	user/usertests.asm	/^     a32:	00006a97          	auipc	s5,0x6$/;"	l
-a34	user/alarmtests.asm	/^ a34:	6ba2                	ld	s7,8(sp)$/;"	l
+a34	user/alarmtests.asm	/^ a34:	8556                	mv	a0,s5$/;"	l
 a34	user/ls.asm	/^ a34:	6121                	addi	sp,sp,64$/;"	l
-a36	user/alarmtests.asm	/^ a36:	6c02                	ld	s8,0(sp)$/;"	l
+a36	user/alarmtests.asm	/^ a36:	00000097          	auipc	ra,0x0$/;"	l
 a36	user/grep.asm	/^ a36:	853e                	mv	a0,a5$/;"	l
 a36	user/grind.asm	/^     a36:	74e080e7          	jalr	1870(ra) # 1180 <fprintf>$/;"	l
 a36	user/ls.asm	/^ a36:	8082                	ret$/;"	l
 a36	user/sh.asm	/^     a36:	00961e63          	bne	a2,s1,a52 <parsecmd+0x66>$/;"	l
 a36	user/usertests.asm	/^     a36:	a36a8a93          	addi	s5,s5,-1482 # 6468 <malloc+0x4a2>$/;"	l
-a38	user/alarmtests.asm	/^ a38:	6161                	addi	sp,sp,80$/;"	l
 a38	user/grep.asm	/^ a38:	fef719e3          	bne	a4,a5,a2a <malloc+0xc2>$/;"	l
 a38	user/ls.asm	/^ a38:	6398                	ld	a4,0(a5)$/;"	l
-a3a	user/alarmtests.asm	/^ a3a:	8082                	ret$/;"	l
+a3a	user/alarmtests.asm	/^ a3a:	d90080e7          	jalr	-624(ra) # 7c6 <putc>$/;"	l
 a3a	user/grind.asm	/^     a3a:	4519                	li	a0,6$/;"	l
 a3a	user/ls.asm	/^ a3a:	e118                	sd	a4,0(a0)$/;"	l
 a3a	user/sh.asm	/^     a3a:	854a                	mv	a0,s2$/;"	l
 a3a	user/usertests.asm	/^     a3a:	06400a13          	li	s4,100$/;"	l
-a3c	user/alarmtests.asm	/^ a3c:	715d                	addi	sp,sp,-80$/;"	l
 a3c	user/grep.asm	/^ a3c:	8552                	mv	a0,s4$/;"	l
 a3c	user/grind.asm	/^     a3c:	00000097          	auipc	ra,0x0$/;"	l
 a3c	user/ls.asm	/^ a3c:	bff1                	j	a18 <malloc+0x88>$/;"	l
 a3c	user/sh.asm	/^     a3c:	00000097          	auipc	ra,0x0$/;"	l
-a3e	user/alarmtests.asm	/^ a3e:	ec06                	sd	ra,24(sp)$/;"	l
+a3e	user/alarmtests.asm	/^ a3e:	4981                	li	s3,0$/;"	l
 a3e	user/grep.asm	/^ a3e:	00000097          	auipc	ra,0x0$/;"	l
 a3e	user/ls.asm	/^ a3e:	01652423          	sw	s6,8(a0)$/;"	l
 a3e	user/usertests.asm	/^     a3e:	4629                	li	a2,10$/;"	l
@@ -1311,64 +1305,68 @@ a4	user/stressfs.asm	/^  a4:	312080e7          	jalr	786(ra) # 3b2 <write>$/;"	l
 a4	user/usertests.asm	/^      a4:	84aa                	mv	s1,a0$/;"	l
 a4	user/wc.asm	/^  a4:	85e2                	mv	a1,s8$/;"	l
 a4	user/zombie.asm	/^  a4:	ff65                	bnez	a4,9c <strlen+0x10>$/;"	l
-a40	user/alarmtests.asm	/^ a40:	e822                	sd	s0,16(sp)$/;"	l
+a40	user/alarmtests.asm	/^ a40:	bd61                	j	8d8 <vprintf+0x44>$/;"	l
 a40	user/grind.asm	/^     a40:	3f2080e7          	jalr	1010(ra) # e2e <exit>$/;"	l
 a40	user/sh.asm	/^     a40:	f18080e7          	jalr	-232(ra) # 954 <nulterminate>$/;"	l
 a40	user/usertests.asm	/^     a40:	85ce                	mv	a1,s3$/;"	l
-a42	user/alarmtests.asm	/^ a42:	1000                	addi	s0,sp,32$/;"	l
+a42	user/alarmtests.asm	/^ a42:	8bce                	mv	s7,s3$/;"	l
 a42	user/grep.asm	/^ a42:	b7a080e7          	jalr	-1158(ra) # 5b8 <sbrk>$/;"	l
 a42	user/ls.asm	/^ a42:	0541                	addi	a0,a0,16$/;"	l
 a42	user/usertests.asm	/^     a42:	854a                	mv	a0,s2$/;"	l
-a44	user/alarmtests.asm	/^ a44:	e010                	sd	a2,0(s0)$/;"	l
+a44	user/alarmtests.asm	/^ a44:	4981                	li	s3,0$/;"	l
 a44	user/grind.asm	/^     a44:	00001597          	auipc	a1,0x1$/;"	l
 a44	user/ls.asm	/^ a44:	00000097          	auipc	ra,0x0$/;"	l
 a44	user/sh.asm	/^     a44:	854a                	mv	a0,s2$/;"	l
 a44	user/usertests.asm	/^     a44:	00005097          	auipc	ra,0x5$/;"	l
-a46	user/alarmtests.asm	/^ a46:	e414                	sd	a3,8(s0)$/;"	l
+a46	user/alarmtests.asm	/^ a46:	bd49                	j	8d8 <vprintf+0x44>$/;"	l
 a46	user/grep.asm	/^ a46:	fd5518e3          	bne	a0,s5,a16 <malloc+0xae>$/;"	l
 a46	user/sh.asm	/^     a46:	70a2                	ld	ra,40(sp)$/;"	l
-a48	user/alarmtests.asm	/^ a48:	e818                	sd	a4,16(s0)$/;"	l
+a48	user/alarmtests.asm	/^ a48:	60a6                	ld	ra,72(sp)$/;"	l
 a48	user/grind.asm	/^     a48:	a0c58593          	addi	a1,a1,-1524 # 1450 <malloc+0x1ea>$/;"	l
 a48	user/ls.asm	/^ a48:	eca080e7          	jalr	-310(ra) # 90e <free>$/;"	l
 a48	user/sh.asm	/^     a48:	7402                	ld	s0,32(sp)$/;"	l
 a48	user/usertests.asm	/^     a48:	16a080e7          	jalr	362(ra) # 5bae <write>$/;"	l
-a4a	user/alarmtests.asm	/^ a4a:	ec1c                	sd	a5,24(s0)$/;"	l
+a4a	user/alarmtests.asm	/^ a4a:	6406                	ld	s0,64(sp)$/;"	l
 a4a	user/grep.asm	/^ a4a:	4501                	li	a0,0$/;"	l
 a4a	user/sh.asm	/^     a4a:	64e2                	ld	s1,24(sp)$/;"	l
-a4c	user/alarmtests.asm	/^ a4c:	03043023          	sd	a6,32(s0)$/;"	l
+a4c	user/alarmtests.asm	/^ a4c:	74e2                	ld	s1,56(sp)$/;"	l
 a4c	user/grep.asm	/^ a4c:	bf45                	j	9fc <malloc+0x94>$/;"	l
 a4c	user/grind.asm	/^     a4c:	4509                	li	a0,2$/;"	l
 a4c	user/ls.asm	/^ a4c:	00093503          	ld	a0,0(s2)$/;"	l
 a4c	user/sh.asm	/^     a4c:	6942                	ld	s2,16(sp)$/;"	l
 a4c	user/usertests.asm	/^     a4c:	47a9                	li	a5,10$/;"	l
+a4e	user/alarmtests.asm	/^ a4e:	7942                	ld	s2,48(sp)$/;"	l
 a4e	user/grind.asm	/^     a4e:	00000097          	auipc	ra,0x0$/;"	l
 a4e	user/sh.asm	/^     a4e:	6145                	addi	sp,sp,48$/;"	l
 a4e	user/usertests.asm	/^     a4e:	0af51563          	bne	a0,a5,af8 <writetest+0x100>$/;"	l
 a5	kernel/proc.h	/^  \/* 152 *\/ uint64 a5;$/;"	m	struct:trapframe	typeref:typename:uint64
-a50	user/alarmtests.asm	/^ a50:	03143423          	sd	a7,40(s0)$/;"	l
+a50	user/alarmtests.asm	/^ a50:	79a2                	ld	s3,40(sp)$/;"	l
 a50	user/ls.asm	/^ a50:	d971                	beqz	a0,a24 <malloc+0x94>$/;"	l
 a50	user/sh.asm	/^     a50:	8082                	ret$/;"	l
+a52	user/alarmtests.asm	/^ a52:	7a02                	ld	s4,32(sp)$/;"	l
 a52	user/grind.asm	/^     a52:	732080e7          	jalr	1842(ra) # 1180 <fprintf>$/;"	l
 a52	user/ls.asm	/^ a52:	611c                	ld	a5,0(a0)$/;"	l
 a52	user/sh.asm	/^     a52:	00001597          	auipc	a1,0x1$/;"	l
 a52	user/usertests.asm	/^     a52:	4629                	li	a2,10$/;"	l
-a54	user/alarmtests.asm	/^ a54:	fe843423          	sd	s0,-24(s0)$/;"	l
+a54	user/alarmtests.asm	/^ a54:	6ae2                	ld	s5,24(sp)$/;"	l
 a54	user/ls.asm	/^ a54:	4798                	lw	a4,8(a5)$/;"	l
 a54	user/usertests.asm	/^     a54:	85d6                	mv	a1,s5$/;"	l
+a56	user/alarmtests.asm	/^ a56:	6b42                	ld	s6,16(sp)$/;"	l
 a56	user/grind.asm	/^     a56:	451d                	li	a0,7$/;"	l
 a56	user/ls.asm	/^ a56:	fa9775e3          	bgeu	a4,s1,a00 <malloc+0x70>$/;"	l
 a56	user/sh.asm	/^     a56:	9b658593          	addi	a1,a1,-1610 # 1408 <malloc+0x1da>$/;"	l
 a56	user/usertests.asm	/^     a56:	854a                	mv	a0,s2$/;"	l
-a58	user/alarmtests.asm	/^ a58:	8622                	mv	a2,s0$/;"	l
+a58	user/alarmtests.asm	/^ a58:	6ba2                	ld	s7,8(sp)$/;"	l
 a58	user/grind.asm	/^     a58:	00000097          	auipc	ra,0x0$/;"	l
 a58	user/usertests.asm	/^     a58:	00005097          	auipc	ra,0x5$/;"	l
-a5a	user/alarmtests.asm	/^ a5a:	00000097          	auipc	ra,0x0$/;"	l
+a5a	user/alarmtests.asm	/^ a5a:	6c02                	ld	s8,0(sp)$/;"	l
 a5a	user/ls.asm	/^ a5a:	00093703          	ld	a4,0(s2)$/;"	l
 a5a	user/sh.asm	/^     a5a:	4509                	li	a0,2$/;"	l
+a5c	user/alarmtests.asm	/^ a5c:	6161                	addi	sp,sp,80$/;"	l
 a5c	user/grind.asm	/^     a5c:	3d6080e7          	jalr	982(ra) # e2e <exit>$/;"	l
 a5c	user/sh.asm	/^     a5c:	00000097          	auipc	ra,0x0$/;"	l
 a5c	user/usertests.asm	/^     a5c:	156080e7          	jalr	342(ra) # 5bae <write>$/;"	l
-a5e	user/alarmtests.asm	/^ a5e:	e16080e7          	jalr	-490(ra) # 870 <vprintf>$/;"	l
+a5e	user/alarmtests.asm	/^ a5e:	8082                	ret$/;"	l
 a5e	user/ls.asm	/^ a5e:	853e                	mv	a0,a5$/;"	l
 a6	kernel/proc.h	/^  \/* 160 *\/ uint64 a6;$/;"	m	struct:trapframe	typeref:typename:uint64
 a6	user/alarmtests.asm	/^  a6:	00001097          	auipc	ra,0x1$/;"	l
@@ -1385,59 +1383,58 @@ a6	user/strace.asm	/^  a6:	0505                	addi	a0,a0,1$/;"	l
 a6	user/usertests.asm	/^      a6:	4581                	li	a1,0$/;"	l
 a6	user/wc.asm	/^  a6:	00001517          	auipc	a0,0x1$/;"	l
 a6	user/zombie.asm	/^  a6:	40a6853b          	subw	a0,a3,a0$/;"	l
+a60	user/alarmtests.asm	/^ a60:	715d                	addi	sp,sp,-80$/;"	l
 a60	user/grind.asm	/^     a60:	7179                	addi	sp,sp,-48$/;"	l
 a60	user/ls.asm	/^ a60:	fef719e3          	bne	a4,a5,a52 <malloc+0xc2>$/;"	l
 a60	user/sh.asm	/^     a60:	6ec080e7          	jalr	1772(ra) # 1148 <fprintf>$/;"	l
 a60	user/usertests.asm	/^     a60:	47a9                	li	a5,10$/;"	l
-a62	user/alarmtests.asm	/^ a62:	60e2                	ld	ra,24(sp)$/;"	l
+a62	user/alarmtests.asm	/^ a62:	ec06                	sd	ra,24(sp)$/;"	l
 a62	user/grind.asm	/^     a62:	f406                	sd	ra,40(sp)$/;"	l
 a62	user/usertests.asm	/^     a62:	0af51a63          	bne	a0,a5,b16 <writetest+0x11e>$/;"	l
-a64	user/alarmtests.asm	/^ a64:	6442                	ld	s0,16(sp)$/;"	l
+a64	user/alarmtests.asm	/^ a64:	e822                	sd	s0,16(sp)$/;"	l
 a64	user/grind.asm	/^     a64:	f022                	sd	s0,32(sp)$/;"	l
 a64	user/ls.asm	/^ a64:	8552                	mv	a0,s4$/;"	l
 a64	user/sh.asm	/^     a64:	00001517          	auipc	a0,0x1$/;"	l
-a66	user/alarmtests.asm	/^ a66:	6161                	addi	sp,sp,80$/;"	l
+a66	user/alarmtests.asm	/^ a66:	1000                	addi	s0,sp,32$/;"	l
 a66	user/grind.asm	/^     a66:	ec26                	sd	s1,24(sp)$/;"	l
 a66	user/ls.asm	/^ a66:	00000097          	auipc	ra,0x0$/;"	l
 a66	user/usertests.asm	/^     a66:	2485                	addiw	s1,s1,1$/;"	l
-a68	user/alarmtests.asm	/^ a68:	8082                	ret$/;"	l
+a68	user/alarmtests.asm	/^ a68:	e010                	sd	a2,0(s0)$/;"	l
 a68	user/grind.asm	/^     a68:	e84a                	sd	s2,16(sp)$/;"	l
 a68	user/sh.asm	/^     a68:	93450513          	addi	a0,a0,-1740 # 1398 <malloc+0x16a>$/;"	l
 a68	user/usertests.asm	/^     a68:	fd449be3          	bne	s1,s4,a3e <writetest+0x46>$/;"	l
-a6a	user/alarmtests.asm	/^ a6a:	711d                	addi	sp,sp,-96$/;"	l
+a6a	user/alarmtests.asm	/^ a6a:	e414                	sd	a3,8(s0)$/;"	l
 a6a	user/grind.asm	/^     a6a:	1800                	addi	s0,sp,48$/;"	l
 a6a	user/ls.asm	/^ a6a:	b7a080e7          	jalr	-1158(ra) # 5e0 <sbrk>$/;"	l
-a6c	user/alarmtests.asm	/^ a6c:	ec06                	sd	ra,24(sp)$/;"	l
+a6c	user/alarmtests.asm	/^ a6c:	e818                	sd	a4,16(s0)$/;"	l
 a6c	user/grind.asm	/^     a6c:	00001517          	auipc	a0,0x1$/;"	l
 a6c	user/sh.asm	/^     a6c:	fffff097          	auipc	ra,0xfffff$/;"	l
 a6c	user/usertests.asm	/^     a6c:	854a                	mv	a0,s2$/;"	l
-a6e	user/alarmtests.asm	/^ a6e:	e822                	sd	s0,16(sp)$/;"	l
+a6e	user/alarmtests.asm	/^ a6e:	ec1c                	sd	a5,24(s0)$/;"	l
 a6e	user/ls.asm	/^ a6e:	fd5518e3          	bne	a0,s5,a3e <malloc+0xae>$/;"	l
 a6e	user/usertests.asm	/^     a6e:	00005097          	auipc	ra,0x5$/;"	l
 a7	kernel/proc.h	/^  \/* 168 *\/ uint64 a7;$/;"	m	struct:trapframe	typeref:typename:uint64
-a70	user/alarmtests.asm	/^ a70:	1000                	addi	s0,sp,32$/;"	l
+a70	user/alarmtests.asm	/^ a70:	03043023          	sd	a6,32(s0)$/;"	l
 a70	user/grind.asm	/^     a70:	9c450513          	addi	a0,a0,-1596 # 1430 <malloc+0x1ca>$/;"	l
 a70	user/sh.asm	/^     a70:	5ea080e7          	jalr	1514(ra) # 56 <panic>$/;"	l
-a72	user/alarmtests.asm	/^ a72:	e40c                	sd	a1,8(s0)$/;"	l
 a72	user/ls.asm	/^ a72:	4501                	li	a0,0$/;"	l
 a72	user/usertests.asm	/^     a72:	148080e7          	jalr	328(ra) # 5bb6 <close>$/;"	l
-a74	user/alarmtests.asm	/^ a74:	e810                	sd	a2,16(s0)$/;"	l
+a74	user/alarmtests.asm	/^ a74:	03143423          	sd	a7,40(s0)$/;"	l
 a74	user/grind.asm	/^     a74:	00000097          	auipc	ra,0x0$/;"	l
 a74	user/ls.asm	/^ a74:	bf45                	j	a24 <malloc+0x94>$/;"	l
 a74	user/sh.asm	/^     a74:	7179                	addi	sp,sp,-48$/;"	l
-a76	user/alarmtests.asm	/^ a76:	ec14                	sd	a3,24(s0)$/;"	l
 a76	user/sh.asm	/^     a76:	f406                	sd	ra,40(sp)$/;"	l
 a76	user/usertests.asm	/^     a76:	4581                	li	a1,0$/;"	l
-a78	user/alarmtests.asm	/^ a78:	f018                	sd	a4,32(s0)$/;"	l
+a78	user/alarmtests.asm	/^ a78:	fe843423          	sd	s0,-24(s0)$/;"	l
 a78	user/grind.asm	/^     a78:	40a080e7          	jalr	1034(ra) # e7e <unlink>$/;"	l
 a78	user/sh.asm	/^     a78:	f022                	sd	s0,32(sp)$/;"	l
 a78	user/usertests.asm	/^     a78:	00006517          	auipc	a0,0x6$/;"	l
-a7a	user/alarmtests.asm	/^ a7a:	f41c                	sd	a5,40(s0)$/;"	l
 a7a	user/sh.asm	/^     a7a:	ec26                	sd	s1,24(sp)$/;"	l
-a7c	user/alarmtests.asm	/^ a7c:	03043823          	sd	a6,48(s0)$/;"	l
+a7c	user/alarmtests.asm	/^ a7c:	8622                	mv	a2,s0$/;"	l
 a7c	user/grind.asm	/^     a7c:	00001517          	auipc	a0,0x1$/;"	l
 a7c	user/sh.asm	/^     a7c:	e84a                	sd	s2,16(sp)$/;"	l
 a7c	user/usertests.asm	/^     a7c:	99050513          	addi	a0,a0,-1648 # 6408 <malloc+0x442>$/;"	l
+a7e	user/alarmtests.asm	/^ a7e:	00000097          	auipc	ra,0x0$/;"	l
 a7e	user/sh.asm	/^     a7e:	e44e                	sd	s3,8(sp)$/;"	l
 a8	user/echo.asm	/^  a8:	1141                	addi	sp,sp,-16$/;"	l
 a8	user/grep.asm	/^  a8:	fee9                	bnez	a3,82 <matchhere+0x34>$/;"	l
@@ -1447,47 +1444,50 @@ a8	user/rm.asm	/^  a8:	0141                	addi	sp,sp,16$/;"	l
 a8	user/strace.asm	/^  a8:	87aa                	mv	a5,a0$/;"	l
 a8	user/stressfs.asm	/^  a8:	34fd                	addiw	s1,s1,-1$/;"	l
 a8	user/usertests.asm	/^      a8:	00006517          	auipc	a0,0x6$/;"	l
-a80	user/alarmtests.asm	/^ a80:	03143c23          	sd	a7,56(s0)$/;"	l
 a80	user/grind.asm	/^     a80:	96450513          	addi	a0,a0,-1692 # 13e0 <malloc+0x17a>$/;"	l
 a80	user/sh.asm	/^     a80:	e052                	sd	s4,0(sp)$/;"	l
 a80	user/usertests.asm	/^     a80:	00005097          	auipc	ra,0x5$/;"	l
+a82	user/alarmtests.asm	/^ a82:	e16080e7          	jalr	-490(ra) # 894 <vprintf>$/;"	l
 a82	user/sh.asm	/^     a82:	1800                	addi	s0,sp,48$/;"	l
-a84	user/alarmtests.asm	/^ a84:	00840613          	addi	a2,s0,8$/;"	l
 a84	user/grind.asm	/^     a84:	00000097          	auipc	ra,0x0$/;"	l
 a84	user/sh.asm	/^     a84:	00001497          	auipc	s1,0x1$/;"	l
 a84	user/usertests.asm	/^     a84:	14e080e7          	jalr	334(ra) # 5bce <open>$/;"	l
-a88	user/alarmtests.asm	/^ a88:	fec43423          	sd	a2,-24(s0)$/;"	l
+a86	user/alarmtests.asm	/^ a86:	60e2                	ld	ra,24(sp)$/;"	l
+a88	user/alarmtests.asm	/^ a88:	6442                	ld	s0,16(sp)$/;"	l
 a88	user/grind.asm	/^     a88:	3fa080e7          	jalr	1018(ra) # e7e <unlink>$/;"	l
 a88	user/sh.asm	/^     a88:	99448493          	addi	s1,s1,-1644 # 1418 <malloc+0x1ea>$/;"	l
 a88	user/usertests.asm	/^     a88:	84aa                	mv	s1,a0$/;"	l
+a8a	user/alarmtests.asm	/^ a8a:	6161                	addi	sp,sp,80$/;"	l
 a8a	user/usertests.asm	/^     a8a:	0a054563          	bltz	a0,b34 <writetest+0x13c>$/;"	l
-a8c	user/alarmtests.asm	/^ a8c:	85aa                	mv	a1,a0$/;"	l
+a8c	user/alarmtests.asm	/^ a8c:	8082                	ret$/;"	l
 a8c	user/grind.asm	/^     a8c:	00000097          	auipc	ra,0x0$/;"	l
 a8c	user/sh.asm	/^     a8c:	4589                	li	a1,2$/;"	l
-a8e	user/alarmtests.asm	/^ a8e:	4505                	li	a0,1$/;"	l
+a8e	user/alarmtests.asm	/^ a8e:	711d                	addi	sp,sp,-96$/;"	l
 a8e	user/sh.asm	/^     a8e:	8526                	mv	a0,s1$/;"	l
 a8e	user/usertests.asm	/^     a8e:	7d000613          	li	a2,2000$/;"	l
-a90	user/alarmtests.asm	/^ a90:	00000097          	auipc	ra,0x0$/;"	l
+a90	user/alarmtests.asm	/^ a90:	ec06                	sd	ra,24(sp)$/;"	l
 a90	user/grind.asm	/^     a90:	39a080e7          	jalr	922(ra) # e26 <fork>$/;"	l
 a90	user/sh.asm	/^     a90:	00000097          	auipc	ra,0x0$/;"	l
+a92	user/alarmtests.asm	/^ a92:	e822                	sd	s0,16(sp)$/;"	l
 a92	user/usertests.asm	/^     a92:	0000c597          	auipc	a1,0xc$/;"	l
-a94	user/alarmtests.asm	/^ a94:	de0080e7          	jalr	-544(ra) # 870 <vprintf>$/;"	l
+a94	user/alarmtests.asm	/^ a94:	1000                	addi	s0,sp,32$/;"	l
 a94	user/grind.asm	/^     a94:	02054163          	bltz	a0,ab6 <iter+0x56>$/;"	l
 a94	user/sh.asm	/^     a94:	3a6080e7          	jalr	934(ra) # e36 <open>$/;"	l
+a96	user/alarmtests.asm	/^ a96:	e40c                	sd	a1,8(s0)$/;"	l
 a96	user/usertests.asm	/^     a96:	1e658593          	addi	a1,a1,486 # cc78 <buf>$/;"	l
-a98	user/alarmtests.asm	/^ a98:	60e2                	ld	ra,24(sp)$/;"	l
+a98	user/alarmtests.asm	/^ a98:	e810                	sd	a2,16(s0)$/;"	l
 a98	user/grind.asm	/^     a98:	84aa                	mv	s1,a0$/;"	l
 a98	user/sh.asm	/^     a98:	00054963          	bltz	a0,aaa <main+0x36>$/;"	l
-a9a	user/alarmtests.asm	/^ a9a:	6442                	ld	s0,16(sp)$/;"	l
+a9a	user/alarmtests.asm	/^ a9a:	ec14                	sd	a3,24(s0)$/;"	l
 a9a	user/grind.asm	/^     a9a:	e91d                	bnez	a0,ad0 <iter+0x70>$/;"	l
 a9a	user/usertests.asm	/^     a9a:	00005097          	auipc	ra,0x5$/;"	l
-a9c	user/alarmtests.asm	/^ a9c:	6125                	addi	sp,sp,96$/;"	l
+a9c	user/alarmtests.asm	/^ a9c:	f018                	sd	a4,32(s0)$/;"	l
 a9c	user/grind.asm	/^     a9c:	00001717          	auipc	a4,0x1$/;"	l
 a9c	user/sh.asm	/^     a9c:	4789                	li	a5,2$/;"	l
-a9e	user/alarmtests.asm	/^ a9e:	8082                	ret$/;"	l
+a9e	user/alarmtests.asm	/^ a9e:	f41c                	sd	a5,40(s0)$/;"	l
 a9e	user/sh.asm	/^     a9e:	fea7d7e3          	bge	a5,a0,a8c <main+0x18>$/;"	l
 a9e	user/usertests.asm	/^     a9e:	10c080e7          	jalr	268(ra) # 5ba6 <read>$/;"	l
-aa	user/alarmtests.asm	/^  aa:	9c4080e7          	jalr	-1596(ra) # a6a <printf>$/;"	l
+aa	user/alarmtests.asm	/^  aa:	9e8080e7          	jalr	-1560(ra) # a8e <printf>$/;"	l
 aa	user/cat.asm	/^  aa:	01d7d993          	srli	s3,a5,0x1d$/;"	l
 aa	user/echo.asm	/^  aa:	e422                	sd	s0,8(sp)$/;"	l
 aa	user/forktest.asm	/^  aa:	306080e7          	jalr	774(ra) # 3ac <wait>$/;"	l
@@ -1503,43 +1503,41 @@ aa	user/strace.asm	/^  aa:	86be                	mv	a3,a5$/;"	l
 aa	user/stressfs.asm	/^  aa:	f4f5                	bnez	s1,96 <main+0x96>$/;"	l
 aa	user/wc.asm	/^  aa:	8a250513          	addi	a0,a0,-1886 # 948 <malloc+0x100>$/;"	l
 aa	user/zombie.asm	/^  aa:	2505                	addiw	a0,a0,1$/;"	l
-aa0	user/alarmtests.asm	/^ aa0:	1141                	addi	sp,sp,-16$/;"	l
+aa0	user/alarmtests.asm	/^ aa0:	03043823          	sd	a6,48(s0)$/;"	l
 aa0	user/grind.asm	/^     aa0:	56470713          	addi	a4,a4,1380 # 2000 <rand_next>$/;"	l
-aa2	user/alarmtests.asm	/^ aa2:	e422                	sd	s0,8(sp)$/;"	l
 aa2	user/sh.asm	/^     aa2:	00000097          	auipc	ra,0x0$/;"	l
 aa2	user/usertests.asm	/^     aa2:	7d000793          	li	a5,2000$/;"	l
-aa4	user/alarmtests.asm	/^ aa4:	0800                	addi	s0,sp,16$/;"	l
+aa4	user/alarmtests.asm	/^ aa4:	03143c23          	sd	a7,56(s0)$/;"	l
 aa4	user/grind.asm	/^     aa4:	631c                	ld	a5,0(a4)$/;"	l
-aa6	user/alarmtests.asm	/^ aa6:	ff050693          	addi	a3,a0,-16$/;"	l
 aa6	user/grind.asm	/^     aa6:	01f7c793          	xori	a5,a5,31$/;"	l
 aa6	user/sh.asm	/^     aa6:	37c080e7          	jalr	892(ra) # e1e <close>$/;"	l
 aa6	user/usertests.asm	/^     aa6:	0af51563          	bne	a0,a5,b50 <writetest+0x158>$/;"	l
-aaa	user/alarmtests.asm	/^ aaa:	00000797          	auipc	a5,0x0$/;"	l
+aa8	user/alarmtests.asm	/^ aa8:	00840613          	addi	a2,s0,8$/;"	l
 aaa	user/grind.asm	/^     aaa:	e31c                	sd	a5,0(a4)$/;"	l
 aaa	user/sh.asm	/^     aaa:	00001497          	auipc	s1,0x1$/;"	l
 aaa	user/usertests.asm	/^     aaa:	8526                	mv	a0,s1$/;"	l
+aac	user/alarmtests.asm	/^ aac:	fec43423          	sd	a2,-24(s0)$/;"	l
 aac	user/grind.asm	/^     aac:	4501                	li	a0,0$/;"	l
 aac	user/usertests.asm	/^     aac:	00005097          	auipc	ra,0x5$/;"	l
-aae	user/alarmtests.asm	/^ aae:	55e7b783          	ld	a5,1374(a5) # 1008 <freep>$/;"	l
 aae	user/grind.asm	/^     aae:	fffff097          	auipc	ra,0xfffff$/;"	l
 aae	user/sh.asm	/^     aae:	57648493          	addi	s1,s1,1398 # 2020 <buf.0>$/;"	l
+ab0	user/alarmtests.asm	/^ ab0:	85aa                	mv	a1,a0$/;"	l
 ab0	user/usertests.asm	/^     ab0:	10a080e7          	jalr	266(ra) # 5bb6 <close>$/;"	l
-ab2	user/alarmtests.asm	/^ ab2:	a02d                	j	adc <free+0x3c>$/;"	l
+ab2	user/alarmtests.asm	/^ ab2:	4505                	li	a0,1$/;"	l
 ab2	user/grind.asm	/^     ab2:	5ca080e7          	jalr	1482(ra) # 78 <go>$/;"	l
 ab2	user/sh.asm	/^     ab2:	06300913          	li	s2,99$/;"	l
-ab4	user/alarmtests.asm	/^ ab4:	4618                	lw	a4,8(a2)$/;"	l
+ab4	user/alarmtests.asm	/^ ab4:	00000097          	auipc	ra,0x0$/;"	l
 ab4	user/usertests.asm	/^     ab4:	00006517          	auipc	a0,0x6$/;"	l
-ab6	user/alarmtests.asm	/^ ab6:	9f2d                	addw	a4,a4,a1$/;"	l
 ab6	user/grind.asm	/^     ab6:	00001517          	auipc	a0,0x1$/;"	l
 ab6	user/sh.asm	/^     ab6:	02000993          	li	s3,32$/;"	l
-ab8	user/alarmtests.asm	/^ ab8:	fee52c23          	sw	a4,-8(a0)$/;"	l
+ab8	user/alarmtests.asm	/^ ab8:	de0080e7          	jalr	-544(ra) # 894 <vprintf>$/;"	l
 ab8	user/usertests.asm	/^     ab8:	95450513          	addi	a0,a0,-1708 # 6408 <malloc+0x442>$/;"	l
 aba	user/grind.asm	/^     aba:	99a50513          	addi	a0,a0,-1638 # 1450 <malloc+0x1ea>$/;"	l
 aba	user/sh.asm	/^     aba:	a819                	j	ad0 <main+0x5c>$/;"	l
-abc	user/alarmtests.asm	/^ abc:	6398                	ld	a4,0(a5)$/;"	l
+abc	user/alarmtests.asm	/^ abc:	60e2                	ld	ra,24(sp)$/;"	l
 abc	user/sh.asm	/^     abc:	fffff097          	auipc	ra,0xfffff$/;"	l
 abc	user/usertests.asm	/^     abc:	00005097          	auipc	ra,0x5$/;"	l
-abe	user/alarmtests.asm	/^ abe:	6310                	ld	a2,0(a4)$/;"	l
+abe	user/alarmtests.asm	/^ abe:	6442                	ld	s0,16(sp)$/;"	l
 abe	user/grind.asm	/^     abe:	00000097          	auipc	ra,0x0$/;"	l
 ac	user/echo.asm	/^  ac:	0800                	addi	s0,sp,16$/;"	l
 ac	user/grep.asm	/^  ac:	bff1                	j	88 <matchhere+0x3a>$/;"	l
@@ -1553,48 +1551,49 @@ ac	user/strace.asm	/^  ac:	0785                	addi	a5,a5,1$/;"	l
 ac	user/stressfs.asm	/^  ac:	854a                	mv	a0,s2$/;"	l
 ac	user/usertests.asm	/^      ac:	04050513          	addi	a0,a0,64 # 60e8 <malloc+0x122>$/;"	l
 ac	user/zombie.asm	/^  ac:	6422                	ld	s0,8(sp)$/;"	l
-ac0	user/alarmtests.asm	/^ ac0:	a83d                	j	afe <free+0x5e>$/;"	l
+ac0	user/alarmtests.asm	/^ ac0:	6125                	addi	sp,sp,96$/;"	l
 ac0	user/sh.asm	/^     ac0:	5c0080e7          	jalr	1472(ra) # 7c <fork1>$/;"	l
 ac0	user/usertests.asm	/^     ac0:	122080e7          	jalr	290(ra) # 5bde <unlink>$/;"	l
-ac2	user/alarmtests.asm	/^ ac2:	ff852703          	lw	a4,-8(a0)$/;"	l
+ac2	user/alarmtests.asm	/^ ac2:	8082                	ret$/;"	l
 ac2	user/grind.asm	/^     ac2:	6f0080e7          	jalr	1776(ra) # 11ae <printf>$/;"	l
+ac4	user/alarmtests.asm	/^ ac4:	1141                	addi	sp,sp,-16$/;"	l
 ac4	user/sh.asm	/^     ac4:	c549                	beqz	a0,b4e <main+0xda>$/;"	l
 ac4	user/usertests.asm	/^     ac4:	0a054463          	bltz	a0,b6c <writetest+0x174>$/;"	l
-ac6	user/alarmtests.asm	/^ ac6:	9f31                	addw	a4,a4,a2$/;"	l
+ac6	user/alarmtests.asm	/^ ac6:	e422                	sd	s0,8(sp)$/;"	l
 ac6	user/grind.asm	/^     ac6:	4505                	li	a0,1$/;"	l
 ac6	user/sh.asm	/^     ac6:	4501                	li	a0,0$/;"	l
-ac8	user/alarmtests.asm	/^ ac8:	c798                	sw	a4,8(a5)$/;"	l
+ac8	user/alarmtests.asm	/^ ac8:	0800                	addi	s0,sp,16$/;"	l
 ac8	user/grind.asm	/^     ac8:	00000097          	auipc	ra,0x0$/;"	l
 ac8	user/sh.asm	/^     ac8:	00000097          	auipc	ra,0x0$/;"	l
 ac8	user/usertests.asm	/^     ac8:	70e2                	ld	ra,56(sp)$/;"	l
-aca	user/alarmtests.asm	/^ aca:	ff053683          	ld	a3,-16(a0)$/;"	l
+aca	user/alarmtests.asm	/^ aca:	ff050693          	addi	a3,a0,-16$/;"	l
 aca	user/usertests.asm	/^     aca:	7442                	ld	s0,48(sp)$/;"	l
 acc	user/grind.asm	/^     acc:	366080e7          	jalr	870(ra) # e2e <exit>$/;"	l
 acc	user/sh.asm	/^     acc:	336080e7          	jalr	822(ra) # dfe <wait>$/;"	l
 acc	user/usertests.asm	/^     acc:	74a2                	ld	s1,40(sp)$/;"	l
-ace	user/alarmtests.asm	/^ ace:	a091                	j	b12 <free+0x72>$/;"	l
+ace	user/alarmtests.asm	/^ ace:	00000797          	auipc	a5,0x0$/;"	l
 ace	user/usertests.asm	/^     ace:	7902                	ld	s2,32(sp)$/;"	l
 acquire	kernel/spinlock.c	/^acquire(struct spinlock *lk)$/;"	f	typeref:typename:void
 acquiresleep	kernel/sleeplock.c	/^acquiresleep(struct sleeplock *lk)$/;"	f	typeref:typename:void
-ad0	user/alarmtests.asm	/^ ad0:	6398                	ld	a4,0(a5)$/;"	l
 ad0	user/grind.asm	/^     ad0:	00000097          	auipc	ra,0x0$/;"	l
 ad0	user/sh.asm	/^     ad0:	06400593          	li	a1,100$/;"	l
 ad0	user/usertests.asm	/^     ad0:	69e2                	ld	s3,24(sp)$/;"	l
-ad2	user/alarmtests.asm	/^ ad2:	00e7e463          	bltu	a5,a4,ada <free+0x3a>$/;"	l
+ad2	user/alarmtests.asm	/^ ad2:	53a7b783          	ld	a5,1338(a5) # 1008 <freep>$/;"	l
 ad2	user/usertests.asm	/^     ad2:	6a42                	ld	s4,16(sp)$/;"	l
 ad4	user/grind.asm	/^     ad4:	356080e7          	jalr	854(ra) # e26 <fork>$/;"	l
 ad4	user/sh.asm	/^     ad4:	8526                	mv	a0,s1$/;"	l
 ad4	user/usertests.asm	/^     ad4:	6aa2                	ld	s5,8(sp)$/;"	l
-ad6	user/alarmtests.asm	/^ ad6:	00e6ea63          	bltu	a3,a4,aea <free+0x4a>$/;"	l
+ad6	user/alarmtests.asm	/^ ad6:	a02d                	j	b00 <free+0x3c>$/;"	l
 ad6	user/sh.asm	/^     ad6:	fffff097          	auipc	ra,0xfffff$/;"	l
 ad6	user/usertests.asm	/^     ad6:	6b02                	ld	s6,0(sp)$/;"	l
+ad8	user/alarmtests.asm	/^ ad8:	4618                	lw	a4,8(a2)$/;"	l
 ad8	user/grind.asm	/^     ad8:	892a                	mv	s2,a0$/;"	l
 ad8	user/usertests.asm	/^     ad8:	6121                	addi	sp,sp,64$/;"	l
-ada	user/alarmtests.asm	/^ ada:	87ba                	mv	a5,a4$/;"	l
+ada	user/alarmtests.asm	/^ ada:	9f2d                	addw	a4,a4,a1$/;"	l
 ada	user/grind.asm	/^     ada:	02054263          	bltz	a0,afe <iter+0x9e>$/;"	l
 ada	user/sh.asm	/^     ada:	52a080e7          	jalr	1322(ra) # 0 <getcmd>$/;"	l
 ada	user/usertests.asm	/^     ada:	8082                	ret$/;"	l
-adc	user/alarmtests.asm	/^ adc:	fed7fae3          	bgeu	a5,a3,ad0 <free+0x30>$/;"	l
+adc	user/alarmtests.asm	/^ adc:	fee52c23          	sw	a4,-8(a0)$/;"	l
 adc	user/usertests.asm	/^     adc:	85da                	mv	a1,s6$/;"	l
 addr	kernel/kernel.asm	/^      addr = balloc(ip->dev);$/;"	d
 addr	kernel/kernel.asm	/^  addr = myproc()->sz;$/;"	d
@@ -1621,40 +1620,42 @@ ae	user/wc.asm	/^  ae:	00000097          	auipc	ra,0x0$/;"	l
 ae	user/zombie.asm	/^  ae:	0141                	addi	sp,sp,16$/;"	l
 ae0	user/alarmtests.asm	/^ ae0:	6398                	ld	a4,0(a5)$/;"	l
 ae0	user/grind.asm	/^     ae0:	00001697          	auipc	a3,0x1$/;"	l
-ae2	user/alarmtests.asm	/^ ae2:	00e6e463          	bltu	a3,a4,aea <free+0x4a>$/;"	l
+ae2	user/alarmtests.asm	/^ ae2:	6310                	ld	a2,0(a4)$/;"	l
 ae2	user/sh.asm	/^     ae2:	0004c783          	lbu	a5,0(s1)$/;"	l
 ae2	user/usertests.asm	/^     ae2:	93250513          	addi	a0,a0,-1742 # 6410 <malloc+0x44a>$/;"	l
+ae4	user/alarmtests.asm	/^ ae4:	a83d                	j	b22 <free+0x5e>$/;"	l
 ae4	user/grind.asm	/^     ae4:	52068693          	addi	a3,a3,1312 # 2000 <rand_next>$/;"	l
-ae6	user/alarmtests.asm	/^ ae6:	fee7eae3          	bltu	a5,a4,ada <free+0x3a>$/;"	l
+ae6	user/alarmtests.asm	/^ ae6:	ff852703          	lw	a4,-8(a0)$/;"	l
 ae6	user/sh.asm	/^     ae6:	fd279be3          	bne	a5,s2,abc <main+0x48>$/;"	l
 ae6	user/usertests.asm	/^     ae6:	00005097          	auipc	ra,0x5$/;"	l
 ae8	user/grind.asm	/^     ae8:	629c                	ld	a5,0(a3)$/;"	l
-aea	user/alarmtests.asm	/^ aea:	ff852583          	lw	a1,-8(a0)$/;"	l
+aea	user/alarmtests.asm	/^ aea:	9f31                	addw	a4,a4,a2$/;"	l
 aea	user/grind.asm	/^     aea:	6709                	lui	a4,0x2$/;"	l
 aea	user/sh.asm	/^     aea:	0014c703          	lbu	a4,1(s1)$/;"	l
 aea	user/usertests.asm	/^     aea:	428080e7          	jalr	1064(ra) # 5f0e <printf>$/;"	l
+aec	user/alarmtests.asm	/^ aec:	c798                	sw	a4,8(a5)$/;"	l
 aec	user/grind.asm	/^     aec:	c0970713          	addi	a4,a4,-1015 # 1c09 <digits+0x511>$/;"	l
-aee	user/alarmtests.asm	/^ aee:	6390                	ld	a2,0(a5)$/;"	l
+aee	user/alarmtests.asm	/^ aee:	ff053683          	ld	a3,-16(a0)$/;"	l
 aee	user/sh.asm	/^     aee:	06400793          	li	a5,100$/;"	l
 aee	user/usertests.asm	/^     aee:	4505                	li	a0,1$/;"	l
-af0	user/alarmtests.asm	/^ af0:	02059813          	slli	a6,a1,0x20$/;"	l
 af0	user/grind.asm	/^     af0:	8fb9                	xor	a5,a5,a4$/;"	l
 af0	user/usertests.asm	/^     af0:	00005097          	auipc	ra,0x5$/;"	l
+af2	user/alarmtests.asm	/^ af2:	a091                	j	b36 <free+0x72>$/;"	l
 af2	user/grind.asm	/^     af2:	e29c                	sd	a5,0(a3)$/;"	l
 af2	user/sh.asm	/^     af2:	fcf715e3          	bne	a4,a5,abc <main+0x48>$/;"	l
-af4	user/alarmtests.asm	/^ af4:	01c85713          	srli	a4,a6,0x1c$/;"	l
+af4	user/alarmtests.asm	/^ af4:	6398                	ld	a4,0(a5)$/;"	l
 af4	user/grind.asm	/^     af4:	4505                	li	a0,1$/;"	l
 af4	user/usertests.asm	/^     af4:	09e080e7          	jalr	158(ra) # 5b8e <exit>$/;"	l
+af6	user/alarmtests.asm	/^ af6:	00e7e463          	bltu	a5,a4,afe <free+0x3a>$/;"	l
 af6	user/grind.asm	/^     af6:	fffff097          	auipc	ra,0xfffff$/;"	l
 af6	user/sh.asm	/^     af6:	0024c783          	lbu	a5,2(s1)$/;"	l
-af8	user/alarmtests.asm	/^ af8:	9736                	add	a4,a4,a3$/;"	l
 af8	user/usertests.asm	/^     af8:	8626                	mv	a2,s1$/;"	l
-afa	user/alarmtests.asm	/^ afa:	fae60de3          	beq	a2,a4,ab4 <free+0x14>$/;"	l
+afa	user/alarmtests.asm	/^ afa:	00e6ea63          	bltu	a3,a4,b0e <free+0x4a>$/;"	l
 afa	user/grind.asm	/^     afa:	582080e7          	jalr	1410(ra) # 78 <go>$/;"	l
 afa	user/sh.asm	/^     afa:	fd3791e3          	bne	a5,s3,abc <main+0x48>$/;"	l
 afa	user/usertests.asm	/^     afa:	85da                	mv	a1,s6$/;"	l
 afc	user/usertests.asm	/^     afc:	00006517          	auipc	a0,0x6$/;"	l
-afe	user/alarmtests.asm	/^ afe:	fec53823          	sd	a2,-16(a0)$/;"	l
+afe	user/alarmtests.asm	/^ afe:	87ba                	mv	a5,a4$/;"	l
 afe	user/grind.asm	/^     afe:	00001517          	auipc	a0,0x1$/;"	l
 afe	user/sh.asm	/^     afe:	00001a17          	auipc	s4,0x1$/;"	l
 alarm	kernel/proc.h	/^  int alarm;                   \/\/ Whether the program has called sigalarm or not.$/;"	m	struct:proc	typeref:typename:int
@@ -1733,42 +1734,42 @@ b0	user/rm.asm	/^  b0:	0800                	addi	s0,sp,16$/;"	l
 b0	user/sh.asm	/^      b0:	ec26                	sd	s1,24(sp)$/;"	l
 b0	user/usertests.asm	/^      b0:	00006097          	auipc	ra,0x6$/;"	l
 b0	user/zombie.asm	/^  b0:	8082                	ret$/;"	l
+b00	user/alarmtests.asm	/^ b00:	fed7fae3          	bgeu	a5,a3,af4 <free+0x30>$/;"	l
 b00	user/usertests.asm	/^     b00:	94450513          	addi	a0,a0,-1724 # 6440 <malloc+0x47a>$/;"	l
-b02	user/alarmtests.asm	/^ b02:	4790                	lw	a2,8(a5)$/;"	l
 b02	user/grind.asm	/^     b02:	95250513          	addi	a0,a0,-1710 # 1450 <malloc+0x1ea>$/;"	l
 b02	user/sh.asm	/^     b02:	522a0a13          	addi	s4,s4,1314 # 2020 <buf.0>$/;"	l
-b04	user/alarmtests.asm	/^ b04:	02061593          	slli	a1,a2,0x20$/;"	l
+b04	user/alarmtests.asm	/^ b04:	6398                	ld	a4,0(a5)$/;"	l
 b04	user/usertests.asm	/^     b04:	00005097          	auipc	ra,0x5$/;"	l
+b06	user/alarmtests.asm	/^ b06:	00e6e463          	bltu	a3,a4,b0e <free+0x4a>$/;"	l
 b06	user/grind.asm	/^     b06:	00000097          	auipc	ra,0x0$/;"	l
 b06	user/sh.asm	/^     b06:	8552                	mv	a0,s4$/;"	l
-b08	user/alarmtests.asm	/^ b08:	01c5d713          	srli	a4,a1,0x1c$/;"	l
 b08	user/sh.asm	/^     b08:	00000097          	auipc	ra,0x0$/;"	l
 b08	user/usertests.asm	/^     b08:	40a080e7          	jalr	1034(ra) # 5f0e <printf>$/;"	l
+b0a	user/alarmtests.asm	/^ b0a:	fee7eae3          	bltu	a5,a4,afe <free+0x3a>$/;"	l
 b0a	user/grind.asm	/^     b0a:	6a8080e7          	jalr	1704(ra) # 11ae <printf>$/;"	l
-b0c	user/alarmtests.asm	/^ b0c:	973e                	add	a4,a4,a5$/;"	l
 b0c	user/sh.asm	/^     b0c:	0ca080e7          	jalr	202(ra) # bd2 <strlen>$/;"	l
 b0c	user/usertests.asm	/^     b0c:	4505                	li	a0,1$/;"	l
-b0e	user/alarmtests.asm	/^ b0e:	fae68ae3          	beq	a3,a4,ac2 <free+0x22>$/;"	l
+b0e	user/alarmtests.asm	/^ b0e:	ff852583          	lw	a1,-8(a0)$/;"	l
 b0e	user/grind.asm	/^     b0e:	4505                	li	a0,1$/;"	l
 b0e	user/usertests.asm	/^     b0e:	00005097          	auipc	ra,0x5$/;"	l
 b10	user/grind.asm	/^     b10:	00000097          	auipc	ra,0x0$/;"	l
 b10	user/sh.asm	/^     b10:	fff5079b          	addiw	a5,a0,-1$/;"	l
-b12	user/alarmtests.asm	/^ b12:	e394                	sd	a3,0(a5)$/;"	l
+b12	user/alarmtests.asm	/^ b12:	6390                	ld	a2,0(a5)$/;"	l
 b12	user/usertests.asm	/^     b12:	080080e7          	jalr	128(ra) # 5b8e <exit>$/;"	l
-b14	user/alarmtests.asm	/^ b14:	00000717          	auipc	a4,0x0$/;"	l
+b14	user/alarmtests.asm	/^ b14:	02059813          	slli	a6,a1,0x20$/;"	l
 b14	user/grind.asm	/^     b14:	31e080e7          	jalr	798(ra) # e2e <exit>$/;"	l
 b14	user/sh.asm	/^     b14:	1782                	slli	a5,a5,0x20$/;"	l
 b16	user/sh.asm	/^     b16:	9381                	srli	a5,a5,0x20$/;"	l
 b16	user/usertests.asm	/^     b16:	8626                	mv	a2,s1$/;"	l
-b18	user/alarmtests.asm	/^ b18:	4ef73a23          	sd	a5,1268(a4) # 1008 <freep>$/;"	l
+b18	user/alarmtests.asm	/^ b18:	01c85713          	srli	a4,a6,0x1c$/;"	l
 b18	user/grind.asm	/^     b18:	57fd                	li	a5,-1$/;"	l
 b18	user/sh.asm	/^     b18:	9a3e                	add	s4,s4,a5$/;"	l
 b18	user/usertests.asm	/^     b18:	85da                	mv	a1,s6$/;"	l
 b1a	user/grind.asm	/^     b1a:	fcf42e23          	sw	a5,-36(s0)$/;"	l
 b1a	user/sh.asm	/^     b1a:	000a0023          	sb	zero,0(s4)$/;"	l
 b1a	user/usertests.asm	/^     b1a:	00006517          	auipc	a0,0x6$/;"	l
-b1c	user/alarmtests.asm	/^ b1c:	6422                	ld	s0,8(sp)$/;"	l
-b1e	user/alarmtests.asm	/^ b1e:	0141                	addi	sp,sp,16$/;"	l
+b1c	user/alarmtests.asm	/^ b1c:	9736                	add	a4,a4,a3$/;"	l
+b1e	user/alarmtests.asm	/^ b1e:	fae60de3          	beq	a2,a4,ad8 <free+0x14>$/;"	l
 b1e	user/grind.asm	/^     b1e:	fdc40513          	addi	a0,s0,-36$/;"	l
 b1e	user/sh.asm	/^     b1e:	00001517          	auipc	a0,0x1$/;"	l
 b1e	user/usertests.asm	/^     b1e:	95e50513          	addi	a0,a0,-1698 # 6478 <malloc+0x4b2>$/;"	l
@@ -1786,48 +1787,42 @@ b2	user/strace.asm	/^  b2:	ff65                	bnez	a4,aa <strlen+0x10>$/;"	l
 b2	user/stressfs.asm	/^  b2:	30c080e7          	jalr	780(ra) # 3ba <close>$/;"	l
 b2	user/wc.asm	/^  b2:	6e2080e7          	jalr	1762(ra) # 790 <printf>$/;"	l
 b2	user/zombie.asm	/^  b2:	4501                	li	a0,0$/;"	l
-b20	user/alarmtests.asm	/^ b20:	8082                	ret$/;"	l
-b22	user/alarmtests.asm	/^ b22:	7139                	addi	sp,sp,-64$/;"	l
+b22	user/alarmtests.asm	/^ b22:	fec53823          	sd	a2,-16(a0)$/;"	l
 b22	user/grind.asm	/^     b22:	00000097          	auipc	ra,0x0$/;"	l
 b22	user/sh.asm	/^     b22:	50550513          	addi	a0,a0,1285 # 2023 <buf.0+0x3>$/;"	l
 b22	user/usertests.asm	/^     b22:	00005097          	auipc	ra,0x5$/;"	l
-b24	user/alarmtests.asm	/^ b24:	fc06                	sd	ra,56(sp)$/;"	l
-b26	user/alarmtests.asm	/^ b26:	f822                	sd	s0,48(sp)$/;"	l
+b26	user/alarmtests.asm	/^ b26:	4790                	lw	a2,8(a5)$/;"	l
 b26	user/grind.asm	/^     b26:	314080e7          	jalr	788(ra) # e36 <wait>$/;"	l
 b26	user/sh.asm	/^     b26:	00000097          	auipc	ra,0x0$/;"	l
 b26	user/usertests.asm	/^     b26:	3ec080e7          	jalr	1004(ra) # 5f0e <printf>$/;"	l
-b28	user/alarmtests.asm	/^ b28:	f426                	sd	s1,40(sp)$/;"	l
-b2a	user/alarmtests.asm	/^ b2a:	f04a                	sd	s2,32(sp)$/;"	l
+b28	user/alarmtests.asm	/^ b28:	02061593          	slli	a1,a2,0x20$/;"	l
 b2a	user/grind.asm	/^     b2a:	fdc42783          	lw	a5,-36(s0)$/;"	l
 b2a	user/sh.asm	/^     b2a:	340080e7          	jalr	832(ra) # e66 <chdir>$/;"	l
 b2a	user/usertests.asm	/^     b2a:	4505                	li	a0,1$/;"	l
-b2c	user/alarmtests.asm	/^ b2c:	ec4e                	sd	s3,24(sp)$/;"	l
+b2c	user/alarmtests.asm	/^ b2c:	01c5d713          	srli	a4,a1,0x1c$/;"	l
 b2c	user/usertests.asm	/^     b2c:	00005097          	auipc	ra,0x5$/;"	l
-b2e	user/alarmtests.asm	/^ b2e:	e852                	sd	s4,16(sp)$/;"	l
 b2e	user/grind.asm	/^     b2e:	ef99                	bnez	a5,b4c <iter+0xec>$/;"	l
 b2e	user/sh.asm	/^     b2e:	fa0551e3          	bgez	a0,ad0 <main+0x5c>$/;"	l
-b30	user/alarmtests.asm	/^ b30:	e456                	sd	s5,8(sp)$/;"	l
+b30	user/alarmtests.asm	/^ b30:	973e                	add	a4,a4,a5$/;"	l
 b30	user/grind.asm	/^     b30:	57fd                	li	a5,-1$/;"	l
 b30	user/usertests.asm	/^     b30:	062080e7          	jalr	98(ra) # 5b8e <exit>$/;"	l
-b32	user/alarmtests.asm	/^ b32:	e05a                	sd	s6,0(sp)$/;"	l
+b32	user/alarmtests.asm	/^ b32:	fae68ae3          	beq	a3,a4,ae6 <free+0x22>$/;"	l
 b32	user/grind.asm	/^     b32:	fcf42c23          	sw	a5,-40(s0)$/;"	l
 b32	user/sh.asm	/^     b32:	00001617          	auipc	a2,0x1$/;"	l
-b34	user/alarmtests.asm	/^ b34:	0080                	addi	s0,sp,64$/;"	l
 b34	user/usertests.asm	/^     b34:	85da                	mv	a1,s6$/;"	l
-b36	user/alarmtests.asm	/^ b36:	02051493          	slli	s1,a0,0x20$/;"	l
+b36	user/alarmtests.asm	/^ b36:	e394                	sd	a3,0(a5)$/;"	l
 b36	user/grind.asm	/^     b36:	fd840513          	addi	a0,s0,-40$/;"	l
 b36	user/sh.asm	/^     b36:	4f160613          	addi	a2,a2,1265 # 2023 <buf.0+0x3>$/;"	l
 b36	user/usertests.asm	/^     b36:	00006517          	auipc	a0,0x6$/;"	l
-b3a	user/alarmtests.asm	/^ b3a:	9081                	srli	s1,s1,0x20$/;"	l
+b38	user/alarmtests.asm	/^ b38:	00000717          	auipc	a4,0x0$/;"	l
 b3a	user/grind.asm	/^     b3a:	00000097          	auipc	ra,0x0$/;"	l
 b3a	user/sh.asm	/^     b3a:	00001597          	auipc	a1,0x1$/;"	l
 b3a	user/usertests.asm	/^     b3a:	96a50513          	addi	a0,a0,-1686 # 64a0 <malloc+0x4da>$/;"	l
-b3c	user/alarmtests.asm	/^ b3c:	04bd                	addi	s1,s1,15$/;"	l
-b3e	user/alarmtests.asm	/^ b3e:	8091                	srli	s1,s1,0x4$/;"	l
+b3c	user/alarmtests.asm	/^ b3c:	4cf73823          	sd	a5,1232(a4) # 1008 <freep>$/;"	l
 b3e	user/grind.asm	/^     b3e:	2fc080e7          	jalr	764(ra) # e36 <wait>$/;"	l
 b3e	user/sh.asm	/^     b3e:	8e658593          	addi	a1,a1,-1818 # 1420 <malloc+0x1f2>$/;"	l
 b3e	user/usertests.asm	/^     b3e:	00005097          	auipc	ra,0x5$/;"	l
-b4	user/alarmtests.asm	/^  b4:	63a080e7          	jalr	1594(ra) # 6ea <exit>$/;"	l
+b4	user/alarmtests.asm	/^  b4:	65e080e7          	jalr	1630(ra) # 70e <exit>$/;"	l
 b4	user/cat.asm	/^  b4:	00093503          	ld	a0,0(s2) # 1010 <buf>$/;"	l
 b4	user/echo.asm	/^  b4:	fff5c703          	lbu	a4,-1(a1)$/;"	l
 b4	user/forktest.asm	/^  b4:	00000517          	auipc	a0,0x0$/;"	l
@@ -1838,42 +1833,46 @@ b4	user/sh.asm	/^      b4:	c10d                	beqz	a0,d6 <runcmd+0x2c>$/;"	l
 b4	user/strace.asm	/^  b4:	40a6853b          	subw	a0,a3,a0$/;"	l
 b4	user/usertests.asm	/^      b4:	b1e080e7          	jalr	-1250(ra) # 5bce <open>$/;"	l
 b4	user/zombie.asm	/^  b4:	bfe5                	j	ac <strlen+0x20>$/;"	l
-b40	user/alarmtests.asm	/^ b40:	0014899b          	addiw	s3,s1,1$/;"	l
+b40	user/alarmtests.asm	/^ b40:	6422                	ld	s0,8(sp)$/;"	l
+b42	user/alarmtests.asm	/^ b42:	0141                	addi	sp,sp,16$/;"	l
 b42	user/grind.asm	/^     b42:	4501                	li	a0,0$/;"	l
 b42	user/sh.asm	/^     b42:	4509                	li	a0,2$/;"	l
 b42	user/usertests.asm	/^     b42:	3d0080e7          	jalr	976(ra) # 5f0e <printf>$/;"	l
-b44	user/alarmtests.asm	/^ b44:	0485                	addi	s1,s1,1$/;"	l
+b44	user/alarmtests.asm	/^ b44:	8082                	ret$/;"	l
 b44	user/grind.asm	/^     b44:	00000097          	auipc	ra,0x0$/;"	l
 b44	user/sh.asm	/^     b44:	00000097          	auipc	ra,0x0$/;"	l
-b46	user/alarmtests.asm	/^ b46:	00000517          	auipc	a0,0x0$/;"	l
+b46	user/alarmtests.asm	/^ b46:	7139                	addi	sp,sp,-64$/;"	l
 b46	user/usertests.asm	/^     b46:	4505                	li	a0,1$/;"	l
+b48	user/alarmtests.asm	/^ b48:	fc06                	sd	ra,56(sp)$/;"	l
 b48	user/grind.asm	/^     b48:	2ea080e7          	jalr	746(ra) # e2e <exit>$/;"	l
 b48	user/sh.asm	/^     b48:	604080e7          	jalr	1540(ra) # 1148 <fprintf>$/;"	l
 b48	user/usertests.asm	/^     b48:	00005097          	auipc	ra,0x5$/;"	l
-b4a	user/alarmtests.asm	/^ b4a:	4c253503          	ld	a0,1218(a0) # 1008 <freep>$/;"	l
+b4a	user/alarmtests.asm	/^ b4a:	f822                	sd	s0,48(sp)$/;"	l
+b4c	user/alarmtests.asm	/^ b4c:	f426                	sd	s1,40(sp)$/;"	l
 b4c	user/grind.asm	/^     b4c:	8526                	mv	a0,s1$/;"	l
 b4c	user/sh.asm	/^     b4c:	b751                	j	ad0 <main+0x5c>$/;"	l
 b4c	user/usertests.asm	/^     b4c:	046080e7          	jalr	70(ra) # 5b8e <exit>$/;"	l
-b4e	user/alarmtests.asm	/^ b4e:	c515                	beqz	a0,b7a <malloc+0x58>$/;"	l
+b4e	user/alarmtests.asm	/^ b4e:	f04a                	sd	s2,32(sp)$/;"	l
 b4e	user/grind.asm	/^     b4e:	00000097          	auipc	ra,0x0$/;"	l
 b4e	user/sh.asm	/^     b4e:	00001517          	auipc	a0,0x1$/;"	l
-b50	user/alarmtests.asm	/^ b50:	611c                	ld	a5,0(a0)$/;"	l
+b50	user/alarmtests.asm	/^ b50:	ec4e                	sd	s3,24(sp)$/;"	l
 b50	user/usertests.asm	/^     b50:	85da                	mv	a1,s6$/;"	l
-b52	user/alarmtests.asm	/^ b52:	4798                	lw	a4,8(a5)$/;"	l
+b52	user/alarmtests.asm	/^ b52:	e852                	sd	s4,16(sp)$/;"	l
 b52	user/grind.asm	/^     b52:	310080e7          	jalr	784(ra) # e5e <kill>$/;"	l
 b52	user/sh.asm	/^     b52:	4d250513          	addi	a0,a0,1234 # 2020 <buf.0>$/;"	l
 b52	user/usertests.asm	/^     b52:	00006517          	auipc	a0,0x6$/;"	l
-b54	user/alarmtests.asm	/^ b54:	02977f63          	bgeu	a4,s1,b92 <malloc+0x70>$/;"	l
+b54	user/alarmtests.asm	/^ b54:	e456                	sd	s5,8(sp)$/;"	l
+b56	user/alarmtests.asm	/^ b56:	e05a                	sd	s6,0(sp)$/;"	l
 b56	user/grind.asm	/^     b56:	854a                	mv	a0,s2$/;"	l
 b56	user/sh.asm	/^     b56:	00000097          	auipc	ra,0x0$/;"	l
 b56	user/usertests.asm	/^     b56:	96e50513          	addi	a0,a0,-1682 # 64c0 <malloc+0x4fa>$/;"	l
-b58	user/alarmtests.asm	/^ b58:	8a4e                	mv	s4,s3$/;"	l
+b58	user/alarmtests.asm	/^ b58:	0080                	addi	s0,sp,64$/;"	l
 b58	user/grind.asm	/^     b58:	00000097          	auipc	ra,0x0$/;"	l
-b5a	user/alarmtests.asm	/^ b5a:	0009871b          	sext.w	a4,s3$/;"	l
+b5a	user/alarmtests.asm	/^ b5a:	02051493          	slli	s1,a0,0x20$/;"	l
 b5a	user/sh.asm	/^     b5a:	e96080e7          	jalr	-362(ra) # 9ec <parsecmd>$/;"	l
 b5a	user/usertests.asm	/^     b5a:	00005097          	auipc	ra,0x5$/;"	l
 b5c	user/grind.asm	/^     b5c:	306080e7          	jalr	774(ra) # e5e <kill>$/;"	l
-b5e	user/alarmtests.asm	/^ b5e:	6685                	lui	a3,0x1$/;"	l
+b5e	user/alarmtests.asm	/^ b5e:	9081                	srli	s1,s1,0x20$/;"	l
 b5e	user/sh.asm	/^     b5e:	fffff097          	auipc	ra,0xfffff$/;"	l
 b5e	user/usertests.asm	/^     b5e:	3b4080e7          	jalr	948(ra) # 5f0e <printf>$/;"	l
 b6	user/grep.asm	/^  b6:	bfc9                	j	88 <matchhere+0x3a>$/;"	l
@@ -1885,45 +1884,47 @@ b6	user/sh.asm	/^      b6:	84aa                	mv	s1,a0$/;"	l
 b6	user/stressfs.asm	/^  b6:	00001517          	auipc	a0,0x1$/;"	l
 b6	user/wc.asm	/^  b6:	70e6                	ld	ra,120(sp)$/;"	l
 b6	user/zombie.asm	/^  b6:	1141                	addi	sp,sp,-16$/;"	l
-b60	user/alarmtests.asm	/^ b60:	00d77363          	bgeu	a4,a3,b66 <malloc+0x44>$/;"	l
+b60	user/alarmtests.asm	/^ b60:	04bd                	addi	s1,s1,15$/;"	l
 b60	user/grind.asm	/^     b60:	bfc1                	j	b30 <iter+0xd0>$/;"	l
+b62	user/alarmtests.asm	/^ b62:	8091                	srli	s1,s1,0x4$/;"	l
 b62	user/grind.asm	/^     b62:	1101                	addi	sp,sp,-32$/;"	l
 b62	user/sh.asm	/^     b62:	54c080e7          	jalr	1356(ra) # aa <runcmd>$/;"	l
 b62	user/usertests.asm	/^     b62:	4505                	li	a0,1$/;"	l
-b64	user/alarmtests.asm	/^ b64:	6a05                	lui	s4,0x1$/;"	l
+b64	user/alarmtests.asm	/^ b64:	0014899b          	addiw	s3,s1,1$/;"	l
 b64	user/grind.asm	/^     b64:	ec06                	sd	ra,24(sp)$/;"	l
 b64	user/usertests.asm	/^     b64:	00005097          	auipc	ra,0x5$/;"	l
-b66	user/alarmtests.asm	/^ b66:	000a0b1b          	sext.w	s6,s4$/;"	l
 b66	user/grind.asm	/^     b66:	e822                	sd	s0,16(sp)$/;"	l
 b66	user/sh.asm	/^     b66:	4501                	li	a0,0$/;"	l
+b68	user/alarmtests.asm	/^ b68:	0485                	addi	s1,s1,1$/;"	l
 b68	user/grind.asm	/^     b68:	e426                	sd	s1,8(sp)$/;"	l
 b68	user/sh.asm	/^     b68:	00000097          	auipc	ra,0x0$/;"	l
 b68	user/usertests.asm	/^     b68:	02a080e7          	jalr	42(ra) # 5b8e <exit>$/;"	l
-b6a	user/alarmtests.asm	/^ b6a:	004a1a1b          	slliw	s4,s4,0x4$/;"	l
+b6a	user/alarmtests.asm	/^ b6a:	00000517          	auipc	a0,0x0$/;"	l
 b6a	user/grind.asm	/^     b6a:	1000                	addi	s0,sp,32$/;"	l
 b6c	user/grind.asm	/^     b6c:	00001497          	auipc	s1,0x1$/;"	l
 b6c	user/sh.asm	/^     b6c:	28e080e7          	jalr	654(ra) # df6 <exit>$/;"	l
 b6c	user/usertests.asm	/^     b6c:	85da                	mv	a1,s6$/;"	l
-b6e	user/alarmtests.asm	/^ b6e:	00000917          	auipc	s2,0x0$/;"	l
+b6e	user/alarmtests.asm	/^ b6e:	49e53503          	ld	a0,1182(a0) # 1008 <freep>$/;"	l
 b6e	user/usertests.asm	/^     b6e:	00006517          	auipc	a0,0x6$/;"	l
 b70	user/grind.asm	/^     b70:	49448493          	addi	s1,s1,1172 # 2000 <rand_next>$/;"	l
 b70	user/sh.asm	/^     b70:	1141                	addi	sp,sp,-16$/;"	l
-b72	user/alarmtests.asm	/^ b72:	49a90913          	addi	s2,s2,1178 # 1008 <freep>$/;"	l
+b72	user/alarmtests.asm	/^ b72:	c515                	beqz	a0,b9e <malloc+0x58>$/;"	l
 b72	user/sh.asm	/^     b72:	e406                	sd	ra,8(sp)$/;"	l
 b72	user/usertests.asm	/^     b72:	96a50513          	addi	a0,a0,-1686 # 64d8 <malloc+0x512>$/;"	l
+b74	user/alarmtests.asm	/^ b74:	611c                	ld	a5,0(a0)$/;"	l
 b74	user/grind.asm	/^     b74:	a829                	j	b8e <main+0x2c>$/;"	l
 b74	user/sh.asm	/^     b74:	e022                	sd	s0,0(sp)$/;"	l
-b76	user/alarmtests.asm	/^ b76:	5afd                	li	s5,-1$/;"	l
+b76	user/alarmtests.asm	/^ b76:	4798                	lw	a4,8(a5)$/;"	l
 b76	user/grind.asm	/^     b76:	00000097          	auipc	ra,0x0$/;"	l
 b76	user/sh.asm	/^     b76:	0800                	addi	s0,sp,16$/;"	l
 b76	user/usertests.asm	/^     b76:	00005097          	auipc	ra,0x5$/;"	l
-b78	user/alarmtests.asm	/^ b78:	a895                	j	bec <malloc+0xca>$/;"	l
+b78	user/alarmtests.asm	/^ b78:	02977f63          	bgeu	a4,s1,bb6 <malloc+0x70>$/;"	l
 b78	user/sh.asm	/^     b78:	00000097          	auipc	ra,0x0$/;"	l
-b7a	user/alarmtests.asm	/^ b7a:	00000797          	auipc	a5,0x0$/;"	l
 b7a	user/grind.asm	/^     b7a:	eea080e7          	jalr	-278(ra) # a60 <iter>$/;"	l
 b7a	user/usertests.asm	/^     b7a:	398080e7          	jalr	920(ra) # 5f0e <printf>$/;"	l
+b7c	user/alarmtests.asm	/^ b7c:	8a4e                	mv	s4,s3$/;"	l
 b7c	user/sh.asm	/^     b7c:	efc080e7          	jalr	-260(ra) # a74 <main>$/;"	l
-b7e	user/alarmtests.asm	/^ b7e:	49678793          	addi	a5,a5,1174 # 1010 <base>$/;"	l
+b7e	user/alarmtests.asm	/^ b7e:	0009871b          	sext.w	a4,s3$/;"	l
 b7e	user/grind.asm	/^     b7e:	4551                	li	a0,20$/;"	l
 b7e	user/usertests.asm	/^     b7e:	4505                	li	a0,1$/;"	l
 b8	user/alarmtests.asm	/^  b8:	1141                	addi	sp,sp,-16$/;"	l
@@ -1945,46 +1946,47 @@ b8	user/zombie.asm	/^  b8:	e422                	sd	s0,8(sp)$/;"	l
 b80	user/grind.asm	/^     b80:	00000097          	auipc	ra,0x0$/;"	l
 b80	user/sh.asm	/^     b80:	4501                	li	a0,0$/;"	l
 b80	user/usertests.asm	/^     b80:	00005097          	auipc	ra,0x5$/;"	l
-b82	user/alarmtests.asm	/^ b82:	00000717          	auipc	a4,0x0$/;"	l
+b82	user/alarmtests.asm	/^ b82:	6685                	lui	a3,0x1$/;"	l
 b82	user/sh.asm	/^     b82:	00000097          	auipc	ra,0x0$/;"	l
+b84	user/alarmtests.asm	/^ b84:	00d77363          	bgeu	a4,a3,b8a <malloc+0x44>$/;"	l
 b84	user/grind.asm	/^     b84:	33e080e7          	jalr	830(ra) # ebe <sleep>$/;"	l
 b84	user/usertests.asm	/^     b84:	00e080e7          	jalr	14(ra) # 5b8e <exit>$/;"	l
-b86	user/alarmtests.asm	/^ b86:	48f73323          	sd	a5,1158(a4) # 1008 <freep>$/;"	l
 b86	user/sh.asm	/^     b86:	274080e7          	jalr	628(ra) # df6 <exit>$/;"	l
+b88	user/alarmtests.asm	/^ b88:	6a05                	lui	s4,0x1$/;"	l
 b88	user/grind.asm	/^     b88:	609c                	ld	a5,0(s1)$/;"	l
 b88	user/usertests.asm	/^     b88:	7139                	addi	sp,sp,-64$/;"	l
-b8a	user/alarmtests.asm	/^ b8a:	e39c                	sd	a5,0(a5)$/;"	l
+b8a	user/alarmtests.asm	/^ b8a:	000a0b1b          	sext.w	s6,s4$/;"	l
 b8a	user/grind.asm	/^     b8a:	0785                	addi	a5,a5,1$/;"	l
 b8a	user/sh.asm	/^     b8a:	1141                	addi	sp,sp,-16$/;"	l
 b8a	user/usertests.asm	/^     b8a:	fc06                	sd	ra,56(sp)$/;"	l
-b8c	user/alarmtests.asm	/^ b8c:	0007a423          	sw	zero,8(a5)$/;"	l
 b8c	user/grind.asm	/^     b8c:	e09c                	sd	a5,0(s1)$/;"	l
 b8c	user/sh.asm	/^     b8c:	e422                	sd	s0,8(sp)$/;"	l
 b8c	user/usertests.asm	/^     b8c:	f822                	sd	s0,48(sp)$/;"	l
+b8e	user/alarmtests.asm	/^ b8e:	004a1a1b          	slliw	s4,s4,0x4$/;"	l
 b8e	user/grind.asm	/^     b8e:	00000097          	auipc	ra,0x0$/;"	l
 b8e	user/sh.asm	/^     b8e:	0800                	addi	s0,sp,16$/;"	l
 b8e	user/usertests.asm	/^     b8e:	f426                	sd	s1,40(sp)$/;"	l
-b90	user/alarmtests.asm	/^ b90:	b7e1                	j	b58 <malloc+0x36>$/;"	l
 b90	user/sh.asm	/^     b90:	87aa                	mv	a5,a0$/;"	l
 b90	user/usertests.asm	/^     b90:	f04a                	sd	s2,32(sp)$/;"	l
-b92	user/alarmtests.asm	/^ b92:	02e48c63          	beq	s1,a4,bca <malloc+0xa8>$/;"	l
+b92	user/alarmtests.asm	/^ b92:	00000917          	auipc	s2,0x0$/;"	l
 b92	user/grind.asm	/^     b92:	298080e7          	jalr	664(ra) # e26 <fork>$/;"	l
 b92	user/sh.asm	/^     b92:	0585                	addi	a1,a1,1$/;"	l
 b92	user/usertests.asm	/^     b92:	ec4e                	sd	s3,24(sp)$/;"	l
 b94	user/sh.asm	/^     b94:	0785                	addi	a5,a5,1$/;"	l
 b94	user/usertests.asm	/^     b94:	e852                	sd	s4,16(sp)$/;"	l
-b96	user/alarmtests.asm	/^ b96:	4137073b          	subw	a4,a4,s3$/;"	l
+b96	user/alarmtests.asm	/^ b96:	47690913          	addi	s2,s2,1142 # 1008 <freep>$/;"	l
 b96	user/grind.asm	/^     b96:	d165                	beqz	a0,b76 <main+0x14>$/;"	l
 b96	user/sh.asm	/^     b96:	fff5c703          	lbu	a4,-1(a1)$/;"	l
 b96	user/usertests.asm	/^     b96:	e456                	sd	s5,8(sp)$/;"	l
 b98	user/grind.asm	/^     b98:	fea053e3          	blez	a0,b7e <main+0x1c>$/;"	l
 b98	user/usertests.asm	/^     b98:	0080                	addi	s0,sp,64$/;"	l
-b9a	user/alarmtests.asm	/^ b9a:	c798                	sw	a4,8(a5)$/;"	l
+b9a	user/alarmtests.asm	/^ b9a:	5afd                	li	s5,-1$/;"	l
 b9a	user/sh.asm	/^     b9a:	fee78fa3          	sb	a4,-1(a5)$/;"	l
 b9a	user/usertests.asm	/^     b9a:	8aaa                	mv	s5,a0$/;"	l
-b9c	user/alarmtests.asm	/^ b9c:	02071693          	slli	a3,a4,0x20$/;"	l
+b9c	user/alarmtests.asm	/^ b9c:	a895                	j	c10 <malloc+0xca>$/;"	l
 b9c	user/grind.asm	/^     b9c:	4501                	li	a0,0$/;"	l
 b9c	user/usertests.asm	/^     b9c:	20200593          	li	a1,514$/;"	l
+b9e	user/alarmtests.asm	/^ b9e:	00000797          	auipc	a5,0x0$/;"	l
 b9e	user/grind.asm	/^     b9e:	00000097          	auipc	ra,0x0$/;"	l
 b9e	user/sh.asm	/^     b9e:	fb75                	bnez	a4,b92 <strcpy+0x8>$/;"	l
 ba	user/alarmtests.asm	/^  ba:	e406                	sd	ra,8(sp)$/;"	l
@@ -1995,21 +1997,20 @@ ba	user/strace.asm	/^  ba:	6422                	ld	s0,8(sp)$/;"	l
 ba	user/stressfs.asm	/^  ba:	82250513          	addi	a0,a0,-2014 # 8d8 <malloc+0x10e>$/;"	l
 ba	user/wc.asm	/^  ba:	74a6                	ld	s1,104(sp)$/;"	l
 ba	user/zombie.asm	/^  ba:	0800                	addi	s0,sp,16$/;"	l
-ba0	user/alarmtests.asm	/^ ba0:	01c6d713          	srli	a4,a3,0x1c$/;"	l
 ba0	user/sh.asm	/^     ba0:	6422                	ld	s0,8(sp)$/;"	l
 ba0	user/usertests.asm	/^     ba0:	00006517          	auipc	a0,0x6$/;"	l
+ba2	user/alarmtests.asm	/^ ba2:	47278793          	addi	a5,a5,1138 # 1010 <base>$/;"	l
 ba2	user/grind.asm	/^     ba2:	298080e7          	jalr	664(ra) # e36 <wait>$/;"	l
 ba2	user/sh.asm	/^     ba2:	0141                	addi	sp,sp,16$/;"	l
-ba4	user/alarmtests.asm	/^ ba4:	97ba                	add	a5,a5,a4$/;"	l
 ba4	user/sh.asm	/^     ba4:	8082                	ret$/;"	l
 ba4	user/usertests.asm	/^     ba4:	95850513          	addi	a0,a0,-1704 # 64f8 <malloc+0x532>$/;"	l
-ba6	user/alarmtests.asm	/^ ba6:	0137a423          	sw	s3,8(a5)$/;"	l
+ba6	user/alarmtests.asm	/^ ba6:	00000717          	auipc	a4,0x0$/;"	l
 ba6	user/grind.asm	/^     ba6:	bfe1                	j	b7e <main+0x1c>$/;"	l
 ba6	user/sh.asm	/^     ba6:	1141                	addi	sp,sp,-16$/;"	l
 ba8	user/grind.asm	/^     ba8:	1141                	addi	sp,sp,-16$/;"	l
 ba8	user/sh.asm	/^     ba8:	e422                	sd	s0,8(sp)$/;"	l
 ba8	user/usertests.asm	/^     ba8:	00005097          	auipc	ra,0x5$/;"	l
-baa	user/alarmtests.asm	/^ baa:	00000717          	auipc	a4,0x0$/;"	l
+baa	user/alarmtests.asm	/^ baa:	46f73123          	sd	a5,1122(a4) # 1008 <freep>$/;"	l
 baa	user/grind.asm	/^     baa:	e406                	sd	ra,8(sp)$/;"	l
 baa	user/sh.asm	/^     baa:	0800                	addi	s0,sp,16$/;"	l
 bac	user/grind.asm	/^     bac:	e022                	sd	s0,0(sp)$/;"	l
@@ -2020,31 +2021,30 @@ backcmd	user/sh.c	/^struct backcmd {$/;"	s	file:
 bad	kernel/kernel.asm	/^ bad:$/;"	l
 badarg	user/usertests.c	/^badarg(char *s)$/;"	f	typeref:typename:void
 badwrite	user/usertests.c	/^badwrite(char *s)$/;"	f	typeref:typename:void
-bae	user/alarmtests.asm	/^ bae:	44a73f23          	sd	a0,1118(a4) # 1008 <freep>$/;"	l
+bae	user/alarmtests.asm	/^ bae:	e39c                	sd	a5,0(a5)$/;"	l
 bae	user/grind.asm	/^     bae:	0800                	addi	s0,sp,16$/;"	l
 balloc	kernel/fs.c	/^balloc(uint dev)$/;"	f	typeref:typename:uint	file:
 balloc	mkfs/mkfs.c	/^balloc(int used)$/;"	f	typeref:typename:void
 base	user/umalloc.c	/^static Header base;$/;"	v	typeref:typename:Header	file:
+bb0	user/alarmtests.asm	/^ bb0:	0007a423          	sw	zero,8(a5)$/;"	l
 bb0	user/grind.asm	/^     bb0:	00000097          	auipc	ra,0x0$/;"	l
 bb0	user/sh.asm	/^     bb0:	cb91                	beqz	a5,bc4 <strcmp+0x1e>$/;"	l
 bb0	user/usertests.asm	/^     bb0:	89aa                	mv	s3,a0$/;"	l
-bb2	user/alarmtests.asm	/^ bb2:	01078513          	addi	a0,a5,16$/;"	l
 bb2	user/sh.asm	/^     bb2:	0005c703          	lbu	a4,0(a1)$/;"	l
 bb2	user/usertests.asm	/^     bb2:	4481                	li	s1,0$/;"	l
+bb4	user/alarmtests.asm	/^ bb4:	b7e1                	j	b7c <malloc+0x36>$/;"	l
 bb4	user/grind.asm	/^     bb4:	fb2080e7          	jalr	-78(ra) # b62 <main>$/;"	l
 bb4	user/usertests.asm	/^     bb4:	0000c917          	auipc	s2,0xc$/;"	l
-bb6	user/alarmtests.asm	/^ bb6:	70e2                	ld	ra,56(sp)$/;"	l
+bb6	user/alarmtests.asm	/^ bb6:	02e48c63          	beq	s1,a4,bee <malloc+0xa8>$/;"	l
 bb6	user/sh.asm	/^     bb6:	00f71763          	bne	a4,a5,bc4 <strcmp+0x1e>$/;"	l
-bb8	user/alarmtests.asm	/^ bb8:	7442                	ld	s0,48(sp)$/;"	l
 bb8	user/grind.asm	/^     bb8:	4501                	li	a0,0$/;"	l
 bb8	user/usertests.asm	/^     bb8:	0c490913          	addi	s2,s2,196 # cc78 <buf>$/;"	l
-bba	user/alarmtests.asm	/^ bba:	74a2                	ld	s1,40(sp)$/;"	l
+bba	user/alarmtests.asm	/^ bba:	4137073b          	subw	a4,a4,s3$/;"	l
 bba	user/grind.asm	/^     bba:	00000097          	auipc	ra,0x0$/;"	l
 bba	user/sh.asm	/^     bba:	0505                	addi	a0,a0,1$/;"	l
-bbc	user/alarmtests.asm	/^ bbc:	7902                	ld	s2,32(sp)$/;"	l
 bbc	user/sh.asm	/^     bbc:	0585                	addi	a1,a1,1$/;"	l
 bbc	user/usertests.asm	/^     bbc:	10c00a13          	li	s4,268$/;"	l
-bbe	user/alarmtests.asm	/^ bbe:	69e2                	ld	s3,24(sp)$/;"	l
+bbe	user/alarmtests.asm	/^ bbe:	c798                	sw	a4,8(a5)$/;"	l
 bbe	user/grind.asm	/^     bbe:	274080e7          	jalr	628(ra) # e2e <exit>$/;"	l
 bbe	user/sh.asm	/^     bbe:	00054783          	lbu	a5,0(a0)$/;"	l
 bc	user/alarmtests.asm	/^  bc:	e022                	sd	s0,0(sp)$/;"	l
@@ -2063,53 +2063,50 @@ bc	user/strace.asm	/^  bc:	0141                	addi	sp,sp,16$/;"	l
 bc	user/usertests.asm	/^      bc:	00006097          	auipc	ra,0x6$/;"	l
 bc	user/wc.asm	/^  bc:	7906                	ld	s2,96(sp)$/;"	l
 bc	user/zombie.asm	/^  bc:	ca19                	beqz	a2,d2 <memset+0x1c>$/;"	l
-bc0	user/alarmtests.asm	/^ bc0:	6a42                	ld	s4,16(sp)$/;"	l
+bc0	user/alarmtests.asm	/^ bc0:	02071693          	slli	a3,a4,0x20$/;"	l
 bc0	user/usertests.asm	/^     bc0:	06054c63          	bltz	a0,c38 <writebig+0xb0>$/;"	l
-bc2	user/alarmtests.asm	/^ bc2:	6aa2                	ld	s5,8(sp)$/;"	l
 bc2	user/grind.asm	/^     bc2:	1141                	addi	sp,sp,-16$/;"	l
 bc2	user/sh.asm	/^     bc2:	fbe5                	bnez	a5,bb2 <strcmp+0xc>$/;"	l
-bc4	user/alarmtests.asm	/^ bc4:	6b02                	ld	s6,0(sp)$/;"	l
+bc4	user/alarmtests.asm	/^ bc4:	01c6d713          	srli	a4,a3,0x1c$/;"	l
 bc4	user/grind.asm	/^     bc4:	e422                	sd	s0,8(sp)$/;"	l
 bc4	user/sh.asm	/^     bc4:	0005c503          	lbu	a0,0(a1)$/;"	l
 bc4	user/usertests.asm	/^     bc4:	00992023          	sw	s1,0(s2)$/;"	l
-bc6	user/alarmtests.asm	/^ bc6:	6121                	addi	sp,sp,64$/;"	l
 bc6	user/grind.asm	/^     bc6:	0800                	addi	s0,sp,16$/;"	l
-bc8	user/alarmtests.asm	/^ bc8:	8082                	ret$/;"	l
+bc8	user/alarmtests.asm	/^ bc8:	97ba                	add	a5,a5,a4$/;"	l
 bc8	user/grind.asm	/^     bc8:	87aa                	mv	a5,a0$/;"	l
 bc8	user/sh.asm	/^     bc8:	40a7853b          	subw	a0,a5,a0$/;"	l
 bc8	user/usertests.asm	/^     bc8:	40000613          	li	a2,1024$/;"	l
-bca	user/alarmtests.asm	/^ bca:	6398                	ld	a4,0(a5)$/;"	l
+bca	user/alarmtests.asm	/^ bca:	0137a423          	sw	s3,8(a5)$/;"	l
 bca	user/grind.asm	/^     bca:	0585                	addi	a1,a1,1$/;"	l
 bcache	kernel/bio.c	/^} bcache;$/;"	v	typeref:struct:__anon6a7165400108
-bcc	user/alarmtests.asm	/^ bcc:	e118                	sd	a4,0(a0)$/;"	l
 bcc	user/grind.asm	/^     bcc:	0785                	addi	a5,a5,1$/;"	l
 bcc	user/sh.asm	/^     bcc:	6422                	ld	s0,8(sp)$/;"	l
 bcc	user/usertests.asm	/^     bcc:	85ca                	mv	a1,s2$/;"	l
-bce	user/alarmtests.asm	/^ bce:	bff1                	j	baa <malloc+0x88>$/;"	l
+bce	user/alarmtests.asm	/^ bce:	00000717          	auipc	a4,0x0$/;"	l
 bce	user/grind.asm	/^     bce:	fff5c703          	lbu	a4,-1(a1)$/;"	l
 bce	user/sh.asm	/^     bce:	0141                	addi	sp,sp,16$/;"	l
 bce	user/usertests.asm	/^     bce:	854e                	mv	a0,s3$/;"	l
 bcmd	user/sh.asm	/^    bcmd = (struct backcmd*)cmd;$/;"	d
-bd0	user/alarmtests.asm	/^ bd0:	01652423          	sw	s6,8(a0)$/;"	l
 bd0	user/sh.asm	/^     bd0:	8082                	ret$/;"	l
 bd0	user/usertests.asm	/^     bd0:	00005097          	auipc	ra,0x5$/;"	l
+bd2	user/alarmtests.asm	/^ bd2:	42a73d23          	sd	a0,1082(a4) # 1008 <freep>$/;"	l
 bd2	user/grind.asm	/^     bd2:	fee78fa3          	sb	a4,-1(a5)$/;"	l
 bd2	user/sh.asm	/^     bd2:	1141                	addi	sp,sp,-16$/;"	l
-bd4	user/alarmtests.asm	/^ bd4:	0541                	addi	a0,a0,16$/;"	l
 bd4	user/sh.asm	/^     bd4:	e422                	sd	s0,8(sp)$/;"	l
 bd4	user/usertests.asm	/^     bd4:	fde080e7          	jalr	-34(ra) # 5bae <write>$/;"	l
-bd6	user/alarmtests.asm	/^ bd6:	00000097          	auipc	ra,0x0$/;"	l
+bd6	user/alarmtests.asm	/^ bd6:	01078513          	addi	a0,a5,16$/;"	l
 bd6	user/grind.asm	/^     bd6:	fb75                	bnez	a4,bca <strcpy+0x8>$/;"	l
 bd6	user/sh.asm	/^     bd6:	0800                	addi	s0,sp,16$/;"	l
 bd8	user/grind.asm	/^     bd8:	6422                	ld	s0,8(sp)$/;"	l
 bd8	user/sh.asm	/^     bd8:	00054783          	lbu	a5,0(a0)$/;"	l
 bd8	user/usertests.asm	/^     bd8:	40000793          	li	a5,1024$/;"	l
-bda	user/alarmtests.asm	/^ bda:	eca080e7          	jalr	-310(ra) # aa0 <free>$/;"	l
+bda	user/alarmtests.asm	/^ bda:	70e2                	ld	ra,56(sp)$/;"	l
 bda	user/grind.asm	/^     bda:	0141                	addi	sp,sp,16$/;"	l
+bdc	user/alarmtests.asm	/^ bdc:	7442                	ld	s0,48(sp)$/;"	l
 bdc	user/grind.asm	/^     bdc:	8082                	ret$/;"	l
 bdc	user/sh.asm	/^     bdc:	cf91                	beqz	a5,bf8 <strlen+0x26>$/;"	l
 bdc	user/usertests.asm	/^     bdc:	06f51c63          	bne	a0,a5,c54 <writebig+0xcc>$/;"	l
-bde	user/alarmtests.asm	/^ bde:	00093503          	ld	a0,0(s2)$/;"	l
+bde	user/alarmtests.asm	/^ bde:	74a2                	ld	s1,40(sp)$/;"	l
 bde	user/grind.asm	/^     bde:	1141                	addi	sp,sp,-16$/;"	l
 bde	user/sh.asm	/^     bde:	0505                	addi	a0,a0,1$/;"	l
 be	user/alarmtests.asm	/^  be:	0800                	addi	s0,sp,16$/;"	l
@@ -2121,50 +2118,54 @@ be	user/strace.asm	/^  be:	8082                	ret$/;"	l
 be	user/stressfs.asm	/^  be:	00000097          	auipc	ra,0x0$/;"	l
 be	user/wc.asm	/^  be:	69e6                	ld	s3,88(sp)$/;"	l
 be	user/zombie.asm	/^  be:	87aa                	mv	a5,a0$/;"	l
+be0	user/alarmtests.asm	/^ be0:	7902                	ld	s2,32(sp)$/;"	l
 be0	user/grind.asm	/^     be0:	e422                	sd	s0,8(sp)$/;"	l
 be0	user/sh.asm	/^     be0:	87aa                	mv	a5,a0$/;"	l
 be0	user/usertests.asm	/^     be0:	2485                	addiw	s1,s1,1$/;"	l
-be2	user/alarmtests.asm	/^ be2:	d971                	beqz	a0,bb6 <malloc+0x94>$/;"	l
+be2	user/alarmtests.asm	/^ be2:	69e2                	ld	s3,24(sp)$/;"	l
 be2	user/grind.asm	/^     be2:	0800                	addi	s0,sp,16$/;"	l
 be2	user/sh.asm	/^     be2:	86be                	mv	a3,a5$/;"	l
 be2	user/usertests.asm	/^     be2:	ff4491e3          	bne	s1,s4,bc4 <writebig+0x3c>$/;"	l
-be4	user/alarmtests.asm	/^ be4:	611c                	ld	a5,0(a0)$/;"	l
+be4	user/alarmtests.asm	/^ be4:	6a42                	ld	s4,16(sp)$/;"	l
 be4	user/grind.asm	/^     be4:	00054783          	lbu	a5,0(a0)$/;"	l
 be4	user/sh.asm	/^     be4:	0785                	addi	a5,a5,1$/;"	l
-be6	user/alarmtests.asm	/^ be6:	4798                	lw	a4,8(a5)$/;"	l
+be6	user/alarmtests.asm	/^ be6:	6aa2                	ld	s5,8(sp)$/;"	l
 be6	user/sh.asm	/^     be6:	fff7c703          	lbu	a4,-1(a5)$/;"	l
 be6	user/usertests.asm	/^     be6:	854e                	mv	a0,s3$/;"	l
-be8	user/alarmtests.asm	/^ be8:	fa9775e3          	bgeu	a4,s1,b92 <malloc+0x70>$/;"	l
+be8	user/alarmtests.asm	/^ be8:	6b02                	ld	s6,0(sp)$/;"	l
 be8	user/grind.asm	/^     be8:	cb91                	beqz	a5,bfc <strcmp+0x1e>$/;"	l
 be8	user/usertests.asm	/^     be8:	00005097          	auipc	ra,0x5$/;"	l
+bea	user/alarmtests.asm	/^ bea:	6121                	addi	sp,sp,64$/;"	l
 bea	user/grind.asm	/^     bea:	0005c703          	lbu	a4,0(a1)$/;"	l
 bea	user/sh.asm	/^     bea:	ff65                	bnez	a4,be2 <strlen+0x10>$/;"	l
-bec	user/alarmtests.asm	/^ bec:	00093703          	ld	a4,0(s2)$/;"	l
+bec	user/alarmtests.asm	/^ bec:	8082                	ret$/;"	l
 bec	user/sh.asm	/^     bec:	40a6853b          	subw	a0,a3,a0$/;"	l
 bec	user/usertests.asm	/^     bec:	fce080e7          	jalr	-50(ra) # 5bb6 <close>$/;"	l
+bee	user/alarmtests.asm	/^ bee:	6398                	ld	a4,0(a5)$/;"	l
 bee	user/grind.asm	/^     bee:	00f71763          	bne	a4,a5,bfc <strcmp+0x1e>$/;"	l
 begin_op	kernel/log.c	/^begin_op(void)$/;"	f	typeref:typename:void
-bf0	user/alarmtests.asm	/^ bf0:	853e                	mv	a0,a5$/;"	l
+bf0	user/alarmtests.asm	/^ bf0:	e118                	sd	a4,0(a0)$/;"	l
 bf0	user/sh.asm	/^     bf0:	2505                	addiw	a0,a0,1$/;"	l
 bf0	user/usertests.asm	/^     bf0:	4581                	li	a1,0$/;"	l
-bf2	user/alarmtests.asm	/^ bf2:	fef719e3          	bne	a4,a5,be4 <malloc+0xc2>$/;"	l
+bf2	user/alarmtests.asm	/^ bf2:	bff1                	j	bce <malloc+0x88>$/;"	l
 bf2	user/grind.asm	/^     bf2:	0505                	addi	a0,a0,1$/;"	l
 bf2	user/sh.asm	/^     bf2:	6422                	ld	s0,8(sp)$/;"	l
 bf2	user/usertests.asm	/^     bf2:	00006517          	auipc	a0,0x6$/;"	l
+bf4	user/alarmtests.asm	/^ bf4:	01652423          	sw	s6,8(a0)$/;"	l
 bf4	user/grind.asm	/^     bf4:	0585                	addi	a1,a1,1$/;"	l
 bf4	user/sh.asm	/^     bf4:	0141                	addi	sp,sp,16$/;"	l
-bf6	user/alarmtests.asm	/^ bf6:	8552                	mv	a0,s4$/;"	l
 bf6	user/grind.asm	/^     bf6:	00054783          	lbu	a5,0(a0)$/;"	l
 bf6	user/sh.asm	/^     bf6:	8082                	ret$/;"	l
 bf6	user/usertests.asm	/^     bf6:	90650513          	addi	a0,a0,-1786 # 64f8 <malloc+0x532>$/;"	l
-bf8	user/alarmtests.asm	/^ bf8:	00000097          	auipc	ra,0x0$/;"	l
+bf8	user/alarmtests.asm	/^ bf8:	0541                	addi	a0,a0,16$/;"	l
 bf8	user/sh.asm	/^     bf8:	4501                	li	a0,0$/;"	l
+bfa	user/alarmtests.asm	/^ bfa:	00000097          	auipc	ra,0x0$/;"	l
 bfa	user/grind.asm	/^     bfa:	fbe5                	bnez	a5,bea <strcmp+0xc>$/;"	l
 bfa	user/sh.asm	/^     bfa:	bfe5                	j	bf2 <strlen+0x20>$/;"	l
 bfa	user/usertests.asm	/^     bfa:	00005097          	auipc	ra,0x5$/;"	l
-bfc	user/alarmtests.asm	/^ bfc:	b7a080e7          	jalr	-1158(ra) # 772 <sbrk>$/;"	l
 bfc	user/grind.asm	/^     bfc:	0005c503          	lbu	a0,0(a1)$/;"	l
 bfc	user/sh.asm	/^     bfc:	1141                	addi	sp,sp,-16$/;"	l
+bfe	user/alarmtests.asm	/^ bfe:	eca080e7          	jalr	-310(ra) # ac4 <free>$/;"	l
 bfe	user/sh.asm	/^     bfe:	e422                	sd	s0,8(sp)$/;"	l
 bfe	user/usertests.asm	/^     bfe:	fd4080e7          	jalr	-44(ra) # 5bce <open>$/;"	l
 bfree	kernel/fs.c	/^bfree(int dev, uint b)$/;"	f	typeref:typename:void	file:
@@ -2262,41 +2263,48 @@ c0	user/strace.asm	/^  c0:	4501                	li	a0,0$/;"	l
 c0	user/usertests.asm	/^      c0:	afa080e7          	jalr	-1286(ra) # 5bb6 <close>$/;"	l
 c0	user/wc.asm	/^  c0:	6a46                	ld	s4,80(sp)$/;"	l
 c0	user/zombie.asm	/^  c0:	1602                	slli	a2,a2,0x20$/;"	l
-c00	user/alarmtests.asm	/^ c00:	fd5518e3          	bne	a0,s5,bd0 <malloc+0xae>$/;"	l
 c00	user/grind.asm	/^     c00:	40a7853b          	subw	a0,a5,a0$/;"	l
 c00	user/sh.asm	/^     c00:	0800                	addi	s0,sp,16$/;"	l
+c02	user/alarmtests.asm	/^ c02:	00093503          	ld	a0,0(s2)$/;"	l
 c02	user/sh.asm	/^     c02:	ca19                	beqz	a2,c18 <memset+0x1c>$/;"	l
 c02	user/usertests.asm	/^     c02:	89aa                	mv	s3,a0$/;"	l
-c04	user/alarmtests.asm	/^ c04:	4501                	li	a0,0$/;"	l
 c04	user/grind.asm	/^     c04:	6422                	ld	s0,8(sp)$/;"	l
 c04	user/sh.asm	/^     c04:	87aa                	mv	a5,a0$/;"	l
 c04	user/usertests.asm	/^     c04:	4481                	li	s1,0$/;"	l
-c06	user/alarmtests.asm	/^ c06:	bf45                	j	bb6 <malloc+0x94>$/;"	l
+c06	user/alarmtests.asm	/^ c06:	d971                	beqz	a0,bda <malloc+0x94>$/;"	l
 c06	user/grind.asm	/^     c06:	0141                	addi	sp,sp,16$/;"	l
 c06	user/sh.asm	/^     c06:	1602                	slli	a2,a2,0x20$/;"	l
 c06	user/usertests.asm	/^     c06:	0000c917          	auipc	s2,0xc$/;"	l
+c08	user/alarmtests.asm	/^ c08:	611c                	ld	a5,0(a0)$/;"	l
 c08	user/grind.asm	/^     c08:	8082                	ret$/;"	l
 c08	user/sh.asm	/^     c08:	9201                	srli	a2,a2,0x20$/;"	l
+c0a	user/alarmtests.asm	/^ c0a:	4798                	lw	a4,8(a5)$/;"	l
 c0a	user/grind.asm	/^     c0a:	1141                	addi	sp,sp,-16$/;"	l
 c0a	user/sh.asm	/^     c0a:	00a60733          	add	a4,a2,a0$/;"	l
 c0a	user/usertests.asm	/^     c0a:	07290913          	addi	s2,s2,114 # cc78 <buf>$/;"	l
+c0c	user/alarmtests.asm	/^ c0c:	fa9775e3          	bgeu	a4,s1,bb6 <malloc+0x70>$/;"	l
 c0c	user/grind.asm	/^     c0c:	e422                	sd	s0,8(sp)$/;"	l
 c0e	user/grind.asm	/^     c0e:	0800                	addi	s0,sp,16$/;"	l
 c0e	user/sh.asm	/^     c0e:	00b78023          	sb	a1,0(a5)$/;"	l
 c0e	user/usertests.asm	/^     c0e:	06054263          	bltz	a0,c72 <writebig+0xea>$/;"	l
+c10	user/alarmtests.asm	/^ c10:	00093703          	ld	a4,0(s2)$/;"	l
 c10	user/grind.asm	/^     c10:	00054783          	lbu	a5,0(a0)$/;"	l
 c12	user/sh.asm	/^     c12:	0785                	addi	a5,a5,1$/;"	l
 c12	user/usertests.asm	/^     c12:	40000613          	li	a2,1024$/;"	l
+c14	user/alarmtests.asm	/^ c14:	853e                	mv	a0,a5$/;"	l
 c14	user/grind.asm	/^     c14:	cf91                	beqz	a5,c30 <strlen+0x26>$/;"	l
 c14	user/sh.asm	/^     c14:	fee79de3          	bne	a5,a4,c0e <memset+0x12>$/;"	l
+c16	user/alarmtests.asm	/^ c16:	fef719e3          	bne	a4,a5,c08 <malloc+0xc2>$/;"	l
 c16	user/grind.asm	/^     c16:	0505                	addi	a0,a0,1$/;"	l
 c16	user/usertests.asm	/^     c16:	85ca                	mv	a1,s2$/;"	l
 c18	user/grind.asm	/^     c18:	87aa                	mv	a5,a0$/;"	l
 c18	user/sh.asm	/^     c18:	6422                	ld	s0,8(sp)$/;"	l
 c18	user/usertests.asm	/^     c18:	854e                	mv	a0,s3$/;"	l
+c1a	user/alarmtests.asm	/^ c1a:	8552                	mv	a0,s4$/;"	l
 c1a	user/grind.asm	/^     c1a:	86be                	mv	a3,a5$/;"	l
 c1a	user/sh.asm	/^     c1a:	0141                	addi	sp,sp,16$/;"	l
 c1a	user/usertests.asm	/^     c1a:	00005097          	auipc	ra,0x5$/;"	l
+c1c	user/alarmtests.asm	/^ c1c:	00000097          	auipc	ra,0x0$/;"	l
 c1c	user/grind.asm	/^     c1c:	0785                	addi	a5,a5,1$/;"	l
 c1c	user/sh.asm	/^     c1c:	8082                	ret$/;"	l
 c1e	user/grind.asm	/^     c1e:	fff7c703          	lbu	a4,-1(a5)$/;"	l
@@ -2315,16 +2323,20 @@ c2	user/strace.asm	/^  c2:	bfe5                	j	ba <strlen+0x20>$/;"	l
 c2	user/stressfs.asm	/^  c2:	654080e7          	jalr	1620(ra) # 712 <printf>$/;"	l
 c2	user/wc.asm	/^  c2:	6aa6                	ld	s5,72(sp)$/;"	l
 c2	user/zombie.asm	/^  c2:	9201                	srli	a2,a2,0x20$/;"	l
+c20	user/alarmtests.asm	/^ c20:	b7a080e7          	jalr	-1158(ra) # 796 <sbrk>$/;"	l
 c20	user/sh.asm	/^     c20:	e422                	sd	s0,8(sp)$/;"	l
 c22	user/grind.asm	/^     c22:	ff65                	bnez	a4,c1a <strlen+0x10>$/;"	l
 c22	user/sh.asm	/^     c22:	0800                	addi	s0,sp,16$/;"	l
 c22	user/usertests.asm	/^     c22:	c535                	beqz	a0,c8e <writebig+0x106>$/;"	l
+c24	user/alarmtests.asm	/^ c24:	fd5518e3          	bne	a0,s5,bf4 <malloc+0xae>$/;"	l
 c24	user/grind.asm	/^     c24:	40a6853b          	subw	a0,a3,a0$/;"	l
 c24	user/sh.asm	/^     c24:	00054783          	lbu	a5,0(a0)$/;"	l
 c24	user/usertests.asm	/^     c24:	40000793          	li	a5,1024$/;"	l
+c28	user/alarmtests.asm	/^ c28:	4501                	li	a0,0$/;"	l
 c28	user/grind.asm	/^     c28:	2505                	addiw	a0,a0,1$/;"	l
 c28	user/sh.asm	/^     c28:	cb99                	beqz	a5,c3e <strchr+0x20>$/;"	l
 c28	user/usertests.asm	/^     c28:	0af51f63          	bne	a0,a5,ce6 <writebig+0x15e>$/;"	l
+c2a	user/alarmtests.asm	/^ c2a:	bf45                	j	bda <malloc+0x94>$/;"	l
 c2a	user/grind.asm	/^     c2a:	6422                	ld	s0,8(sp)$/;"	l
 c2a	user/sh.asm	/^     c2a:	00f58763          	beq	a1,a5,c38 <strchr+0x1a>$/;"	l
 c2c	user/grind.asm	/^     c2c:	0141                	addi	sp,sp,16$/;"	l
@@ -2449,7 +2461,7 @@ c7c	user/grind.asm	/^     c7c:	ec86                	sd	ra,88(sp)$/;"	l
 c7c	user/sh.asm	/^     c7c:	00a05e63          	blez	a0,c98 <gets+0x56>$/;"	l
 c7c	user/usertests.asm	/^     c7c:	00005097          	auipc	ra,0x5$/;"	l
 c7e	user/grind.asm	/^     c7e:	e8a2                	sd	s0,80(sp)$/;"	l
-c8	user/alarmtests.asm	/^  c8:	6ce080e7          	jalr	1742(ra) # 792 <sigalarm>$/;"	l
+c8	user/alarmtests.asm	/^  c8:	6f2080e7          	jalr	1778(ra) # 7b6 <sigalarm>$/;"	l
 c8	user/echo.asm	/^  c8:	0800                	addi	s0,sp,16$/;"	l
 c8	user/forktest.asm	/^  c8:	64a2                	ld	s1,8(sp)$/;"	l
 c8	user/grep.asm	/^  c8:	4505                	li	a0,1$/;"	l
@@ -2770,7 +2782,7 @@ createdelete	user/usertests.c	/^createdelete(char *s)$/;"	f	typeref:typename:voi
 createtest	user/usertests.c	/^createtest(char *s)$/;"	f	typeref:typename:void
 cwd	kernel/proc.h	/^  struct inode *cwd;           \/\/ Current directory$/;"	m	struct:proc	typeref:struct:inode *
 d	kernel/kernel.asm	/^  d = dst;$/;"	d
-d0	user/alarmtests.asm	/^  d0:	6ce080e7          	jalr	1742(ra) # 79a <sigreturn>$/;"	l
+d0	user/alarmtests.asm	/^  d0:	6f2080e7          	jalr	1778(ra) # 7be <sigreturn>$/;"	l
 d0	user/cat.asm	/^  d0:	00000097          	auipc	ra,0x0$/;"	l
 d0	user/echo.asm	/^  d0:	0005c703          	lbu	a4,0(a1)$/;"	l
 d0	user/forktest.asm	/^  d0:	00000517          	auipc	a0,0x0$/;"	l
@@ -3748,7 +3760,7 @@ f1a	user/usertests.asm	/^     f1a:	00005097          	auipc	ra,0x5$/;"	l
 f1e	user/grind.asm	/^     f1e:	2581                	sext.w	a1,a1$/;"	l
 f1e	user/sh.asm	/^     f1e:	00088c63          	beqz	a7,f36 <printint+0x66>$/;"	l
 f1e	user/usertests.asm	/^     f1e:	cc4080e7          	jalr	-828(ra) # 5bde <unlink>$/;"	l
-f2	user/alarmtests.asm	/^  f2:	b6250513          	addi	a0,a0,-1182 # c50 <malloc+0x12e>$/;"	l
+f2	user/alarmtests.asm	/^  f2:	b8250513          	addi	a0,a0,-1150 # c70 <malloc+0x12a>$/;"	l
 f2	user/cat.asm	/^  f2:	4501                	li	a0,0$/;"	l
 f2	user/echo.asm	/^  f2:	e422                	sd	s0,8(sp)$/;"	l
 f2	user/forktest.asm	/^  f2:	00000097          	auipc	ra,0x0$/;"	l
@@ -3920,7 +3932,7 @@ f9c	user/sh.asm	/^     f9c:	8aaa                	mv	s5,a0$/;"	l
 f9c	user/usertests.asm	/^     f9c:	0e055e63          	bgez	a0,1098 <linktest+0x1a4>$/;"	l
 f9e	user/grind.asm	/^     f9e:	70e2                	ld	ra,56(sp)$/;"	l
 f9e	user/sh.asm	/^     f9e:	8bb2                	mv	s7,a2$/;"	l
-fa	user/alarmtests.asm	/^  fa:	974080e7          	jalr	-1676(ra) # a6a <printf>$/;"	l
+fa	user/alarmtests.asm	/^  fa:	998080e7          	jalr	-1640(ra) # a8e <printf>$/;"	l
 fa	user/echo.asm	/^  fa:	cf91                	beqz	a5,116 <strlen+0x26>$/;"	l
 fa	user/forktest.asm	/^  fa:	4505                	li	a0,1$/;"	l
 fa	user/grind.asm	/^      fa:	5a7d                	li	s4,-1$/;"	l
@@ -5448,6 +5460,7 @@ strlen	kernel/string.c	/^strlen(const char *s)$/;"	f	typeref:typename:int
 strlen	user/ulib.c	/^strlen(const char *s)$/;"	f	typeref:typename:uint
 strncmp	kernel/string.c	/^strncmp(const char *p, const char *q, uint n)$/;"	f	typeref:typename:int
 strncpy	kernel/string.c	/^strncpy(char *s, const char *t, int n)$/;"	f	typeref:typename:char *
+struct	kernel/kernel.asm	/^    struct proc *currProcess = myproc();$/;"	l
 struct	kernel/kernel.asm	/^  struct proc *p = c->proc;$/;"	l
 struct	kernel/kernel.asm	/^  struct proc *p = myproc();$/;"	l
 struct	kernel/kernel.asm	/^  struct proc *p;$/;"	l

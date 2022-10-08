@@ -85,6 +85,8 @@ usertrap(void)
 
           if ( p->tickCount == p->alarmTime )
           {
+            p->alarm = 0;
+            *(p->Sigtrapframe) = *(p->trapframe);
             p->tickCount = 0;
             p->trapframe->epc = p->interruptFunction;
             // Function execution is passed on to the interrupt function.
