@@ -141,7 +141,13 @@ found:
         release(&p->lock);
         return 0;
     }
-
+    if((p->Sigtrapframe = (struct trapframe *)kalloc()) == 0)
+    {
+        freeproc(p);
+        release(&p->lock);
+        return 0;
+    }
+    
     // An empty user page table.
     p->pagetable = proc_pagetable(p);
     if(p->pagetable == 0)
@@ -151,11 +157,22 @@ found:
         return 0;
     }
 
-    // Set up new context to start executing at forkret,
-    // which returns to user space.
-    memset(&p->context, 0, sizeof(p->context));
-    p->context.ra = (uint64)forkret;
-    p->context.sp = p->kstack + PGSIZE;
+  // Set up new context to start executing at forkret,
+  // which returns to user space.
+  memset(&p->context, 0, sizeof(p->context));
+  p->context.ra = (uint64)forkret;
+  p->context.sp = p->kstack + PGSIZE;
+  
+  //By default, no tracing is set.
+  p->mask = 0;
+  //Initially, the alarm timers are all initialized to 0.
+  p->alarm = 0;
+  //Initially, no goal for time should be set.
+  p->alarmTime = 0;
+  //Initially no ticks are recorded.
+  p->tickCount = 0;
+  //Initially, there is no interrupt function.
+  p->interruptFunction = 0;
 
     return p;
 }
@@ -166,24 +183,29 @@ found:
 static void
 freeproc(struct proc *p)
 {
-    if(p->trapframe)
-    {
-        kfree((void*)p->trapframe);
-    }
-    p->trapframe = 0;
-    if(p->pagetable)
-    {
-        proc_freepagetable(p->pagetable, p->sz);
-    }
-    p->pagetable = 0;
-    p->sz = 0;
-    p->pid = 0;
-    p->parent = 0;
-    p->name[0] = 0;
-    p->chan = 0;
-    p->killed = 0;
-    p->xstate = 0;
-    p->state = UNUSED;
+  if(p->trapframe)
+    kfree((void*)p->trapframe);
+  if(p->Sigtrapframe)
+    kfree((void*)p->Sigtrapframe);
+  p->trapframe = 0;
+  p->Sigtrapframe = 0;
+
+  if(p->pagetable)
+    proc_freepagetable(p->pagetable, p->sz);
+  p->pagetable = 0;
+  p->sz = 0;
+  p->pid = 0;
+  p->parent = 0;
+  p->name[0] = 0;
+  p->chan = 0;
+  p->killed = 0;
+  p->xstate = 0;
+  p->state = UNUSED;
+  p->mask = 0;
+  p->alarm = 0;
+  p->alarmTime = 0;
+  p->interruptFunction = 0;
+  p->tickCount = 0;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -313,7 +335,9 @@ fork(void)
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
-
+  
+  //*(np->Sigtrapframe) = *(p->Sigtrapframe);
+  
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
 
@@ -723,12 +747,12 @@ void
 procdump(void)
 {
   static char *states[] = {
-  [UNUSED]    ="unused",
-  [USED]      ="used",
-  [SLEEPING]  ="sleep ",
-  [RUNNABLE]  ="runble",
-  [RUNNING]   ="run   ",
-  [ZOMBIE]    ="zombie"
+  [UNUSED]   =  "unused",
+  [USED]     =  "used",
+  [SLEEPING] =  "sleep ",
+  [RUNNABLE] =  "runble",
+  [RUNNING]  =  "run   ",
+  [ZOMBIE]   =  "zombie"
   };
   struct proc *p;
   char *state;

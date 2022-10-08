@@ -119,6 +119,12 @@ struct proc
 
     // Scheduler Modifications
     int in_tick;                    // Tick value when process is added
+    int alarm;                      // Whether the program has called sigalarm or not.
+    int tickCount;                  // Current number of ticks used by the process.
+    int alarmTime;                  // The nunmber of ticks after which handler should be called.
+    uint64 interruptFunction;       // What is the handler function in sigalarm.
+    struct trapframe *Sigtrapframe; // For the implementation of sigreturn. 
+    Bitmask mask;                   // Tracong mask associated with the process
 
 
 

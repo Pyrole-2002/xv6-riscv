@@ -12,4 +12,6 @@ typedef unsigned long uint64;
 
 typedef uint64 pde_t;
 
+typedef int Bitmask;
+
 #endif

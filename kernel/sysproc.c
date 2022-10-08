@@ -89,3 +89,68 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_trace(void)
+{
+    Bitmask mask;
+    argint( 0, &mask);
+    myproc()->mask = mask;
+    return 0;
+}
+
+uint64
+sys_sigalarm(void)
+{
+    int timeInterval;
+    uint64 functionPointer;
+
+    argint( 0, &timeInterval );
+    argaddr( 1, &functionPointer );
+    
+    myproc()->tickCount = 0;
+
+    if ( timeInterval < 0 )
+    {
+        printf("Invalid Arguments to sigalalarm");
+        myproc()->alarm = 0;
+        return -1;
+    }
+    else if ( timeInterval == 0 )
+    {
+        myproc()->alarm = 0;
+        return 0;
+    }
+
+    //myproc()->Sigtrapframe = myproc()->trapframe;
+    
+    myproc()->alarm = 1;
+    myproc()->alarmTime = timeInterval; 
+    myproc()->interruptFunction = functionPointer;
+    // if( ticks == myproc()->alarmTime );
+    //     myproc()->trapframe->epc = functionPointer;
+    // The execution of the program woould start from the address in functionPointer.
+    // Since the handler does not consist of any arguments or return value, registers need not be updated.
+
+    // After this, the function would anyways go to sigreturn where it would reset the program counter.
+    return 0;
+}
+
+uint64
+sys_sigreturn(void)
+{
+    struct proc *currProcess = myproc();
+    
+    currProcess->Sigtrapframe->kernel_hartid = currProcess->trapframe->kernel_hartid;
+    currProcess->Sigtrapframe->kernel_satp = currProcess->trapframe->kernel_satp;
+    currProcess->Sigtrapframe->kernel_sp = currProcess->trapframe->kernel_sp;
+    currProcess->Sigtrapframe->kernel_trap = currProcess->trapframe->kernel_trap;
+    // DO NOT CHANGE the kernel specific info of a process.
+    // If the process was executing in another cpu at the time handler was called, 
+    // such information should not be changed back.
+
+    *(currProcess->trapframe) = *(currProcess->Sigtrapframe);
+    // Returns the state of the registers to before the call of handler function.
+    currProcess->alarm = 1;
+    return currProcess->trapframe->a0;
+}
