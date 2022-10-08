@@ -78,8 +78,22 @@ usertrap(void)
 
   // give up the CPU if this is a timer interrupt.
   if(which_dev == 2)
-    yield();
+  {
+      if ( p->alarm == 1 )
+      {
+          p->tickCount++;
 
+          if ( p->tickCount == p->alarmTime )
+          {
+            p->alarm = 0;
+            *(p->Sigtrapframe) = *(p->trapframe);
+            p->tickCount = 0;
+            p->trapframe->epc = p->interruptFunction;
+            // Function execution is passed on to the interrupt function.
+          }
+      }
+      yield();
+  }
   usertrapret();
 }
 

@@ -92,6 +92,10 @@ struct proc {
   int xstate;                  // Exit status to be returned to parent's wait
   int pid;                     // Process ID
 
+  int alarm;                   // Whether the program has called sigalarm or not.
+  int tickCount;               // Current number of ticks used by the process.
+  int alarmTime;               // The nunmber of ticks after which handler should be called.
+  uint64 interruptFunction;    // What is the handler function in sigalarm.
   // wait_lock must be held when using this:
   struct proc *parent;         // Parent process
 
@@ -100,8 +104,10 @@ struct proc {
   uint64 sz;                   // Size of process memory (bytes)
   pagetable_t pagetable;       // User page table
   struct trapframe *trapframe; // data page for trampoline.S
+  struct trapframe *Sigtrapframe; // For the implementation of sigreturn. 
   struct context context;      // swtch() here to run process
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  Bitmask mask;                // Tracong mask associated with the process
 };
