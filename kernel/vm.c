@@ -317,9 +317,19 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
       panic("uvmcopy: page not present");
     pa = PTE2PA(*pte);
     flags = PTE_FLAGS(*pte);
+
+    flags |= PTE_COW;
+    // Enabling copy on write for the pagetable.
+    flags &= ~(PTE_W);
+    // Writable permissions removed for the pagetable.
+    
+    if ( mappages(old, i, PGSIZE, pa, flags) != 0 )
+        goto err;
+
     if((mem = kalloc()) == 0)
       goto err;
     memmove(mem, (char*)pa, PGSIZE);
+    
     if(mappages(new, i, PGSIZE, (uint64)mem, flags) != 0){
       kfree(mem);
       goto err;
