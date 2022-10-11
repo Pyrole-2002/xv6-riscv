@@ -11,8 +11,6 @@
 
 void freerange(void *pa_start, void *pa_end);
 
-void remPage( void* page );
-
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
 uint64 addressMap[ 32*1024 ] = {0};
@@ -35,7 +33,7 @@ void
 kinit()
 {
     for( int i = 0; i < 32*1024; i++ )
-        addressMap[i] = 1;
+        addressMap[i] += 1;
 
     initlock(&kmem.lock, "kmem");
     freerange(end, (void*)PHYSTOP);
@@ -101,7 +99,7 @@ void pageRef( void* page )
     int index = PGROUNDDOWN( (uint64)page - KERNBASE );
     index = index / PGSIZE;
     
-    if ( index < 0 || index > 32*1024 )
+    if ( index < 0 || index >= 32*1024 )
         return;
 
     addressMap[index]++;
@@ -109,34 +107,6 @@ void pageRef( void* page )
     return ;
 }
 
-// void remPage( void* page)
-// {
-//     int index = PGROUNDDOWN((uint64)page) - KERNBASE;
-//     index = index / PGSIZE;
-//
-//     if ( index < 0 || index > 32*1024 )
-//         return;
-//     
-//     if( addressMap[index] <= 0 )
-//     {
-//         panic("Invalid Page Free Request.");
-//         return;
-//     }
-//     else
-//     {
-//         addressMap[index]--;
-//     }
-//     
-//     if ( addressMap[index] == 0 )
-//     {
-//         kfree(page);
-//     }
-//     return;
-// }
-//
-// Allocate one 4096-byte page of physical memory.
-// Returns a pointer that the kernel can use.
-// Returns 0 if the memory cannot be allocated.
 void *
 kalloc(void)
 {

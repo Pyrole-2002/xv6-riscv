@@ -238,13 +238,12 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
   for(a = oldsz; a < newsz; a += PGSIZE){
     mem = kalloc();
     if(mem == 0){
-      printf("here2\n");
+      
       uvmdealloc(pagetable, a, oldsz);
       return 0;
     }
     memset(mem, 0, PGSIZE);
     if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_R|PTE_U|xperm) != 0){
-      printf("here\n");
       kfree(mem);
       uvmdealloc(pagetable, a, oldsz);
       return 0;
@@ -386,8 +385,6 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
     if ( ( *pte & PTE_U ) == 0 )
         return -1;
     
-    ///////////////////////////////////////////////////////////
-
     if ( PTE_COW & flags )    
     {
         if ( (PTE_V & *pte) && ( PTE_U & *pte) && ( PTE_COW & *pte) )
@@ -412,8 +409,6 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
         pa0 = walkaddr(pagetable, va0);
     }
 
-    ///////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////
     n = PGSIZE - (dstva - va0);
     if(n > len)
         n = len;

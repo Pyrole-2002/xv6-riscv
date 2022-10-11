@@ -89,14 +89,14 @@ usertrap(void)
 
             if ( pageTableEntry == 0 )
             {
-                printf("Unavailable Address Refferenced.\n");
+                // printf("Unavailable Address Refferenced.\n");
                 p->killed = 1;
                 // Kill the process, since
                 // this should not have happened 
                 // in the COW-fork scheme.
                 // usertrapret();
             }
-            else
+            else if ( PTE_COW & *pageTableEntry )
             {
                 char *physicalAddress = (char *)PTE2PA(*pageTableEntry);
                 uint64 flags = PTE_FLAGS(*pageTableEntry);
@@ -111,8 +111,10 @@ usertrap(void)
                     char *newMemory = kalloc();
 
                     if ( newMemory == 0 )
-                        panic("Could not allocate more memory");
-
+                    {
+                        p->killed = 1;
+                        goto loopend;
+                    }
                     memmove( newMemory, (void*)physicalAddress, PGSIZE);
 
                     *pageTableEntry = PA2PTE(newMemory) | flags ;
@@ -120,6 +122,12 @@ usertrap(void)
 
                     kfree((void*)physicalAddress);
                 }
+            }
+            else
+            {
+                printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
+                printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
+                setkilled(p);
             }
         }
     }
@@ -133,6 +141,8 @@ usertrap(void)
         printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
         setkilled(p);
     }
+
+loopend:
 
     if(killed(p))
     {
