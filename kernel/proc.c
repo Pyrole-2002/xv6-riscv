@@ -15,7 +15,6 @@ struct proc *initproc;
 int nextpid = 1;
 struct spinlock pid_lock;
 
-extern void remPage(void*);
 extern void forkret(void);
 static void freeproc(struct proc *p);
 
@@ -128,7 +127,6 @@ allocproc(void)
             release(&p->lock);
         }
     }
-    printf("e4\n");
     return 0;
 
 found:
@@ -139,14 +137,12 @@ found:
     // Allocate a trapframe page.
     if((p->trapframe = (struct trapframe *)kalloc()) == 0)
     {
-        printf("e1\n");
         freeproc(p);
         release(&p->lock);
         return 0;
     }
     if((p->Sigtrapframe = (struct trapframe *)kalloc()) == 0)
     {
-        printf("e2\n");
         freeproc(p);
         release(&p->lock);
         return 0;
@@ -156,7 +152,6 @@ found:
     p->pagetable = proc_pagetable(p);
     if(p->pagetable == 0)
     {
-        printf("e3\n");
         freeproc(p);
         release(&p->lock);
         return 0;
@@ -327,7 +322,6 @@ fork(void)
 
   // Allocate process.
   if((np = allocproc()) == 0){
-    printf("abracadabra original\n");
     return -1;
   }
 
@@ -335,7 +329,6 @@ fork(void)
   if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
     freeproc(np);
     release(&np->lock);
-    printf("abracadabra\n");
     return -1;
   }
   np->sz = p->sz;

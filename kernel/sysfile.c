@@ -16,7 +16,6 @@
 #include "file.h"
 #include "fcntl.h"
 
-extern void remPage( void *);
 
 // Fetch the nth word-sized system call argument as a file descriptor
 // and return both the descriptor and the corresponding struct file.
@@ -466,13 +465,13 @@ sys_exec(void)
   int ret = exec(path, argv);
 
   for(i = 0; i < NELEM(argv) && argv[i] != 0; i++)
-    remPage(argv[i]);
+    kfree(argv[i]);
 
   return ret;
 
  bad:
   for(i = 0; i < NELEM(argv) && argv[i] != 0; i++)
-    remPage(argv[i]);
+    kfree(argv[i]);
   return -1;
 }
 

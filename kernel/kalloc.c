@@ -34,6 +34,9 @@ struct
 void
 kinit()
 {
+    for( int i = 0; i < 32*1024; i++ )
+        addressMap[i] = 1;
+
     initlock(&kmem.lock, "kmem");
     freerange(end, (void*)PHYSTOP);
 }
@@ -63,15 +66,34 @@ kfree(void *pa)
         panic("kfree");
     }
 
-    // Fill with junk to catch dangling refs.
-    memset(pa, 1, PGSIZE);
+    int index = PGROUNDDOWN((uint64)pa) - KERNBASE;
+    index = index / PGSIZE;
 
-    r = (struct run*)pa;
+    if ( index < 0 || index > 32*1024 )
+        return;
+    
+    if( addressMap[index] <= 0 )
+    {
+        panic("Invalid Page Free Request.");
+        return;
+    }
+    else
+    {
+        addressMap[index]--;
+    }
 
-    acquire(&kmem.lock);
-    r->next = kmem.freelist;
-    kmem.freelist = r;
-    release(&kmem.lock);
+    if ( addressMap[index] == 0 ) 
+    {
+        // Fill with junk to catch dangling refs.
+        memset(pa, 1, PGSIZE);
+
+        r = (struct run*)pa;
+
+        acquire(&kmem.lock);
+        r->next = kmem.freelist;
+        kmem.freelist = r;
+        release(&kmem.lock);
+    }
 }
 
 void pageRef( void* page )
@@ -87,31 +109,31 @@ void pageRef( void* page )
     return ;
 }
 
-void remPage( void* page)
-{
-    int index = PGROUNDDOWN((uint64)page) - KERNBASE;
-    index = index / PGSIZE;
-
-    if ( index < 0 || index > 32*1024 )
-        return;
-    
-    if( addressMap[index] <= 0 )
-    {
-        panic("Invalid Page Free Request.");
-        return;
-    }
-    else
-    {
-        addressMap[index]--;
-    }
-    
-    if ( addressMap[index] == 0 )
-    {
-        kfree(page);
-    }
-    return;
-}
-
+// void remPage( void* page)
+// {
+//     int index = PGROUNDDOWN((uint64)page) - KERNBASE;
+//     index = index / PGSIZE;
+//
+//     if ( index < 0 || index > 32*1024 )
+//         return;
+//     
+//     if( addressMap[index] <= 0 )
+//     {
+//         panic("Invalid Page Free Request.");
+//         return;
+//     }
+//     else
+//     {
+//         addressMap[index]--;
+//     }
+//     
+//     if ( addressMap[index] == 0 )
+//     {
+//         kfree(page);
+//     }
+//     return;
+// }
+//
 // Allocate one 4096-byte page of physical memory.
 // Returns a pointer that the kernel can use.
 // Returns 0 if the memory cannot be allocated.
@@ -122,22 +144,18 @@ kalloc(void)
 
     acquire(&kmem.lock);
     r = kmem.freelist;
-    if(r)
-    {
-        kmem.freelist = r->next;
-    }
     
-    pageRef( (void*) r );
-    // Increasing the number of processes that are currently using this page.
+    if(r)
+        kmem.freelist = r->next;
     
     release(&kmem.lock);
 
     if(r)
     {
         memset((char*)r, 5, PGSIZE); // fill with junk
+        pageRef( (void*) r );
+        // Increasing the number of processes that are currently using this page.
     }
-    
-
     return (void*)r;
 }
 

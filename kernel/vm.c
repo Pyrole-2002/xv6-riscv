@@ -6,6 +6,8 @@
 #include "riscv.h"
 #include "defs.h"
 #include "fs.h"
+#include "proc.h"
+
 
 /*
  * the kernel's page table.
@@ -15,7 +17,6 @@ pagetable_t kernel_pagetable;
 extern char etext[];  // kernel.ld sets this to end of kernel code.
 
 extern char trampoline[]; // trampoline.S
-extern void remPage(void*);
 extern void pageRef(void*);
 // Make a direct-map page table for the kernel.
 pagetable_t
@@ -187,7 +188,7 @@ uvmunmap(pagetable_t pagetable, uint64 va, uint64 npages, int do_free)
       panic("uvmunmap: not a leaf");
     if(do_free){
       uint64 pa = PTE2PA(*pte);
-      remPage((void*)pa);
+      kfree((void*)pa);
     }
     *pte = 0;
   }
@@ -237,12 +238,14 @@ uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz, int xperm)
   for(a = oldsz; a < newsz; a += PGSIZE){
     mem = kalloc();
     if(mem == 0){
+      printf("here2\n");
       uvmdealloc(pagetable, a, oldsz);
       return 0;
     }
     memset(mem, 0, PGSIZE);
     if(mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_R|PTE_U|xperm) != 0){
-      remPage(mem);
+      printf("here\n");
+      kfree(mem);
       uvmdealloc(pagetable, a, oldsz);
       return 0;
     }
@@ -259,7 +262,7 @@ uvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz)
 {
   if(newsz >= oldsz)
     return oldsz;
-
+    
   if(PGROUNDUP(newsz) < PGROUNDUP(oldsz)){
     int npages = (PGROUNDUP(oldsz) - PGROUNDUP(newsz)) / PGSIZE;
     uvmunmap(pagetable, PGROUNDUP(newsz), npages, 1);
@@ -285,7 +288,7 @@ freewalk(pagetable_t pagetable)
       panic("freewalk: leaf");
     }
   }
-  remPage((void*)pagetable);
+  kfree((void*)pagetable);
 }
 
 // Free user memory pages,
@@ -317,18 +320,22 @@ uvmcopy(pagetable_t old, pagetable_t new, uint64 sz)
     if((*pte & PTE_V) == 0)
       panic("uvmcopy: page not present");
     pa = PTE2PA(*pte);
+    
     flags = PTE_FLAGS(*pte);
 
-    flags |= PTE_COW;
-    // Enabling copy on write for the pagetable.
-    flags &= ~(PTE_W);
-    // Writable permissions removed for the pagetable.
-    
+    if ( flags & PTE_W )
+    {
+        flags |= PTE_COW;
+        // Enabling copy on write for the pagetable.
+        flags &= ~(PTE_W);
+        // Writable permissions removed for the pagetable.
+    }
+
     if ( mappages(new, i, PGSIZE, pa, flags) != 0 )
         goto err;
     
     pageRef( ( void* )pa );
-
+    
     uvmunmap(old, i, 1, 0);
 
     if(mappages(old, i, PGSIZE, (uint64)pa, flags) != 0){
@@ -361,49 +368,57 @@ uvmclear(pagetable_t pagetable, uint64 va)
 int
 copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
 {
-  uint64 va0, pa0, n;
+  uint64 va0, pa0, n, flags;
+  pte_t *pte;
+
   while(len > 0){
     va0 = PGROUNDDOWN(dstva);
-    
-    pte_t *pte;
+    pa0 = walkaddr(pagetable, va0);
+
+    if ( pa0 == 0 )
+        return -1;
     pte = walk(pagetable, va0, 0);
 
-    n = PGSIZE - (dstva - va0);
+    flags = PTE_FLAGS(*pte);
     
     if ( ( *pte & PTE_V )  == 0 )
         return -1;
     if ( ( *pte & PTE_U ) == 0 )
         return -1;
+    
+    ///////////////////////////////////////////////////////////
 
-    pa0 = PTE2PA(*pte);
-    if ( *pte & PTE_COW )
+    if ( PTE_COW & flags )    
     {
-        uint64 flags = PTE_FLAGS(*pte);
-        
-        flags |= PTE_W;
-        flags &= (~PTE_COW);
+        if ( (PTE_V & *pte) && ( PTE_U & *pte) && ( PTE_COW & *pte) )
+        {
+            // This is where the code should end up in case of cow-fork.
 
-        char *newMemory = kalloc();
-        memmove(newMemory, (void*)pa0, PGSIZE);
-        
-        remPage((void*)pa0);
+            flags |= PTE_W;
+            flags &= (~PTE_COW);
 
-        uvmunmap(pagetable, va0, 1, 0);
-        
-        if ( mappages( pagetable, va0, PGSIZE, (uint64)newMemory, flags ) != 0 )
-            panic("Could not map data from kernel space.");
+            char *newMemory = kalloc();
+
+            if ( newMemory == 0 )
+                panic("Could not allocate more memory");
+
+            memmove( newMemory, (void*)pa0, PGSIZE);
+
+            *pte = PA2PTE(newMemory) | flags ;
+            // Instead of unmapping and remapping, the flag is directly modified.
+
+            kfree((void*)pa0);
+        }
+        pa0 = walkaddr(pagetable, va0);
     }
-    else
-    {
-        pa0 = walkaddr(pagetable , va0);
 
-        if ( pa0 == 0 )
-            return -1;
-
-        if(n > len)
-            n = len;
-        memmove((void *)(pa0 + (dstva - va0)), src, n);
-    }
+    ///////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////
+    n = PGSIZE - (dstva - va0);
+    if(n > len)
+        n = len;
+    memmove((void *)(pa0 + (dstva - va0)), src, n);
+    
     len -= n;
     src += n;
     dstva = va0 + PGSIZE;

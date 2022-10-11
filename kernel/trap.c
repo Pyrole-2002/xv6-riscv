@@ -15,7 +15,6 @@ extern char trampoline[], uservec[], userret[];
 void kernelvec();
 
 extern int devintr();
-extern void remPage(void*);
 
 void
 trapinit(void)
@@ -75,44 +74,52 @@ usertrap(void)
     {
         // Page Fault detected.
         // If the COW flag is raised, then the fault should be handled.
-        uint64 pageStart = PGROUNDDOWN( r_stval() ); 
+        // uint64 pageStart = PGROUNDDOWN( r_stval() ); 
+        uint64 pageStart = r_stval();
 
-        pte_t *pageTableEntry;
-        pageTableEntry = walk( p->pagetable, pageStart, 0 );
-        // No allocation is needed.
-        
-        if ( pageTableEntry == 0 )
+        if ( pageStart >= MAXVA || ((uint64)pageStart>=PGROUNDDOWN(p->trapframe->sp)-PGSIZE&&(uint64)pageStart<=PGROUNDDOWN(p->trapframe->sp)) || pageStart <= 0 )
         {
-            printf("Unavailable Address Refferenced.\n");
             p->killed = 1;
-            // Kill the process, since
-            // this should not have happened 
-            // in the COW-fork scheme.
         }
-
-        if ( (PTE_V & *pageTableEntry) && ( PTE_U & *pageTableEntry) && ( PTE_COW & *pageTableEntry) )
+        else
         {
-            // This is where the code should end up in case of cow-fork.
-            
-            uint64 flags = PTE_FLAGS(*pageTableEntry);
-            flags |= PTE_W;
-            flags &= (~PTE_COW);
+            pte_t *pageTableEntry;
+            pageTableEntry = walk( p->pagetable, pageStart, 0 );
+            // No allocation is needed.
 
-            char *newMemory = kalloc();
-            char *physicalAddress = (char *)PTE2PA(*pageTableEntry);
-
-            memmove( newMemory, physicalAddress, PGSIZE);
-            
-            uvmunmap( p->pagetable, pageStart, 1, 0);
-            
-            remPage( (void*)physicalAddress);
-
-            if ( mappages( p->pagetable, pageStart, PGSIZE, (uint64)newMemory, flags) != 0 )
+            if ( pageTableEntry == 0 )
             {
+                printf("Unavailable Address Refferenced.\n");
                 p->killed = 1;
-                // The process' page table could not be mapped to the 
-                // physical address provided.
-                printf("The Process is doing funny stuff.\n");
+                // Kill the process, since
+                // this should not have happened 
+                // in the COW-fork scheme.
+                // usertrapret();
+            }
+            else
+            {
+                char *physicalAddress = (char *)PTE2PA(*pageTableEntry);
+                uint64 flags = PTE_FLAGS(*pageTableEntry);
+
+                if ( (PTE_V & *pageTableEntry) && ( PTE_U & *pageTableEntry) && ( PTE_COW & *pageTableEntry) )
+                {
+                    // This is where the code should end up in case of cow-fork.
+
+                    flags |= PTE_W;
+                    flags &= (~PTE_COW);
+
+                    char *newMemory = kalloc();
+
+                    if ( newMemory == 0 )
+                        panic("Could not allocate more memory");
+
+                    memmove( newMemory, (void*)physicalAddress, PGSIZE);
+
+                    *pageTableEntry = PA2PTE(newMemory) | flags ;
+                    // Instead of unmapping and remapping, the flag is directly modified.
+
+                    kfree((void*)physicalAddress);
+                }
             }
         }
     }
