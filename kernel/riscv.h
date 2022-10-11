@@ -1,5 +1,3 @@
-#include "types.h"
-
 #ifndef RISCV_H
 #define RISCV_H
 

@@ -15,6 +15,7 @@ extern char trampoline[], uservec[], userret[];
 void kernelvec();
 
 extern int devintr();
+extern void remPage(void*);
 
 void
 trapinit(void)
@@ -70,6 +71,52 @@ usertrap(void)
 
         syscall();
     }
+    else if ( r_scause() == 15 || r_scause() == 13 )
+    {
+        // Page Fault detected.
+        // If the COW flag is raised, then the fault should be handled.
+        uint64 pageStart = PGROUNDDOWN( r_stval() ); 
+
+        pte_t *pageTableEntry;
+        pageTableEntry = walk( p->pagetable, pageStart, 0 );
+        // No allocation is needed.
+        
+        if ( pageTableEntry == 0 )
+        {
+            printf("Unavailable Address Refferenced.\n");
+            p->killed = 1;
+            // Kill the process, since
+            // this should not have happened 
+            // in the COW-fork scheme.
+            return;
+        }
+
+        if ( (PTE_V & *pageTableEntry) && ( PTE_U & *pageTableEntry) && ( PTE_COW & *pageTableEntry) )
+        {
+            // This is where the code should end up in case of cow-fork.
+            
+            uint64 flags = PTE_FLAGS(*pageTableEntry);
+            flags |= PTE_W;
+            flags &= (~PTE_COW);
+
+            char *newMemory = kalloc();
+            char *physicalAddress = (char *)PTE2PA(*pageTableEntry);
+
+            memmove( newMemory, physicalAddress, PGSIZE);
+            
+            uvmunmap( p->pagetable, pageStart, 1, 0);
+            
+            remPage( (void*)physicalAddress);
+
+            if ( mappages( p->pagetable, pageStart, PGSIZE, (uint64)newMemory, flags) != 0 )
+            {
+                p->killed = 1;
+                // The process' page table could not be mapped to the 
+                // physical address provided.
+                printf("The Process is doing funny stuff.\n");
+            }
+        }
+    }
     else if((which_dev = devintr()) != 0)
     {
         // ok
@@ -77,7 +124,7 @@ usertrap(void)
     else
     {
         printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
-        printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
+        printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
         setkilled(p);
     }
 
