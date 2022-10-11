@@ -62,10 +62,11 @@ argint(int n, int *ip)
 // Retrieve an argument as a pointer.
 // Doesn't check for legality, since
 // copyin/copyout will do that.
-void
+int
 argaddr(int n, uint64 *ip)
 {
   *ip = argraw(n);
+  return 0;
 }
 
 // Fetch the nth word-sized system call argument as a null-terminated string.
@@ -83,6 +84,7 @@ argstr(int n, char *buf, int max)
 extern uint64 sys_fork(void);
 extern uint64 sys_exit(void);
 extern uint64 sys_wait(void);
+extern uint64 sys_waitx(void);
 extern uint64 sys_pipe(void);
 extern uint64 sys_read(void);
 extern uint64 sys_kill(void);
@@ -131,19 +133,22 @@ static uint64 (*syscalls[])(void) = {
 [SYS_close] = sys_close,
 [SYS_trace] = sys_trace,
 [SYS_sigalarm] = sys_sigalarm,
-[SYS_sigreturn] = sys_sigreturn
+[SYS_sigreturn] = sys_sigreturn,
+[SYS_waitx] = sys_waitx
 };
 
 static char * SysCallName[ NELEM(syscalls) + 1 ] = {"", "fork", "exit", "wait", "pipe",
                                              "read", "kill", "exec", "fstat", "chdir",
                                             "dup", "getpid", "sbrk", "sleep", "uptime",
                                             "open", "write", "mknod", "unlink", "link",
-                                            "mkdir", "close", "trace", "sigalarm", "sigreturn"};
+                                            "mkdir", "close", "trace", "sigalarm", "sigreturn",
+                                            "waitx"};
 static int SysCallNumArgs[ NELEM(syscalls) + 1] = { 0, 0, 1, 1, 1,
                                                     3, 1, 2, 2, 1,
                                                     1, 0, 1, 1, 1,
                                                     2, 3, 3, 1, 2,
-                                                    1, 1, 1, 2, 0};
+                                                    1, 1, 1, 2, 0,
+                                                    3};
 void
 syscall(void)
 {

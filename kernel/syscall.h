@@ -27,5 +27,6 @@
 #define SYS_trace  22
 #define SYS_sigalarm 23
 #define SYS_sigreturn 24
+#define SYS_waitx  25
 
 #endif
