@@ -88,7 +88,6 @@ usertrap(void)
             // Kill the process, since
             // this should not have happened 
             // in the COW-fork scheme.
-            return;
         }
 
         if ( (PTE_V & *pageTableEntry) && ( PTE_U & *pageTableEntry) && ( PTE_COW & *pageTableEntry) )

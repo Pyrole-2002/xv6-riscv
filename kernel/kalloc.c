@@ -76,7 +76,7 @@ kfree(void *pa)
 
 void pageRef( void* page )
 {
-    int index = PGROUNDDOWN((uint64)page) - KERNBASE;
+    int index = PGROUNDDOWN( (uint64)page - KERNBASE );
     index = index / PGSIZE;
     
     if ( index < 0 || index > 32*1024 )
@@ -109,6 +109,7 @@ void remPage( void* page)
     {
         kfree(page);
     }
+    return;
 }
 
 // Allocate one 4096-byte page of physical memory.
@@ -125,6 +126,10 @@ kalloc(void)
     {
         kmem.freelist = r->next;
     }
+    
+    pageRef( (void*) r );
+    // Increasing the number of processes that are currently using this page.
+    
     release(&kmem.lock);
 
     if(r)
@@ -132,8 +137,6 @@ kalloc(void)
         memset((char*)r, 5, PGSIZE); // fill with junk
     }
     
-    pageRef( (void*) r );
-    // Increasing the number of processes that are currently using this page.
 
     return (void*)r;
 }
