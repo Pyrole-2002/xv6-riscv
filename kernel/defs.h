@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "riscv.h"
+/* #include "user/user.h" */
 
 struct buf;
 struct context;
@@ -113,6 +114,8 @@ void            yield(void);
 int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
+int             set_priority(int, int);
+void            update_time(void);
 
 // swtch.S
 void            swtch(struct context*, struct context*);
@@ -143,7 +146,7 @@ char*           strncpy(char*, const char*, int);
 // syscall.c
 void            argint(int, int*);
 int             argstr(int, char*, int);
-int            argaddr(int, uint64 *);
+void            argaddr(int, uint64 *);
 int             fetchstr(uint64, char*, int);
 int             fetchaddr(uint64, uint64*);
 void            syscall();

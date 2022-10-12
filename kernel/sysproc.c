@@ -160,18 +160,9 @@ sys_waitx(void)
 {
     uint64 p, raddr, waddr;
     int rtime, wtime;
-    if(argaddr(0, &p) < 0)
-    {
-        return -1;
-    }
-    if (argaddr(1, &raddr) < 0)
-    {
-        return -1;
-    }
-    if (argaddr(2, &waddr) < 0)
-    {
-        return -1;
-    }
+    argaddr(0, &p);
+    argaddr(1, &raddr);
+    argaddr(2, &waddr);
     int ret = waitx(p,&rtime,&wtime);
     struct proc *proc = myproc();
     if (copyout(proc->pagetable, raddr, (char*)&rtime , sizeof(int)) < 0)
@@ -185,3 +176,11 @@ sys_waitx(void)
     return ret;
 }
 
+uint64
+sys_set_priority(void)
+{
+    int new_priority, pid;
+    argint(0, &new_priority);
+    argint(1, &pid);
+    return set_priority(new_priority, pid);
+}

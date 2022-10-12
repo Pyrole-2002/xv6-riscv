@@ -31,6 +31,7 @@ int uptime(void);
 int trace(int);
 int sigalarm(int, const void(*));
 int sigreturn(void);
+int set_priority(int, int);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

@@ -126,13 +126,22 @@ struct proc
                                     
     // Scheduler Modifications
     int in_tick;                    // Tick value when process is added
-    int run_time;                   // How long the process will run
+    int run_time;                   // How long the process will runs in total
     int end_tick;                   // Tick value when process is exited
 
 
 
 #ifdef FCFS
     // ok
+#endif
+
+
+
+    int priority;                   // Priority of Process
+#ifdef PBS
+    int num_sched;                  // Number of times process is scheduled
+    int running;                    // Time spent running
+    int sleeping;                   // Time spent sleeping
 #endif
 };
 
