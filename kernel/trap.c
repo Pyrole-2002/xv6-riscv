@@ -79,7 +79,7 @@ usertrap(void)
 
         if ( pageStart >= MAXVA || ((uint64)pageStart>=PGROUNDDOWN(p->trapframe->sp)-PGSIZE&&(uint64)pageStart<=PGROUNDDOWN(p->trapframe->sp)) || pageStart <= 0 )
         {
-            p->killed = 1;
+            setkilled(p);
         }
         else
         {

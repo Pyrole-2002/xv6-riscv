@@ -72,7 +72,7 @@ kfree(void *pa)
     
     if( addressMap[index] <= 0 )
     {
-        panic("Invalid Page Free Request.");
+        printf("Invalid Page Free Request.\n");
         return;
     }
     else

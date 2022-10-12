@@ -397,7 +397,9 @@ copyout(pagetable_t pagetable, uint64 dstva, char *src, uint64 len)
             char *newMemory = kalloc();
 
             if ( newMemory == 0 )
-                panic("Could not allocate more memory");
+            {
+                setkilled(myproc());
+            }
 
             memmove( newMemory, (void*)pa0, PGSIZE);
 
