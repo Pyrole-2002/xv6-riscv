@@ -90,7 +90,9 @@ usertrap(void)
             if ( pageTableEntry == 0 )
             {
                 // printf("Unavailable Address Refferenced.\n");
-                p->killed = 1;
+                printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
+                printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
+                setkilled(p);
                 // Kill the process, since
                 // this should not have happened 
                 // in the COW-fork scheme.
@@ -148,8 +150,6 @@ loopend:
     {
         exit(-1);
     }
-
-
 
     // give up the CPU if this is a timer interrupt.
     if(which_dev == 2)
