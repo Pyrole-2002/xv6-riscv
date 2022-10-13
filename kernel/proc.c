@@ -157,23 +157,31 @@ found:
         return 0;
     }
 
-  // Set up new context to start executing at forkret,
-  // which returns to user space.
-  memset(&p->context, 0, sizeof(p->context));
-  p->context.ra = (uint64)forkret;
-  p->context.sp = p->kstack + PGSIZE;
-  
-  //By default, no tracing is set.
-  p->mask = 0;
-  //Initially, the alarm timers are all initialized to 0.
-  p->alarm = 0;
-  //Initially, no goal for time should be set.
-  p->alarmTime = 0;
-  //Initially no ticks are recorded.
-  p->tickCount = 0;
-  //Initially, there is no interrupt function.
-  p->interruptFunction = 0;
+    // Set up new context to start executing at forkret,
+    // which returns to user space.
+    memset(&p->context, 0, sizeof(p->context));
+    p->context.ra = (uint64)forkret;
+    p->context.sp = p->kstack + PGSIZE;
 
+    //By default, no tracing is set.
+    p->mask = 0;
+    //Initially, the alarm timers are all initialized to 0.
+    p->alarm = 0;
+    //Initially, no goal for time should be set.
+    p->alarmTime = 0;
+    //Initially no ticks are recorded.
+    p->tickCount = 0;
+    //Initially, there is no interrupt function.
+    p->interruptFunction = 0;
+
+
+
+#ifdef PBS
+    p->priority = 60;               // Default priority
+    p->num_sched = 0;
+    p->running = 0;
+    p->sleeping = 0;
+#endif
     return p;
 }
 
@@ -183,29 +191,49 @@ found:
 static void
 freeproc(struct proc *p)
 {
-  if(p->trapframe)
-    kfree((void*)p->trapframe);
-  if(p->Sigtrapframe)
-    kfree((void*)p->Sigtrapframe);
-  p->trapframe = 0;
-  p->Sigtrapframe = 0;
+    if(p->trapframe)
+    {
+        kfree((void*)p->trapframe);
+    }
+    if(p->Sigtrapframe)
+    {
+        kfree((void*)p->Sigtrapframe);
+    }
+    p->trapframe = 0;
+    p->Sigtrapframe = 0;
 
-  if(p->pagetable)
-    proc_freepagetable(p->pagetable, p->sz);
-  p->pagetable = 0;
-  p->sz = 0;
-  p->pid = 0;
-  p->parent = 0;
-  p->name[0] = 0;
-  p->chan = 0;
-  p->killed = 0;
-  p->xstate = 0;
-  p->state = UNUSED;
-  p->mask = 0;
-  p->alarm = 0;
-  p->alarmTime = 0;
-  p->interruptFunction = 0;
-  p->tickCount = 0;
+    if(p->pagetable)
+    {
+        proc_freepagetable(p->pagetable, p->sz);
+    }
+    p->pagetable = 0;
+    p->sz = 0;
+    p->pid = 0;
+    p->parent = 0;
+    p->name[0] = 0;
+    p->chan = 0;
+    p->killed = 0;
+    p->xstate = 0;
+    p->state = UNUSED;
+
+    p->mask = 0;
+    p->alarm = 0;
+    p->alarmTime = 0;
+    p->interruptFunction = 0;
+    p->tickCount = 0;
+
+    p->in_tick = 0;
+    p->run_time = 0;
+    p->end_tick = 0;
+    p->priority = 60;
+
+
+
+#ifdef PBS
+    p->num_sched = 0;
+    p->running = 0;
+    p->sleeping = 0;
+#endif
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -473,6 +501,83 @@ wait(uint64 addr)
   }
 }
 
+int waitx(uint64 addr, int *rtime, int *wtime)
+{
+    struct proc *np;
+    int havekids, pid;
+    struct proc *p = myproc();
+
+    acquire(&wait_lock);
+
+    for (;;)
+    {
+        // Scan through table looking for exited children.
+        havekids = 0;
+        for (np = proc; np < &proc[NPROC]; np++)
+        {
+            if (np->parent == p)
+            {
+                // make sure the child isn't still in exit() or swtch().
+                acquire(&np->lock);
+
+                havekids = 1;
+                if (np->state == ZOMBIE)
+                {
+                    // Found one.
+                    pid = np->pid;
+                    *rtime = np->run_time;
+                    *wtime = np->end_tick - np->in_tick - np->run_time;
+                    if (addr != 0 && copyout(p->pagetable, addr, (char *)&np->xstate, sizeof(np->xstate)) < 0)
+                    {
+                        release(&np->lock);
+                        release(&wait_lock);
+                        return -1;
+                    }
+                    freeproc(np);
+                    release(&np->lock);
+                    release(&wait_lock);
+                    return pid;
+                }
+                release(&np->lock);
+            }
+        }
+
+        // No point waiting if we don't have any children.
+        if (!havekids || p->killed)
+        {
+            release(&wait_lock);
+            return -1;
+        }
+
+        // Wait for a child to exit.
+        sleep(p, &wait_lock); // DOC: wait-sleep
+    }
+}
+
+int Min(int a, int b)
+{
+    return ((a < b) ? a : b);
+}
+int Max(int a, int b)
+{
+    return ((a > b) ? a : b);
+}
+
+#ifdef PBS
+    int
+nice_priority(struct proc* p)
+{
+    // default
+    int niceness = 5;
+    if (p->running + p->sleeping != 0)
+    {
+        // Not a new process
+        niceness = (p->sleeping * 10) / (p->running + p->sleeping);
+    }
+    return Max(0, Min(p->priority - niceness + 5, 100));
+}
+#endif
+
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
 // Scheduler never returns.  It loops, doing:
@@ -542,13 +647,66 @@ scheduler(void)
             }
             release(&p->lock);
         }
-        if (to_run == 0)
+        if (to_run != 0)
         {
-            // No process is RUNNABLE
-            continue;
+            to_run->state = RUNNING;
+            c->proc = to_run;
+            swtch(&c->context, &to_run->context);
+            c->proc = 0;
+            release(&to_run->lock);
         }
-        else
+#endif
+
+
+
+#ifdef PBS
+        struct proc* to_run = 0;
+        for (struct proc* p = proc; p < &proc[NPROC]; p++)
         {
+            acquire(&p->lock);
+            if (p->state == RUNNABLE)
+            {
+                if (to_run == 0)
+                {
+                    to_run = p;
+                    continue;
+                }
+                else if (nice_priority(to_run) > nice_priority(p))
+                {
+                    // "p" will be favoured in comparison to "to_run"
+                    release(&to_run->lock);
+                    to_run = p;
+                    continue;
+                }
+                else if (nice_priority(to_run) == nice_priority(p))
+                {
+                    // Compare according to number of times process is scheduled
+                    if (to_run->num_sched > p->num_sched)
+                    {
+                        // Choosing the process scheduled less number of times
+                        release(&to_run->lock);
+                        to_run = p;
+                        continue;
+                    }
+                    else if (to_run->num_sched == p->num_sched)
+                    {
+                        // FCFS
+                        if (to_run->in_tick < p->in_tick)
+                        {
+                            release(&to_run->lock);
+                            to_run = p;
+                            continue;
+                        }
+                    }
+                }
+            }
+            release(&p->lock);
+        }
+        if (to_run != 0)
+        {
+            to_run->num_sched++;
+            to_run->running = 0;
+            to_run->sleeping = 0;
             to_run->state = RUNNING;
             c->proc = to_run;
             swtch(&c->context, &to_run->context);
@@ -768,4 +926,76 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+// Returns the old priority value
+int
+set_priority(int new_priority, int pid)
+{
+    int old_priority;
+    if ((new_priority < 0) || (new_priority > 100))
+    {
+        printf("Priority must be in range [0 - 100]\n");
+        return -1;
+    }
+    int flag = 0;
+    struct proc* req_proc;
+    for (struct proc* p = proc; p < &proc[NPROC]; p++)
+    {
+        acquire(&p->lock);
+        if (p->pid == pid)
+        {
+            flag = 1;
+            old_priority = p->priority;
+            p->priority = new_priority;
+            req_proc = p;
+            break;
+        }
+        release(&p->lock);
+    }
+    if (flag)
+    {
+        printf("Priority of [%d] : %d -> %d\n", pid, old_priority, new_priority);
+        if (new_priority < old_priority)
+        {
+            // req_proc will be prioritised more now
+#ifdef PBS
+            req_proc->running = 0;
+            req_proc->sleeping = 0;
+            yield();
+#endif
+        }
+        release(&req_proc->lock);
+        return old_priority;
+    }
+    else
+    {
+        printf("No process found with pid = [pid]\n", pid);
+        return -1;
+    }
+}
+
+
+// Updates the attributes of proc data-structure for scheduling
+void
+update_time()
+{
+    for (struct proc* p = proc; p < &proc[NPROC]; p++)
+    {
+        acquire(&p->lock);
+        if (p->state == RUNNING)
+        {
+            p->run_time++;
+#ifdef PBS
+            p->running++;
+#endif
+        }
+#ifdef PBS
+        else if (p->state == SLEEPING)
+        {
+            p->sleeping++;
+        }
+#endif
+        release(&p->lock);
+    }
 }

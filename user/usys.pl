@@ -18,6 +18,7 @@ sub entry {
 entry("fork");
 entry("exit");
 entry("wait");
+entry("waitx");
 entry("pipe");
 entry("read");
 entry("write");
@@ -39,3 +40,4 @@ entry("uptime");
 entry("trace");
 entry("sigalarm");
 entry("sigreturn");
+entry("set_priority");

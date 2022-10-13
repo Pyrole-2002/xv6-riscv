@@ -33,30 +33,31 @@ fetchstr(uint64 addr, char *buf, int max)
 static uint64
 argraw(int n)
 {
-  struct proc *p = myproc();
-  switch (n) {
-  case 0:
-    return p->trapframe->a0;
-  case 1:
-    return p->trapframe->a1;
-  case 2:
-    return p->trapframe->a2;
-  case 3:
-    return p->trapframe->a3;
-  case 4:
-    return p->trapframe->a4;
-  case 5:
-    return p->trapframe->a5;
-  }
-  panic("argraw");
-  return -1;
+    struct proc *p = myproc();
+    switch (n)
+    {
+        case 0:
+            return p->trapframe->a0;
+        case 1:
+            return p->trapframe->a1;
+        case 2:
+            return p->trapframe->a2;
+        case 3:
+            return p->trapframe->a3;
+        case 4:
+            return p->trapframe->a4;
+        case 5:
+            return p->trapframe->a5;
+    }
+    panic("argraw");
+    return -1;
 }
 
 // Fetch the nth 32-bit system call argument.
 void
 argint(int n, int *ip)
 {
-  *ip = argraw(n);
+    *ip = argraw(n);
 }
 
 // Retrieve an argument as a pointer.
@@ -83,6 +84,7 @@ argstr(int n, char *buf, int max)
 extern uint64 sys_fork(void);
 extern uint64 sys_exit(void);
 extern uint64 sys_wait(void);
+extern uint64 sys_waitx(void);
 extern uint64 sys_pipe(void);
 extern uint64 sys_read(void);
 extern uint64 sys_kill(void);
@@ -104,6 +106,7 @@ extern uint64 sys_close(void);
 extern uint64 sys_trace(void);
 extern uint64 sys_sigalarm(void);
 extern uint64 sys_sigreturn(void);
+extern uint64 sys_set_priority(void);
 
 // An array mapping syscall numbers from syscall.h
 // to the function that handles the system call.
@@ -131,19 +134,23 @@ static uint64 (*syscalls[])(void) = {
 [SYS_close] = sys_close,
 [SYS_trace] = sys_trace,
 [SYS_sigalarm] = sys_sigalarm,
-[SYS_sigreturn] = sys_sigreturn
+[SYS_sigreturn] = sys_sigreturn,
+[SYS_waitx] = sys_waitx,
+[SYS_set_priority] = sys_set_priority,
 };
 
 static char * SysCallName[ NELEM(syscalls) + 1 ] = {"", "fork", "exit", "wait", "pipe",
                                              "read", "kill", "exec", "fstat", "chdir",
                                             "dup", "getpid", "sbrk", "sleep", "uptime",
                                             "open", "write", "mknod", "unlink", "link",
-                                            "mkdir", "close", "trace", "sigalarm", "sigreturn"};
+                                            "mkdir", "close", "trace", "sigalarm", "sigreturn",
+                                            "waitx", "set_priority"};
 static int SysCallNumArgs[ NELEM(syscalls) + 1] = { 0, 0, 1, 1, 1,
                                                     3, 1, 2, 2, 1,
                                                     1, 0, 1, 1, 1,
                                                     2, 3, 3, 1, 2,
-                                                    1, 1, 1, 2, 0};
+                                                    1, 1, 1, 2, 0,
+                                                    3, 2};
 void
 syscall(void)
 {
