@@ -175,12 +175,16 @@ found:
     p->interruptFunction = 0;
 
 
-
 #ifdef PBS
     p->priority = 60;               // Default priority
     p->num_sched = 0;
     p->running = 0;
     p->sleeping = 0;
+#endif
+
+#ifdef MLFQ
+    p->numticks = 0;
+    p->queue = 0;
 #endif
     return p;
 }
@@ -234,6 +238,12 @@ freeproc(struct proc *p)
     p->running = 0;
     p->sleeping = 0;
 #endif
+
+#ifdef MLFQ
+    p->numticks = 0;
+    p->queue = 0;
+#endif
+
 }
 
 // Create a user page table for a given process, with no user memory,

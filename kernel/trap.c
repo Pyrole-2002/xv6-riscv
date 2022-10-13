@@ -169,6 +169,9 @@ usertrap(void)
         yield();
 #endif
 
+#ifdef MLFQ
+        yield();
+#endif
 
 #ifdef FCSF
         // ok
@@ -265,13 +268,13 @@ kerneltrap()
         yield();
 #endif
 
-
+#ifdef MLFQ
+        yield();
+#endif
 
 #ifdef FCSF
         // ok
 #endif
-
-
 
 #ifdef PBS
         // ok
