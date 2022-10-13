@@ -183,8 +183,8 @@ found:
 #endif
 
 #ifdef MLFQ
-    p->numticks = 0;
     p->queue = 0;
+    p->numTicks = 0;
 #endif
     return p;
 }
@@ -240,8 +240,8 @@ freeproc(struct proc *p)
 #endif
 
 #ifdef MLFQ
-    p->numticks = 0;
     p->queue = 0;
+    p->numTicks = 0;
 #endif
 
 }
@@ -574,7 +574,7 @@ int Max(int a, int b)
 }
 
 #ifdef PBS
-    int
+int 
 nice_priority(struct proc* p)
 {
     // default
@@ -610,7 +610,6 @@ scheduler(void)
         intr_on();
 
 
-
 #ifdef RR
         for(struct proc* p = proc; p < &proc[NPROC]; p++)
         {
@@ -631,7 +630,6 @@ scheduler(void)
             release(&p->lock);
         }
 #endif
-
 
 
 #ifdef FCFS
@@ -666,7 +664,6 @@ scheduler(void)
             release(&to_run->lock);
         }
 #endif
-
 
 
 #ifdef PBS
@@ -723,6 +720,56 @@ scheduler(void)
             c->proc = 0;
             release(&to_run->lock);
         }
+
+#endif
+
+#ifdef MLFQ
+
+    struct proc *currProc = proc; 
+    // First find the current process to be used.
+    int currTicks = ticks;
+    
+    for( struct proc *p = proc; p < &proc[NPROC]; p++ )
+    {
+        if ( p->state != RUNNABLE )
+            continue;
+        if ( currTicks - p->in_tick >= TOOMUCH(p->queue) && p->queue < 4 )
+            p->queue++;
+        else if ( currTicks - p->in_tick >= MAXWAIT(p->queue) && p->queue > 0 )
+            p->queue--;
+    }
+
+    for ( struct proc *p = proc; p < &proc[NPROC]; p++ )
+    {   
+        if ( p->state != RUNNABLE )
+            continue;
+
+        if ( p->queue <= currProc->queue )
+        {
+            // The processes are in the same q
+            // Now, we need to check which process is older
+            if ( p->in_tick > currProc->in_tick )
+            {
+                // The process p is older than currProc
+                // therefore should be executed now.
+                currProc = p;
+            }
+        }
+    }
+    
+    // At this point, currProc stores the 
+    // process that needs to be run.
+
+    if ( currProc->state == RUNNABLE )
+    {
+        acquire(&currProc->lock);
+        currProc->state = RUNNING;
+        c->proc = currProc;
+        swtch(&c->context, &currProc->context);
+        c->proc = 0;
+        release(&currProc->lock);
+    }
+
 #endif
     }
 }

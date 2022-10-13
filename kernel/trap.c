@@ -170,10 +170,16 @@ usertrap(void)
 #endif
 
 #ifdef MLFQ
-        yield();
+        if ( p->numTicks == ( 1 << ( p->queue + 1 ) ) )
+        {
+            p->numTicks = 0;
+            yield();
+        }
+        else
+            p->numTicks++;
 #endif
 
-#ifdef FCSF
+#ifdef FCFS
         // ok
 #endif
 
@@ -269,10 +275,16 @@ kerneltrap()
 #endif
 
 #ifdef MLFQ
-        yield();
+        if ( myproc()->numTicks == ( 1 << ( myproc()->queue + 1 ) ) )
+        {
+            myproc()->numTicks = 0;
+            yield();
+        }
+        else
+            myproc()->numTicks++;
 #endif
 
-#ifdef FCSF
+#ifdef FCFS
         // ok
 #endif
 
