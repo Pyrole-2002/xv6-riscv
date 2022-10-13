@@ -444,6 +444,7 @@ exit(int status)
 
   p->xstate = status;
   p->state = ZOMBIE;
+  p->end_tick = ticks;
 
   release(&wait_lock);
 
