@@ -6,6 +6,8 @@
 #include "proc.h"
 #include "defs.h"
 
+extern struct proc proc[];
+
 struct spinlock tickslock;
 uint ticks;
 
@@ -275,7 +277,7 @@ kerneltrap()
 #endif
 
 #ifdef MLFQ
-        if ( myproc()->numTicks == ( 1 << ( myproc()->queue + 1 ) ) )
+        if ( myproc()->numTicks == ( 1 << ( myproc()->queue ) ) )
         {
             myproc()->numTicks = 0;
             yield();
@@ -304,6 +306,25 @@ clockintr()
 {
     acquire(&tickslock);
     ticks++;
+
+#ifdef MLFQ 
+    // printf("yahan bhi pahunch gaya.\n"); 
+    for( struct proc *p = proc; p < &proc[NPROC]; p++ )
+    {
+        acquire(&p->lock);
+        if ( p->state != RUNNABLE )
+        {
+            release(&p->lock);
+            continue;
+        }
+        if (  ticks - p->in_tick >= ( 1 << p->queue ) && p->queue < 4 )
+            p->queue++;
+        else if ( ticks - p->in_tick >= 30 && p->queue > 0 )
+            p->queue--;
+        release(&p->lock);
+    }
+
+#endif
     update_time();
     wakeup(&ticks);
     release(&tickslock);

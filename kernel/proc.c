@@ -325,7 +325,13 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
+  p->in_tick = ticks;
+  p->mask = 0;
 
+#ifdef MLFQ
+  p->queue = 0;
+  p->numTicks = 0;
+#endif
   release(&p->lock);
 }
 
@@ -374,8 +380,7 @@ fork(void)
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
   
-  //*(np->Sigtrapframe) = *(p->Sigtrapframe);
-  
+  np->mask = p->mask; 
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
 
@@ -454,7 +459,10 @@ exit(int status)
 
   p->xstate = status;
   p->state = ZOMBIE;
-
+#ifdef MLFQ
+  p->queue = 0;
+  p->numTicks = 0;
+#endif
   release(&wait_lock);
 
   // Jump into the scheduler, never to return.
@@ -725,48 +733,49 @@ scheduler(void)
 
 #ifdef MLFQ
 
-    struct proc *currProc = proc; 
+    struct proc *currProc = 0; 
     // First find the current process to be used.
-    int currTicks = ticks;
-    
-    for( struct proc *p = proc; p < &proc[NPROC]; p++ )
-    {
-        if ( p->state != RUNNABLE )
-            continue;
-        if ( currTicks - p->in_tick >= TOOMUCH(p->queue) && p->queue < 4 )
-            p->queue++;
-        else if ( currTicks - p->in_tick >= MAXWAIT(p->queue) && p->queue > 0 )
-            p->queue--;
-    }
-
     for ( struct proc *p = proc; p < &proc[NPROC]; p++ )
-    {   
-        if ( p->state != RUNNABLE )
-            continue;
+    {  
+        acquire(&p->lock);
 
-        if ( p->queue <= currProc->queue )
+        if ( p->state == RUNNABLE && currProc == 0 )
+        {
+            // printf("found one,p :  %d\n", p->pid);
+            currProc = p;
+        }
+        else if ( p->state == RUNNABLE && p->queue <= currProc->queue)
         {
             // The processes are in the same q
             // Now, we need to check which process is older
-            if ( p->in_tick > currProc->in_tick )
+            if ( p->in_tick < currProc->in_tick )
             {
+                // printf("p : in_tick : %d\n", p->in_tick);
                 // The process p is older than currProc
                 // therefore should be executed now.
+                release(&currProc->lock);
                 currProc = p;
-            }
-        }
+            } 
+            else 
+                release(&p->lock);
+        } 
+        else 
+            release(&p->lock);
     }
     
     // At this point, currProc stores the 
     // process that needs to be run.
-
-    if ( currProc->state == RUNNABLE )
-    {
-        acquire(&currProc->lock);
-        currProc->state = RUNNING;
-        c->proc = currProc;
-        swtch(&c->context, &currProc->context);
-        c->proc = 0;
+    
+    if(currProc != 0) {
+        if ( currProc->state == RUNNABLE )
+        {
+            // printf("Reached Here.\n");
+            currProc->state = RUNNING;
+            c->proc = currProc;
+            // printf("guchu guchu\n");
+            swtch(&c->context, &currProc->context);
+            c->proc = 0;
+        }
         release(&currProc->lock);
     }
 
@@ -853,7 +862,6 @@ sleep(void *chan, struct spinlock *lk)
   // Go to sleep.
   p->chan = chan;
   p->state = SLEEPING;
-
   sched();
 
   // Tidy up.
@@ -876,6 +884,11 @@ wakeup(void *chan)
       acquire(&p->lock);
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
+#ifdef MLFQ
+        p->in_tick = ticks;
+        p->numTicks = 0;
+        p->queue = 0;
+#endif
       }
       release(&p->lock);
     }
@@ -897,6 +910,11 @@ kill(int pid)
       if(p->state == SLEEPING){
         // Wake process from sleep().
         p->state = RUNNABLE;
+#ifdef MLFQ
+        p->in_tick = ticks;
+        p->queue = 0;
+        p->numTicks = 0;
+#endif
       }
       release(&p->lock);
       return 0;

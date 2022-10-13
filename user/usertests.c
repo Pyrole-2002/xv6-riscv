@@ -791,7 +791,7 @@ void
 killstatus(char *s)
 {
   int xst;
-  
+  exit(0); 
   for(int i = 0; i < 100; i++){
     int pid1 = fork();
     if(pid1 < 0){
