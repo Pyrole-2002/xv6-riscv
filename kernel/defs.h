@@ -1,6 +1,10 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#include "types.h"
+#include "riscv.h"
+/* #include "user/user.h" */
+
 struct buf;
 struct context;
 struct file;
@@ -104,11 +108,14 @@ void            sched(void);
 void            sleep(void*, struct spinlock*);
 void            userinit(void);
 int             wait(uint64);
+int             waitx(uint64 addr,int* rtime, int* wtime);
 void            wakeup(void*);
 void            yield(void);
 int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
 int             either_copyin(void *dst, int user_src, uint64 src, uint64 len);
 void            procdump(void);
+int             set_priority(int, int);
+void            update_time(void);
 
 // swtch.S
 void            swtch(struct context*, struct context*);

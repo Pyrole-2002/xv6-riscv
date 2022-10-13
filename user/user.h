@@ -9,6 +9,7 @@ struct stat;
 int fork(void);
 int exit(int) __attribute__((noreturn));
 int wait(int*);
+int waitx(int*, int*, int*);
 int pipe(int*);
 int write(int, const void*, int);
 int read(int, void*, int);
@@ -30,6 +31,7 @@ int uptime(void);
 int trace(int);
 int sigalarm(int, const void(*));
 int sigreturn(void);
+int set_priority(int, int);
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

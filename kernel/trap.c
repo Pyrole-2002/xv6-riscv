@@ -113,6 +113,12 @@ usertrap(void)
 #ifdef FCSF
         // ok
 #endif
+
+
+
+#ifdef PBS
+        // ok
+#endif
     }
     
     usertrapret();
@@ -205,6 +211,12 @@ kerneltrap()
 #ifdef FCSF
         // ok
 #endif
+
+
+
+#ifdef PBS
+        // ok
+#endif
     }
 
   // the yield() may have caused some traps to occur,
@@ -216,10 +228,11 @@ kerneltrap()
 void
 clockintr()
 {
-  acquire(&tickslock);
-  ticks++;
-  wakeup(&ticks);
-  release(&tickslock);
+    acquire(&tickslock);
+    ticks++;
+    update_time();
+    wakeup(&ticks);
+    release(&tickslock);
 }
 
 // check if it's an external interrupt or software interrupt,
