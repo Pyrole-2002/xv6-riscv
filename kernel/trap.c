@@ -114,8 +114,8 @@ usertrap(void)
 
                     if ( newMemory == 0 )
                     {
-                        p->killed = 1;
-                        goto loopend;
+                        setkilled(p);
+                        exit(-1);
                     }
                     memmove( newMemory, (void*)physicalAddress, PGSIZE);
 
@@ -143,8 +143,6 @@ usertrap(void)
         printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
         setkilled(p);
     }
-
-loopend:
 
     if(killed(p))
     {
