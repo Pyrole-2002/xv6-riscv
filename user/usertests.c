@@ -3017,7 +3017,8 @@ countfree()
       // report back one more page.
       if(write(fds[1], "x", 1) != 1){
         printf("write() failed in countfree()\n");
-        exit(1);
+        return 1;
+        // exit(1);
       }
     }
 

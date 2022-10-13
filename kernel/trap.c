@@ -70,6 +70,69 @@ usertrap(void)
 
         syscall();
     }
+    else if ( r_scause() == 15 || r_scause() == 13 )
+    {
+        // Page Fault detected.
+        // If the COW flag is raised, then the fault should be handled.
+        // uint64 pageStart = PGROUNDDOWN( r_stval() ); 
+        uint64 pageStart = r_stval();
+
+        if ( pageStart >= MAXVA || ((uint64)pageStart>=PGROUNDDOWN(p->trapframe->sp)-PGSIZE&&(uint64)pageStart<=PGROUNDDOWN(p->trapframe->sp)) || pageStart <= 0 )
+        {
+            setkilled(p);
+        }
+        else
+        {
+            pte_t *pageTableEntry;
+            pageTableEntry = walk( p->pagetable, pageStart, 0 );
+            // No allocation is needed.
+
+            if ( pageTableEntry == 0 )
+            {
+                // printf("Unavailable Address Refferenced.\n");
+                printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
+                printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
+                setkilled(p);
+                // Kill the process, since
+                // this should not have happened 
+                // in the COW-fork scheme.
+                // usertrapret();
+            }
+            else if ( PTE_COW & *pageTableEntry )
+            {
+                char *physicalAddress = (char *)PTE2PA(*pageTableEntry);
+                uint64 flags = PTE_FLAGS(*pageTableEntry);
+
+                if ( (PTE_V & *pageTableEntry) && ( PTE_U & *pageTableEntry) && ( PTE_COW & *pageTableEntry) )
+                {
+                    // This is where the code should end up in case of cow-fork.
+
+                    flags |= PTE_W;
+                    flags &= (~PTE_COW);
+
+                    char *newMemory = kalloc();
+
+                    if ( newMemory == 0 )
+                    {
+                        setkilled(p);
+                        exit(-1);
+                    }
+                    memmove( newMemory, (void*)physicalAddress, PGSIZE);
+
+                    *pageTableEntry = PA2PTE(newMemory) | flags ;
+                    // Instead of unmapping and remapping, the flag is directly modified.
+
+                    kfree((void*)physicalAddress);
+                }
+            }
+            else
+            {
+                printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
+                printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
+                setkilled(p);
+            }
+        }
+    }
     else if((which_dev = devintr()) != 0)
     {
         // ok
@@ -77,7 +140,7 @@ usertrap(void)
     else
     {
         printf("usertrap(): unexpected scause %p pid=%d\n", r_scause(), p->pid);
-        printf("            sepc=%p stval=%p\n", r_sepc(), r_stval());
+        printf("             sepc=%p stval=%p\n", r_sepc(), r_stval());
         setkilled(p);
     }
 
@@ -85,8 +148,6 @@ usertrap(void)
     {
         exit(-1);
     }
-
-
 
     // give up the CPU if this is a timer interrupt.
     if(which_dev == 2)
