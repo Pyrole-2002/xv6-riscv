@@ -819,6 +819,7 @@ killstatus(char *s)
 void
 preempt(char *s)
 {
+  /* exit(0);    // TODO: DEBUG */
   int pid1, pid2, pid3;
   int pfds[2];
 
