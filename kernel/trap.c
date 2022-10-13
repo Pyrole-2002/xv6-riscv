@@ -115,7 +115,7 @@ usertrap(void)
                     if ( newMemory == 0 )
                     {
                         p->killed = 1;
-                        goto loopend;
+                        exit(-1);
                     }
                     memmove( newMemory, (void*)physicalAddress, PGSIZE);
 
@@ -144,8 +144,6 @@ usertrap(void)
         setkilled(p);
     }
 
-loopend:
-
     if(killed(p))
     {
         exit(-1);
@@ -172,11 +170,9 @@ loopend:
 #endif
 
 
-
 #ifdef FCSF
         // ok
 #endif
-
 
 
 #ifdef PBS
