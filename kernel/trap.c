@@ -172,7 +172,7 @@ usertrap(void)
 #endif
 
 #ifdef MLFQ
-        if ( p->numTicks == ( 1 << ( p->queue + 1 ) ) )
+        if ( p->numTicks == ( 1 << ( p->queue ) ) )
         {
             p->numTicks = 0;
             yield();
@@ -318,9 +318,15 @@ clockintr()
             continue;
         }
         if (  ticks - p->in_tick >= ( 1 << p->queue ) && p->queue < 4 )
+        {
+            p->last_tick = ticks;
             p->queue++;
-        else if ( ticks - p->in_tick >= 30 && p->queue > 0 )
+        }
+        else if ( ticks - p->last_tick >= 30 && p->queue > 0 )
+        {
+            p->last_tick = ticks;
             p->queue--;
+        }
         release(&p->lock);
     }
 

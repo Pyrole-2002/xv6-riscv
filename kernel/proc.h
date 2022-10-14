@@ -148,7 +148,7 @@ struct proc
 #ifdef MLFQ
 #define TOOMUCH(x) ( ( x + 1 ) )
 #define MAXWAIT(x) ( 30 )
-    
+    int last_tick;    
     int queue;
     int numTicks; 
 #endif

@@ -185,6 +185,7 @@ found:
 #ifdef MLFQ
     p->queue = 0;
     p->numTicks = 0;
+    p->last_tick = ticks;
 #endif
     return p;
 }
@@ -231,8 +232,6 @@ freeproc(struct proc *p)
     p->end_tick = 0;
     p->priority = 60;
 
-
-
 #ifdef PBS
     p->num_sched = 0;
     p->running = 0;
@@ -242,6 +241,7 @@ freeproc(struct proc *p)
 #ifdef MLFQ
     p->queue = 0;
     p->numTicks = 0;
+    p->last_tick = 0;
 #endif
 
 }
@@ -330,6 +330,7 @@ userinit(void)
 
 #ifdef MLFQ
   p->queue = 0;
+  p->last_tick = ticks;
   p->numTicks = 0;
 #endif
   release(&p->lock);
@@ -402,6 +403,11 @@ fork(void)
 
   acquire(&np->lock);
   np->state = RUNNABLE;
+#ifdef MLFQ
+  np->queue = 0;
+  np->numTicks = 0;
+  np->last_tick = ticks;
+#endif
   release(&np->lock);
 
   return pid;
@@ -741,16 +747,14 @@ scheduler(void)
 
         if ( p->state == RUNNABLE && currProc == 0 )
         {
-            // printf("found one,p :  %d\n", p->pid);
             currProc = p;
         }
         else if ( p->state == RUNNABLE && p->queue <= currProc->queue)
         {
-            // The processes are in the same q
+            // The processes are in the same queue
             // Now, we need to check which process is older
             if ( p->in_tick < currProc->in_tick )
             {
-                // printf("p : in_tick : %d\n", p->in_tick);
                 // The process p is older than currProc
                 // therefore should be executed now.
                 release(&currProc->lock);
@@ -769,6 +773,7 @@ scheduler(void)
     if(currProc != 0) {
         if ( currProc->state == RUNNABLE )
         {
+            currProc->last_tick = ticks;
             // printf("Reached Here.\n");
             currProc->state = RUNNING;
             c->proc = currProc;
@@ -856,6 +861,8 @@ sleep(void *chan, struct spinlock *lk)
   // (wakeup locks p->lock),
   // so it's okay to release lk.
 
+  // if ( myproc()->pid > 2 )
+  //   printf("Reached Sleep.\n");
   acquire(&p->lock);  //DOC: sleeplock1
   release(lk);
 
@@ -863,7 +870,8 @@ sleep(void *chan, struct spinlock *lk)
   p->chan = chan;
   p->state = SLEEPING;
   sched();
-
+  // if ( myproc()->pid > 2 )
+  //   printf("Reached Sleep.\n");
   // Tidy up.
   p->chan = 0;
 
@@ -886,8 +894,8 @@ wakeup(void *chan)
         p->state = RUNNABLE;
 #ifdef MLFQ
         p->in_tick = ticks;
+        p->last_tick = ticks;
         p->numTicks = 0;
-        p->queue = 0;
 #endif
       }
       release(&p->lock);
@@ -912,7 +920,7 @@ kill(int pid)
         p->state = RUNNABLE;
 #ifdef MLFQ
         p->in_tick = ticks;
-        p->queue = 0;
+        p->last_tick = ticks;
         p->numTicks = 0;
 #endif
       }

@@ -791,7 +791,7 @@ void
 killstatus(char *s)
 {
   int xst;
-  exit(0); 
+  
   for(int i = 0; i < 100; i++){
     int pid1 = fork();
     if(pid1 < 0){
@@ -804,9 +804,13 @@ killstatus(char *s)
       }
       exit(0);
     }
+    // printf("starting to sleep.\n");
     sleep(1);
+    printf("Yahan\n");
     kill(pid1);
+    printf("Idhr\n");
     wait(&xst);
+    printf("Here\n");
     if(xst != -1) {
        printf("%s: status should be -1\n", s);
        exit(1);
