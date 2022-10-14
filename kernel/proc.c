@@ -6,6 +6,14 @@
 #include "proc.h"
 #include "defs.h"
 
+
+
+#ifdef LBS
+int total_tickets = 0;
+#endif
+
+
+
 struct cpu cpus[NCPU];
 
 struct proc proc[NPROC];
@@ -134,6 +142,7 @@ found:
     p->pid = allocpid();
     p->state = USED;
     p->in_tick = ticks;
+    p->run_time = 0;
 
     // Allocate a trapframe page.
     if((p->trapframe = (struct trapframe *)kalloc()) == 0)
@@ -175,6 +184,10 @@ found:
     //Initially, there is no interrupt function.
     p->interruptFunction = 0;
 
+#ifdef LBS
+    p->tickets = 1;                 // Default tickets
+#endif
+
 
 #ifdef PBS
     p->priority = 60;               // Default priority
@@ -207,7 +220,8 @@ freeproc(struct proc *p)
     }
     if(p->Sigtrapframe)
     {
-        kfree((void*)p->Sigtrapframe);
+        kfree((void*)p->Sigtrapframe); 	Scheduler 	rtime 	wtime
+RR 	Round Robin 	20 	
     }
     p->trapframe = 0;
     p->Sigtrapframe = 0;
@@ -236,6 +250,13 @@ freeproc(struct proc *p)
     p->run_time = 0;
     p->end_tick = 0;
     p->priority = 0;
+
+#ifdef LBS
+    /* total_tickets -= p->tickets; */
+    p->tickets = 0;
+#endif
+
+
 
 #ifdef PBS
     p->num_sched = 0;
@@ -332,6 +353,10 @@ userinit(void)
   p->state = RUNNABLE;
   p->in_tick = ticks;
   p->mask = 0;
+  
+  #ifdef LBS
+  total_tickets += p->tickets;
+#endif
 
 #ifdef MLFQ
   p->in_tick = ticks;
@@ -339,6 +364,7 @@ userinit(void)
   p->last_tick = ticks;
   p->numTicks = 0;
 #endif
+
   release(&p->lock);
 }
 
@@ -367,23 +393,25 @@ growproc(int n)
 int
 fork(void)
 {
-  int i, pid;
-  struct proc *np;
-  struct proc *p = myproc();
+    int i, pid;
+    struct proc *np;
+    struct proc *p = myproc();
 
-  // Allocate process.
-  if((np = allocproc()) == 0){
-    // printf("Alloc ki wjh se\n");
-      return -1;
-  }
+    // Allocate process.
+    if((np = allocproc()) == 0)
+    {
+        return -1;
+    }
 
-  // Copy user memory from parent to child.
-  if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
-    freeproc(np);
-    release(&np->lock);
-    return -1;
-  }
-  np->sz = p->sz;
+
+    // Copy user memory from parent to child.
+    if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0)
+    {
+        freeproc(np);
+        release(&np->lock);
+        return -1;
+    }
+    np->sz = p->sz;
 
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
@@ -392,37 +420,52 @@ fork(void)
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
 
-  // increment reference counts on open file descriptors.
-  for(i = 0; i < NOFILE; i++)
-    if(p->ofile[i])
-      np->ofile[i] = filedup(p->ofile[i]);
-  np->cwd = idup(p->cwd);
+    //*(np->Sigtrapframe) = *(p->Sigtrapframe);
 
-  safestrcpy(np->name, p->name, sizeof(p->name));
+    // Cause fork to return 0 in the child.
+    np->trapframe->a0 = 0;
 
-  pid = np->pid;
+    // increment reference counts on open file descriptors.
+    for(i = 0; i < NOFILE; i++)
+    {
+        if(p->ofile[i])
+        {
+            np->ofile[i] = filedup(p->ofile[i]);
+        }
+    }
+    np->cwd = idup(p->cwd);
 
-  release(&np->lock);
+    safestrcpy(np->name, p->name, sizeof(p->name));
 
-  acquire(&wait_lock);
-  np->parent = p;
-  release(&wait_lock);
+    pid = np->pid;
+    
+    release(&np->lock);
 
-  acquire(&np->lock);
-  np->state = RUNNABLE;
+    acquire(&wait_lock);
+    np->parent = p;
+    release(&wait_lock);
+
+    acquire(&np->lock);
+    np->state = RUNNABLE;
 #ifdef MLFQ
-  np->queue = 0;
-  np->numTicks = 0;
-  np->last_tick = ticks;
-  np->in_tick = ticks;
+    np->queue = 0;
+    np->numTicks = 0;
+    np->last_tick = ticks;
+    np->in_tick = ticks;
 #ifdef YES
-            printf("[%d] started process %d\n", ticks, np->pid);
+    printf("[%d] started process %d\n", ticks, np->pid);
 #endif
 #endif
-  release(&np->lock);
 
+    np->priority = p->priority;
+#ifdef LBS
+    np->tickets = p->tickets;
+    total_tickets += np->tickets;
+#endif
 
-  return pid;
+    release(&np->lock);
+
+    return pid;
 }
 
 // Pass p's abandoned children to init.
@@ -615,6 +658,43 @@ nice_priority(struct proc* p)
 }
 #endif
 
+
+
+int
+do_rand(unsigned long *ctx)
+{
+/*
+ * Compute x = (7^5 * x) mod (2^31 - 1)
+ * without overflowing 31 bits:
+ *      (2^31 - 1) = 127773 * (7^5) + 2836
+ * From "Random number generators: good ones are hard to find",
+ * Park and Miller, Communications of the ACM, vol. 31, no. 10,
+ * October 1988, p. 1195.
+ */
+    long hi, lo, x;
+
+    /* Transform to [1, 0x7ffffffe] range. */
+    x = (*ctx % 0x7ffffffe) + 1;
+    hi = x / 127773;
+    lo = x % 127773;
+    x = 16807 * lo - 2836 * hi;
+    if (x < 0)
+        x += 0x7fffffff;
+    /* Transform to [0, 0x7ffffffd] range. */
+    x--;
+    *ctx = x;
+    return (x);
+}
+
+unsigned long rand_next = 1;
+
+int
+rand(void)
+{
+    return (do_rand(&rand_next));
+}
+
+
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
 // Scheduler never returns.  It loops, doing:
@@ -691,6 +771,42 @@ scheduler(void)
             release(&to_run->lock);
         }
 #endif
+
+
+
+#ifdef LBS
+        if (total_tickets < 0)
+        {
+            panic("Negative Tickets");
+        }
+        struct proc* to_run = 0;
+        int x = rand() % total_tickets + 1;
+        int prefix = 0;
+        for (struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            acquire(&p->lock);
+            if (p->state == RUNNABLE)
+            {
+                if (x <= prefix + p->tickets)
+                {
+                    to_run = p;
+                    break;
+                }
+                prefix += p->tickets;
+            }
+            release(&p->lock);
+        }
+        if (to_run != 0)
+        {
+            total_tickets -= to_run->tickets;
+            to_run->state = RUNNING;
+            c->proc = to_run;
+            swtch(&c->context, &to_run->context);
+            c->proc = 0;
+            release(&to_run->lock);
+        }
+#endif
+
 
 
 #ifdef PBS
@@ -843,6 +959,10 @@ yield(void)
   acquire(&p->lock);
   p->state = RUNNABLE;
 
+#ifdef LBS
+  total_tickets += p->tickets;
+#endif
+
 #ifdef MLFQ
     if ( p->queue < 4 && p->numTicks >= (1 << p->queue ) )
     {
@@ -926,6 +1046,13 @@ wakeup(void *chan)
       acquire(&p->lock);
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
+
+#ifdef LBS
+        total_tickets += p->tickets;
+#endif
+
+
+
 #ifdef MLFQ
         p->last_tick = ticks;
         p->numTicks = 0;
@@ -951,6 +1078,9 @@ kill(int pid)
       if(p->state == SLEEPING){
         // Wake process from sleep().
         p->state = RUNNABLE;
+#ifdef LBS
+        total_tickets += p->tickets;
+#endif
       }
       release(&p->lock);
       return 0;
@@ -1101,12 +1231,29 @@ update_time()
             p->running++;
 #endif
         }
-#ifdef PBS
         else if (p->state == SLEEPING)
         {
+#ifdef PBS
             p->sleeping++;
-        }
 #endif
+        }
         release(&p->lock);
     }
+}
+
+// Returns old ticket value
+int
+settickets(int new_ticket)
+{
+    int old = -1;
+#ifdef LBS
+    struct proc* p = myproc();
+    old = p->tickets;
+    p->tickets = new_ticket;
+    if (total_tickets < 0)
+    {
+        panic("Negative Tickets");
+    }
+#endif
+    return old;
 }

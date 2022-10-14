@@ -13,5 +13,5 @@ main( int argc, char *argv[] )
    trace(Mask);
    exec( argv[2], &argv[2]);
 
-   return 0;
+   exit(0);
 }

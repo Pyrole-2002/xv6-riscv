@@ -24,10 +24,11 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 
-#define SYS_trace  22
-#define SYS_sigalarm 23
-#define SYS_sigreturn 24
-#define SYS_waitx  25
-#define SYS_set_priority  26
+#define SYS_trace           22
+#define SYS_sigalarm        23
+#define SYS_sigreturn       24
+#define SYS_waitx           25
+#define SYS_set_priority    26
+#define SYS_settickets      27
 
 #endif

@@ -126,13 +126,19 @@ struct proc
                                     
     // Scheduler Modifications
     int in_tick;                    // Tick value when process is added
-    int run_time;                   // How long the process will runs in total
+    int run_time;                   // How long the process will run in total
     int end_tick;                   // Tick value when process is exited
 
 
 
 #ifdef FCFS
     // ok
+#endif
+
+
+
+#ifdef LBS
+    int tickets;                    // Tickets owned by process
 #endif
 
 

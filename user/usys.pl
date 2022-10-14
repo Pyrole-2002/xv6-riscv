@@ -41,3 +41,4 @@ entry("trace");
 entry("sigalarm");
 entry("sigreturn");
 entry("set_priority");
+entry("settickets");

@@ -820,7 +820,13 @@ killstatus(char *s)
 void
 preempt(char *s)
 {
-  // exit(0);
+#ifdef FCFS
+    exit(0);
+#endif
+#ifdef PBS
+    exit(0);
+#endif
+
   int pid1, pid2, pid3;
   int pfds[2];
 

@@ -7,7 +7,41 @@
 
 int main()
 {
-    int n, pid;
+    int pid;
+#ifdef LBS
+    pid = fork();
+    if (pid < 0)
+    {
+        exit(0);
+    }
+    else if (pid == 0)
+    {
+        // Child
+        for (int i = 0; i < 1000 * 500000; i++)
+        {
+            if (i % 1000000 == 0)
+            {
+                printf(".");
+            }
+        }
+    }
+    else
+    {
+        // Parent
+        for (int i = 0; i < 1000 * 500000; i++)
+        {
+            if (i % 1000000 == 0)
+            {
+                printf("#");
+            }
+        }
+    }
+    exit(0);
+#endif
+
+
+
+    int n;
     int wtime, rtime;
     int twtime=0, trtime=0;
     for(n = 0; n < NFORK; n++)
