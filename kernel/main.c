@@ -5,6 +5,7 @@
 #include "defs.h"
 
 volatile static int started = 0;
+extern int total_tickets;
 
 // start() jumps here in supervisor mode on all CPUs.
 void

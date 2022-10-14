@@ -724,7 +724,6 @@ scheduler(void)
             to_run->state = RUNNING;
             c->proc = to_run;
             swtch(&c->context, &to_run->context);
-            /* printf("1\n"); // DEBUG */
             c->proc = 0;
             release(&to_run->lock);
         }
@@ -743,12 +742,15 @@ scheduler(void)
         for (struct proc* p = proc; p < &proc[NPROC]; p++)
         {
             acquire(&p->lock);
-            if (x <= prefix + p->tickets)
+            if (p->state == RUNNABLE)
             {
-                to_run = p;
-                break;
+                if (x <= prefix + p->tickets)
+                {
+                    to_run = p;
+                    break;
+                }
+                prefix += p->tickets;
             }
-            prefix += p->tickets;
             release(&p->lock);
         }
         if (to_run != 0)
@@ -1104,12 +1106,12 @@ update_time()
             p->running++;
 #endif
         }
-#ifdef PBS
         else if (p->state == SLEEPING)
         {
+#ifdef PBS
             p->sleeping++;
-        }
 #endif
+        }
         release(&p->lock);
     }
 }
@@ -1123,7 +1125,6 @@ settickets(int new_ticket)
     struct proc* p = myproc();
     old = p->tickets;
     p->tickets = new_ticket;
-    total_tickets -= old - new_ticket;
     if (total_tickets < 0)
     {
         panic("Negative Tickets");

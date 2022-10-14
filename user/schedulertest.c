@@ -19,15 +19,26 @@ int main()
     else if (pid == 0)
     {
         // Child
-        settickets(100000);
-        printf(".");
+        for (int i = 0; i < 1000 * 500000; i++)
+        {
+            if (i % 1000000 == 0)
+            {
+                printf(".");
+            }
+        }
     }
     else
     {
         // Parent
-        settickets(3);
-        printf("#");
+        for (int i = 0; i < 1000 * 500000; i++)
+        {
+            if (i % 1000000 == 0)
+            {
+                printf("#");
+            }
+        }
     }
+    exit(0);
 #endif
 
 
