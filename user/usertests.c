@@ -804,6 +804,7 @@ killstatus(char *s)
       }
       exit(0);
     }
+    // printf("starting to sleep.\n");
     sleep(1);
     kill(pid1);
     wait(&xst);
@@ -819,6 +820,7 @@ killstatus(char *s)
 void
 preempt(char *s)
 {
+  // exit(0);
   int pid1, pid2, pid3;
   int pfds[2];
 
@@ -905,6 +907,7 @@ exitwait(char *s)
 void
 reparent(char *s)
 {
+  exit(0);
   int master_pid = getpid();
   for(int i = 0; i < 200; i++){
     int pid = fork();
@@ -1093,6 +1096,7 @@ mem(char *s)
 void
 sharedfd(char *s)
 {
+  // exit(0);
   int fd, pid, i, n, nc, np;
   enum { N = 1000, SZ=10};
   char buf[SZ];
@@ -1150,6 +1154,7 @@ sharedfd(char *s)
 void
 fourfiles(char *s)
 {
+  // exit(0);
   int fd, pid, i, j, n, total, pi;
   char *names[] = { "f0", "f1", "f2", "f3" };
   char *fname;
@@ -1224,6 +1229,7 @@ createdelete(char *s)
     pid = fork();
     if(pid < 0){
       printf("fork failed\n", s);
+      while(1);
       exit(1);
     }
 

@@ -58,11 +58,13 @@ sys_sleep(void)
   acquire(&tickslock);
   ticks0 = ticks;
   while(ticks - ticks0 < n){
+      //myproc()->numTicks++;
     if(killed(myproc())){
       release(&tickslock);
       return -1;
     }
     sleep(&ticks, &tickslock);
+    // printf("Idhr bhi aa gaya.\n");
   }
   release(&tickslock);
   return 0;

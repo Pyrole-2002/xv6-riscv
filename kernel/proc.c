@@ -127,6 +127,7 @@ allocproc(void)
             release(&p->lock);
         }
     }
+    // printf("Please Yahan nhi.\n");
     return 0;
 
 found:
@@ -175,12 +176,21 @@ found:
     p->interruptFunction = 0;
 
 
-
 #ifdef PBS
     p->priority = 60;               // Default priority
     p->num_sched = 0;
     p->running = 0;
     p->sleeping = 0;
+#endif
+
+
+#ifdef MLFQ
+
+    
+    p->queue = 0;
+    p->numTicks = 0;
+    p->in_tick = 0;
+    p->last_tick = 0;
 #endif
     return p;
 }
@@ -225,15 +235,20 @@ freeproc(struct proc *p)
     p->in_tick = 0;
     p->run_time = 0;
     p->end_tick = 0;
-    p->priority = 60;
-
-
+    p->priority = 0;
 
 #ifdef PBS
     p->num_sched = 0;
     p->running = 0;
     p->sleeping = 0;
 #endif
+
+#ifdef MLFQ
+    p->queue = 0;
+    p->numTicks = 0;
+    p->last_tick = 0;
+#endif
+
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -315,7 +330,15 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
+  p->in_tick = ticks;
+  p->mask = 0;
 
+#ifdef MLFQ
+  p->in_tick = ticks;
+  p->queue = 0;
+  p->last_tick = ticks;
+  p->numTicks = 0;
+#endif
   release(&p->lock);
 }
 
@@ -350,7 +373,8 @@ fork(void)
 
   // Allocate process.
   if((np = allocproc()) == 0){
-    return -1;
+    // printf("Alloc ki wjh se\n");
+      return -1;
   }
 
   // Copy user memory from parent to child.
@@ -364,8 +388,7 @@ fork(void)
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
   
-  //*(np->Sigtrapframe) = *(p->Sigtrapframe);
-  
+  np->mask = p->mask; 
   // Cause fork to return 0 in the child.
   np->trapframe->a0 = 0;
 
@@ -387,7 +410,17 @@ fork(void)
 
   acquire(&np->lock);
   np->state = RUNNABLE;
+#ifdef MLFQ
+  np->queue = 0;
+  np->numTicks = 0;
+  np->last_tick = ticks;
+  np->in_tick = ticks;
+#ifdef YES
+            printf("[%d] started process %d\n", ticks, np->pid);
+#endif
+#endif
   release(&np->lock);
+
 
   return pid;
 }
@@ -432,6 +465,9 @@ exit(int status)
   end_op();
   p->cwd = 0;
 
+#ifdef YES
+            printf("[%d] exited process %d\n", ticks, p->pid);
+#endif
   acquire(&wait_lock);
 
   // Give any children to init.
@@ -565,7 +601,7 @@ int Max(int a, int b)
 }
 
 #ifdef PBS
-    int
+int 
 nice_priority(struct proc* p)
 {
     // default
@@ -601,7 +637,6 @@ scheduler(void)
         intr_on();
 
 
-
 #ifdef RR
         for(struct proc* p = proc; p < &proc[NPROC]; p++)
         {
@@ -622,7 +657,6 @@ scheduler(void)
             release(&p->lock);
         }
 #endif
-
 
 
 #ifdef FCFS
@@ -657,7 +691,6 @@ scheduler(void)
             release(&to_run->lock);
         }
 #endif
-
 
 
 #ifdef PBS
@@ -714,6 +747,63 @@ scheduler(void)
             c->proc = 0;
             release(&to_run->lock);
         }
+
+#endif
+
+#ifdef MLFQ
+
+    struct proc *currProc = 0; 
+    // First find the current process to be used.
+    for ( struct proc *p = proc; p < &proc[NPROC]; p++ )
+    {  
+        acquire(&p->lock);
+
+        if ( p->state == RUNNABLE && currProc == 0 )
+        {
+            currProc = p;
+        }
+        else if ( p->state == RUNNABLE && p->queue <= currProc->queue)
+        {
+            // The processes are in the same queue
+            // Now, we need to check which process is older
+            if ( p->queue < currProc->queue )
+            {
+                release(&currProc->lock);
+                currProc = p;
+            }
+            else if ( p->in_tick < currProc->in_tick )
+            {
+                // The process p is older than currProc
+                // therefore should be executed now.
+                release(&currProc->lock);
+                currProc = p;
+            } 
+            else 
+                release(&p->lock);
+        } 
+        else 
+            release(&p->lock);
+    }
+    
+    // At this point, currProc stores the 
+    // process that needs to be run.
+    
+    if(currProc != 0) 
+    {
+        if ( currProc->state == RUNNABLE )
+        {
+            currProc->last_tick = ticks;
+            currProc->numTicks = 0;
+            // printf("Reached Here.\n");
+            currProc->state = RUNNING;
+            c->proc = currProc;
+            // printf("guchu guchu\n");
+            swtch(&c->context, &currProc->context);
+            c->proc = 0;
+        }
+        release(&currProc->lock);
+    }
+
 #endif
     }
 }
@@ -752,6 +842,20 @@ yield(void)
   struct proc *p = myproc();
   acquire(&p->lock);
   p->state = RUNNABLE;
+
+#ifdef MLFQ
+    if ( p->queue < 4 && p->numTicks >= (1 << p->queue ) )
+    {
+        p->queue++;
+#ifdef YES
+        printf("[%d] queue for %d changed from %d to %d\n", ticks, p->pid, p->queue - 1, p->queue);
+#endif
+
+    }
+    p->last_tick = ticks;
+    p->numTicks = 0;
+#endif
+
   sched();
   release(&p->lock);
 }
@@ -791,15 +895,17 @@ sleep(void *chan, struct spinlock *lk)
   // (wakeup locks p->lock),
   // so it's okay to release lk.
 
+  // if ( myproc()->pid > 2 )
+  //   printf("Reached Sleep.\n");
   acquire(&p->lock);  //DOC: sleeplock1
   release(lk);
 
   // Go to sleep.
   p->chan = chan;
   p->state = SLEEPING;
-
   sched();
-
+  // if ( myproc()->pid > 2 )
+  //   printf("Reached Sleep.\n");
   // Tidy up.
   p->chan = 0;
 
@@ -820,6 +926,10 @@ wakeup(void *chan)
       acquire(&p->lock);
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
+#ifdef MLFQ
+        p->last_tick = ticks;
+        p->numTicks = 0;
+#endif
       }
       release(&p->lock);
     }
