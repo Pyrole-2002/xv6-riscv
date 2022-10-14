@@ -9,7 +9,30 @@
 
 int main()
 {
-    int n, pid;
+    int pid;
+#ifdef LBS
+    pid = fork();
+    if (pid < 0)
+    {
+        exit(0);
+    }
+    else if (pid == 0)
+    {
+        // Child
+        settickets(100000);
+        printf(".");
+    }
+    else
+    {
+        // Parent
+        settickets(3);
+        printf("#");
+    }
+#endif
+
+
+
+    int n;
     int wtime, rtime;
     int twtime=0, trtime=0;
     for(n = 0; n < NFORK; n++)

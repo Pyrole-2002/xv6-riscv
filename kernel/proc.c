@@ -6,6 +6,14 @@
 #include "proc.h"
 #include "defs.h"
 
+
+
+#ifdef LBS
+int total_tickets = 0;
+#endif
+
+
+
 struct cpu cpus[NCPU];
 
 struct proc proc[NPROC];
@@ -133,6 +141,7 @@ found:
     p->pid = allocpid();
     p->state = USED;
     p->in_tick = ticks;
+    /* p->run_time = 0; */
 
     // Allocate a trapframe page.
     if((p->trapframe = (struct trapframe *)kalloc()) == 0)
@@ -173,6 +182,11 @@ found:
     p->tickCount = 0;
     //Initially, there is no interrupt function.
     p->interruptFunction = 0;
+
+#ifdef LBS
+    p->tickets = 1;                 // Default tickets
+    total_tickets++;
+#endif
 
 
 
@@ -226,6 +240,13 @@ freeproc(struct proc *p)
     p->run_time = 0;
     p->end_tick = 0;
     p->priority = 60;
+
+
+
+#ifdef LBS
+    /* total_tickets -= p->tickets; */
+    p->tickets = 0;
+#endif
 
 
 
@@ -344,52 +365,62 @@ growproc(int n)
 int
 fork(void)
 {
-  int i, pid;
-  struct proc *np;
-  struct proc *p = myproc();
+    int i, pid;
+    struct proc *np;
+    struct proc *p = myproc();
 
-  // Allocate process.
-  if((np = allocproc()) == 0){
-    return -1;
-  }
+    // Allocate process.
+    if((np = allocproc()) == 0)
+    {
+        return -1;
+    }
 
-  // Copy user memory from parent to child.
-  if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0){
-    freeproc(np);
+    // Copy user memory from parent to child.
+    if(uvmcopy(p->pagetable, np->pagetable, p->sz) < 0)
+    {
+        freeproc(np);
+        release(&np->lock);
+        return -1;
+    }
+    np->sz = p->sz;
+
+    // copy saved user registers.
+    *(np->trapframe) = *(p->trapframe);
+
+    //*(np->Sigtrapframe) = *(p->Sigtrapframe);
+
+    // Cause fork to return 0 in the child.
+    np->trapframe->a0 = 0;
+
+    // increment reference counts on open file descriptors.
+    for(i = 0; i < NOFILE; i++)
+    {
+        if(p->ofile[i])
+        {
+            np->ofile[i] = filedup(p->ofile[i]);
+        }
+    }
+    np->cwd = idup(p->cwd);
+
+    safestrcpy(np->name, p->name, sizeof(p->name));
+
+    pid = np->pid;
+
     release(&np->lock);
-    return -1;
-  }
-  np->sz = p->sz;
 
-  // copy saved user registers.
-  *(np->trapframe) = *(p->trapframe);
-  
-  //*(np->Sigtrapframe) = *(p->Sigtrapframe);
-  
-  // Cause fork to return 0 in the child.
-  np->trapframe->a0 = 0;
+    acquire(&wait_lock);
+    np->parent = p;
+    release(&wait_lock);
 
-  // increment reference counts on open file descriptors.
-  for(i = 0; i < NOFILE; i++)
-    if(p->ofile[i])
-      np->ofile[i] = filedup(p->ofile[i]);
-  np->cwd = idup(p->cwd);
+    acquire(&np->lock);
+    np->state = RUNNABLE;
+    np->priority = p->priority;
+#ifdef LBS
+    np->tickets = p->tickets;
+#endif
+    release(&np->lock);
 
-  safestrcpy(np->name, p->name, sizeof(p->name));
-
-  pid = np->pid;
-
-  release(&np->lock);
-
-  acquire(&wait_lock);
-  np->parent = p;
-  release(&wait_lock);
-
-  acquire(&np->lock);
-  np->state = RUNNABLE;
-  release(&np->lock);
-
-  return pid;
+    return pid;
 }
 
 // Pass p's abandoned children to init.
@@ -579,6 +610,43 @@ nice_priority(struct proc* p)
 }
 #endif
 
+
+
+int
+do_rand(unsigned long *ctx)
+{
+/*
+ * Compute x = (7^5 * x) mod (2^31 - 1)
+ * without overflowing 31 bits:
+ *      (2^31 - 1) = 127773 * (7^5) + 2836
+ * From "Random number generators: good ones are hard to find",
+ * Park and Miller, Communications of the ACM, vol. 31, no. 10,
+ * October 1988, p. 1195.
+ */
+    long hi, lo, x;
+
+    /* Transform to [1, 0x7ffffffe] range. */
+    x = (*ctx % 0x7ffffffe) + 1;
+    hi = x / 127773;
+    lo = x % 127773;
+    x = 16807 * lo - 2836 * hi;
+    if (x < 0)
+        x += 0x7fffffff;
+    /* Transform to [0, 0x7ffffffd] range. */
+    x--;
+    *ctx = x;
+    return (x);
+}
+
+unsigned long rand_next = 1;
+
+int
+rand(void)
+{
+    return (do_rand(&rand_next));
+}
+
+
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
 // Scheduler never returns.  It loops, doing:
@@ -650,6 +718,39 @@ scheduler(void)
         }
         if (to_run != 0)
         {
+            to_run->state = RUNNING;
+            c->proc = to_run;
+            swtch(&c->context, &to_run->context);
+            /* printf("1\n"); // DEBUG */
+            c->proc = 0;
+            release(&to_run->lock);
+        }
+#endif
+
+
+
+#ifdef LBS
+        if (total_tickets < 0)
+        {
+            panic("Negative Tickets");
+        }
+        struct proc* to_run = 0;
+        int x = rand() % total_tickets + 1;
+        int prefix = 0;
+        for (struct proc* p = proc; p < &proc[NPROC]; p++)
+        {
+            acquire(&p->lock);
+            if (x <= prefix + p->tickets)
+            {
+                to_run = p;
+                break;
+            }
+            prefix += p->tickets;
+            release(&p->lock);
+        }
+        if (to_run != 0)
+        {
+            total_tickets -= to_run->tickets;
             to_run->state = RUNNING;
             c->proc = to_run;
             swtch(&c->context, &to_run->context);
@@ -999,4 +1100,22 @@ update_time()
 #endif
         release(&p->lock);
     }
+}
+
+// Returns old ticket value
+int
+settickets(int new_ticket)
+{
+    int old = -1;
+#ifdef LBS
+    struct proc* p = myproc();
+    old = p->tickets;
+    p->tickets = new_ticket;
+    total_tickets -= old - new_ticket;
+    if (total_tickets < 0)
+    {
+        panic("Negative Tickets");
+    }
+#endif
+    return old;
 }

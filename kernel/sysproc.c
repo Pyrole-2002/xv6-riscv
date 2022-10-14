@@ -184,3 +184,11 @@ sys_set_priority(void)
     argint(1, &pid);
     return set_priority(new_priority, pid);
 }
+
+uint64
+sys_settickets(void)
+{
+    int new_ticket;
+    argint(0, &new_ticket);
+    return settickets(new_ticket);
+}

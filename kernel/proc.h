@@ -137,6 +137,12 @@ struct proc
 
 
 
+#ifdef LBS
+    int tickets;                    // Tickets owned by process
+#endif
+
+
+
     int priority;                   // Priority of Process
 #ifdef PBS
     int num_sched;                  // Number of times process is scheduled

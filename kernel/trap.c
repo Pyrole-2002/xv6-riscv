@@ -171,6 +171,12 @@ usertrap(void)
 
 
 
+#ifdef LBS
+        yield();
+#endif
+
+
+
 #ifdef FCSF
         // ok
 #endif
@@ -271,6 +277,12 @@ kerneltrap()
 
 #ifdef FCSF
         // ok
+#endif
+
+
+
+#ifdef LBS
+        yield();
 #endif
 
 
