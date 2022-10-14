@@ -347,11 +347,17 @@ clockintr()
         if (  ticks - p->in_tick >= ( 1 << p->queue ) && p->queue < 4 )
         {
             p->last_tick = ticks;
+#ifdef YES
+            printf("[%d] queue for %d changed from %d to %d\n", ticks, p->pid, p->queue, p->queue + 1);
+#endif
             p->queue++;
         }
         else if ( ticks - p->last_tick >= 30 && p->queue > 0 )
         {
             p->last_tick = ticks;
+#ifdef YES
+            printf("[%d] queue for %d changed from %d to %d\n", ticks, p->pid, p->queue, p->queue - 1);
+#endif
             p->queue--;
         }
         release(&p->lock);

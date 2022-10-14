@@ -98,6 +98,7 @@ ifeq ($(TRACE), YES)
 endif
 
 CFLAGS += $(SCHEDULER_MACRO)
+CFLAGS += $(TRACE_MACRO)
 # Example compile syntax: `make qemu SCHEDULER=FCFS`
 
 

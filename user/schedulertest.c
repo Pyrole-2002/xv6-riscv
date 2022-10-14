@@ -3,9 +3,7 @@
 #include "user/user.h"
 #include "kernel/fcntl.h"
 
-
-#define NFORK 10
-#define IO 5
+#define NFORK 5
 
 int main()
 {
@@ -21,9 +19,9 @@ int main()
         }
         if (pid == 0)
         {
-            for (volatile int i = 0; i < 1000000000; i++)
+            for (volatile int i = 0; i < 10000000000; i++)
             {} // CPU bound process 
-            printf("Process %d finished\n", n);
+            // printf("Process %d finished\n", n);
             exit(0);
         }
         else
