@@ -13,7 +13,7 @@ void freerange(void *pa_start, void *pa_end);
 
 extern char end[]; // first address after kernel.
                    // defined by kernel.ld.
-uint64 addressMap[ 32*1024 ] = {0};
+uint64 addressMap[ (PHYSTOP)/PGSIZE ] = {0};
 
 struct run
 {
@@ -35,8 +35,8 @@ struct spinlock reff;
 void
 kinit()
 {
-    for( int i = 0; i < 32*1024; i++ )
-        addressMap[i] += 1;
+    for( int i = 0; i < ((PHYSTOP)/(PGSIZE)); i++ )
+        addressMap[i] = 1;
 
     initlock(&kmem.lock, "kmem");
     freerange(end, (void*)PHYSTOP);
