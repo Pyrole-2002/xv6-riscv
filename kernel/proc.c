@@ -127,6 +127,7 @@ allocproc(void)
             release(&p->lock);
         }
     }
+    // printf("Please Yahan nhi.\n");
     return 0;
 
 found:
@@ -185,7 +186,8 @@ found:
 #ifdef MLFQ
     p->queue = 0;
     p->numTicks = 0;
-    p->last_tick = ticks;
+    p->in_tick = 0;
+    p->last_tick = 0;
 #endif
     return p;
 }
@@ -230,7 +232,7 @@ freeproc(struct proc *p)
     p->in_tick = 0;
     p->run_time = 0;
     p->end_tick = 0;
-    p->priority = 60;
+    p->priority = 0;
 
 #ifdef PBS
     p->num_sched = 0;
@@ -367,7 +369,8 @@ fork(void)
 
   // Allocate process.
   if((np = allocproc()) == 0){
-    return -1;
+    // printf("Alloc ki wjh se\n");
+      return -1;
   }
 
   // Copy user memory from parent to child.
@@ -407,6 +410,7 @@ fork(void)
   np->queue = 0;
   np->numTicks = 0;
   np->last_tick = ticks;
+  np->in_tick = ticks;
 #endif
   release(&np->lock);
 
@@ -465,10 +469,7 @@ exit(int status)
 
   p->xstate = status;
   p->state = ZOMBIE;
-#ifdef MLFQ
-  p->queue = 0;
-  p->numTicks = 0;
-#endif
+
   release(&wait_lock);
 
   // Jump into the scheduler, never to return.
@@ -753,7 +754,12 @@ scheduler(void)
         {
             // The processes are in the same queue
             // Now, we need to check which process is older
-            if ( p->in_tick < currProc->in_tick )
+            if ( p->queue < currProc->queue )
+            {
+                release(&currProc->lock);
+                currProc = p;
+            }
+            else if ( p->in_tick < currProc->in_tick )
             {
                 // The process p is older than currProc
                 // therefore should be executed now.
@@ -770,10 +776,12 @@ scheduler(void)
     // At this point, currProc stores the 
     // process that needs to be run.
     
-    if(currProc != 0) {
+    if(currProc != 0) 
+    {
         if ( currProc->state == RUNNABLE )
         {
             currProc->last_tick = ticks;
+            currProc->numTicks = 0;
             // printf("Reached Here.\n");
             currProc->state = RUNNING;
             c->proc = currProc;
@@ -822,6 +830,14 @@ yield(void)
   struct proc *p = myproc();
   acquire(&p->lock);
   p->state = RUNNABLE;
+
+#ifdef MLFQ
+    if ( p->queue < 4 && p->numTicks >= (1 << p->queue ) )
+        p->queue++;
+    p->last_tick = ticks;
+    p->numTicks = 0;
+#endif
+
   sched();
   release(&p->lock);
 }
@@ -893,7 +909,6 @@ wakeup(void *chan)
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
 #ifdef MLFQ
-        p->in_tick = ticks;
         p->last_tick = ticks;
         p->numTicks = 0;
 #endif
@@ -918,11 +933,6 @@ kill(int pid)
       if(p->state == SLEEPING){
         // Wake process from sleep().
         p->state = RUNNABLE;
-#ifdef MLFQ
-        p->in_tick = ticks;
-        p->last_tick = ticks;
-        p->numTicks = 0;
-#endif
       }
       release(&p->lock);
       return 0;

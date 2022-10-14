@@ -172,13 +172,26 @@ usertrap(void)
 #endif
 
 #ifdef MLFQ
-        if ( p->numTicks == ( 1 << ( p->queue ) ) )
+        // printf("Pid Of CurrProc : %d, QueueLevel : %d\n", p->pid, p->queue);
+        p->numTicks++;
+        if ( p->numTicks >= ( 1 << ( p->queue ) ) )
         {
-            p->numTicks = 0;
             yield();
         }
         else
-            p->numTicks++;
+        {
+            for( struct proc * t = proc; t < &proc[NPROC]; t++ )
+            {
+                acquire(&t->lock);
+                if ( t->state == RUNNABLE && t->queue < p->queue )
+                {
+                    release(&t->lock);
+                    yield();
+                    break;
+                }
+                release(&t->lock);
+            }
+        }
 #endif
 
 #ifdef FCFS
@@ -277,13 +290,27 @@ kerneltrap()
 #endif
 
 #ifdef MLFQ
-        if ( myproc()->numTicks == ( 1 << ( myproc()->queue ) ) )
+        myproc()->numTicks++;
+
+        if ( myproc()->numTicks >= ( 1 << ( myproc()->queue ) ) )
         {
             myproc()->numTicks = 0;
             yield();
         }
         else
-            myproc()->numTicks++;
+        {
+            for( struct proc * t = proc; t < &proc[NPROC]; t++ )
+            {
+                acquire(&t->lock);
+                if ( t->state == RUNNABLE && t->queue < myproc()->queue )
+                {
+                    release(&t->lock);
+                    yield();
+                    break;
+                }
+                release(&t->lock);
+            }
+        }
 #endif
 
 #ifdef FCFS
