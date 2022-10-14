@@ -141,7 +141,7 @@ found:
     p->pid = allocpid();
     p->state = USED;
     p->in_tick = ticks;
-    /* p->run_time = 0; */
+    p->run_time = 0;
 
     // Allocate a trapframe page.
     if((p->trapframe = (struct trapframe *)kalloc()) == 0)
@@ -185,7 +185,6 @@ found:
 
 #ifdef LBS
     p->tickets = 1;                 // Default tickets
-    total_tickets++;
 #endif
 
 
@@ -336,6 +335,9 @@ userinit(void)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
+#ifdef LBS
+  total_tickets += p->tickets;
+#endif
 
   release(&p->lock);
 }
@@ -417,6 +419,7 @@ fork(void)
     np->priority = p->priority;
 #ifdef LBS
     np->tickets = p->tickets;
+    total_tickets += np->tickets;
 #endif
     release(&np->lock);
 
@@ -853,6 +856,9 @@ yield(void)
   struct proc *p = myproc();
   acquire(&p->lock);
   p->state = RUNNABLE;
+#ifdef LBS
+  total_tickets += p->tickets;
+#endif
   sched();
   release(&p->lock);
 }
@@ -921,6 +927,9 @@ wakeup(void *chan)
       acquire(&p->lock);
       if(p->state == SLEEPING && p->chan == chan) {
         p->state = RUNNABLE;
+#ifdef LBS
+        total_tickets += p->tickets;
+#endif
       }
       release(&p->lock);
     }
@@ -942,6 +951,9 @@ kill(int pid)
       if(p->state == SLEEPING){
         // Wake process from sleep().
         p->state = RUNNABLE;
+#ifdef LBS
+        total_tickets += p->tickets;
+#endif
       }
       release(&p->lock);
       return 0;
