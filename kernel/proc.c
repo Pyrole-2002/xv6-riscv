@@ -834,7 +834,10 @@ yield(void)
 
 #ifdef MLFQ
     if ( p->queue < 4 && p->numTicks >= (1 << p->queue ) )
+    {
         p->queue++;
+        printf("[%d] q for %d changed from %d to %d.", ticks - p->in_tick, p->pid, p->queue - 1, p->queue);
+    }
     p->last_tick = ticks;
     p->numTicks = 0;
 #endif

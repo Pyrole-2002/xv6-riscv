@@ -76,6 +76,7 @@ endif
 # Arguments to Assign Scheduler
 # Default is Round-Robin
 SCHEDULER_MACRO = -D RR
+TRACE_MACRO = -D NO
 
 ifeq ($(SCHEDULER), RR)
 	SCHEDULER_MACRO = -D RR
@@ -91,6 +92,9 @@ ifeq ($(SCHEDULER), PBS)
 endif
 ifeq ($(SCHEDULER), MLFQ)
 	SCHEDULER_MACRO = -D MLFQ
+endif
+ifeq ($(TRACE), YES)
+	TRACE_MACRO = -D YES
 endif
 
 CFLAGS += $(SCHEDULER_MACRO)
