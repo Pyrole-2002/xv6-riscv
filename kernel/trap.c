@@ -116,7 +116,7 @@ usertrap(void)
 
                     if ( newMemory == 0 )
                     {
-                        p->killed = 1;
+                        setkilled(p);
                         exit(-1);
                     }
                     memmove( newMemory, (void*)physicalAddress, PGSIZE);
