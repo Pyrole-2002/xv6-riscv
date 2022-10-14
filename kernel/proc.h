@@ -145,9 +145,18 @@ struct proc
 
     int priority;                   // Priority of Process
 #ifdef PBS
+
     int num_sched;                  // Number of times process is scheduled
     int running;                    // Time spent running
     int sleeping;                   // Time spent sleeping
+#endif
+
+#ifdef MLFQ
+#define TOOMUCH(x) ( ( x + 1 ) )
+#define MAXWAIT(x) ( 30 )
+    int last_tick;    
+    int queue;
+    int numTicks; 
 #endif
 };
 

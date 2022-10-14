@@ -76,6 +76,7 @@ endif
 # Arguments to Assign Scheduler
 # Default is Round-Robin
 SCHEDULER_MACRO = -D RR
+TRACE_MACRO = -D NO
 
 ifeq ($(SCHEDULER), RR)
 	SCHEDULER_MACRO = -D RR
@@ -92,8 +93,12 @@ endif
 ifeq ($(SCHEDULER), MLFQ)
 	SCHEDULER_MACRO = -D MLFQ
 endif
+ifeq ($(TRACE), YES)
+	TRACE_MACRO = -D YES
+endif
 
 CFLAGS += $(SCHEDULER_MACRO)
+CFLAGS += $(TRACE_MACRO)
 # Example compile syntax: `make qemu SCHEDULER=FCFS`
 
 
@@ -185,7 +190,7 @@ QEMUGDB = $(shell if $(QEMU) -help | grep -q '^-gdb'; \
 	then echo "-gdb tcp::$(GDBPORT)"; \
 	else echo "-s -p $(GDBPORT)"; fi)
 ifndef CPUS
-CPUS := 8
+CPUS := 1
 endif
 
 QEMUOPTS = -machine virt -bios none -kernel $K/kernel -m 128M -smp $(CPUS) -nographic

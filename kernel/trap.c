@@ -6,6 +6,8 @@
 #include "proc.h"
 #include "defs.h"
 
+extern struct proc proc[];
+
 struct spinlock tickslock;
 uint ticks;
 
@@ -169,6 +171,29 @@ usertrap(void)
         yield();
 #endif
 
+#ifdef MLFQ
+        // printf("Pid Of CurrProc : %d, QueueLevel : %d\n", p->pid, p->queue);
+        p->numTicks++;
+        if ( p->numTicks >= ( 1 << ( p->queue ) ) )
+        {
+            yield();
+        }
+        else
+        {
+            for( struct proc * t = proc; t < &proc[NPROC]; t++ )
+            {
+                acquire(&t->lock);
+                if ( t->state == RUNNABLE && t->queue < p->queue )
+                {
+                    release(&t->lock);
+                    yield();
+                    break;
+                }
+                release(&t->lock);
+            }
+        }
+#endif
+
 
 
 #ifdef LBS
@@ -177,10 +202,9 @@ usertrap(void)
 
 
 
-#ifdef FCSF
+#ifdef FCFS
         // ok
 #endif
-
 
 
 #ifdef PBS
@@ -273,9 +297,31 @@ kerneltrap()
         yield();
 #endif
 
+#ifdef MLFQ
+        myproc()->numTicks++;
 
+        if ( myproc()->numTicks >= ( 1 << ( myproc()->queue ) ) )
+        {
+            myproc()->numTicks = 0;
+            yield();
+        }
+        else
+        {
+            for( struct proc * t = proc; t < &proc[NPROC]; t++ )
+            {
+                acquire(&t->lock);
+                if ( t->state == RUNNABLE && t->queue < myproc()->queue )
+                {
+                    release(&t->lock);
+                    yield();
+                    break;
+                }
+                release(&t->lock);
+            }
+        }
+#endif
 
-#ifdef FCSF
+#ifdef FCFS
         // ok
 #endif
 
@@ -303,6 +349,37 @@ clockintr()
 {
     acquire(&tickslock);
     ticks++;
+
+#ifdef MLFQ 
+    // printf("yahan bhi pahunch gaya.\n"); 
+    for( struct proc *p = proc; p < &proc[NPROC]; p++ )
+    {
+        acquire(&p->lock);
+        if ( p->state != RUNNABLE )
+        {
+            release(&p->lock);
+            continue;
+        }
+        if (  ticks - p->in_tick >= ( 1 << p->queue ) && p->queue < 4 )
+        {
+            p->last_tick = ticks;
+#ifdef YES
+            printf("[%d] queue for %d changed from %d to %d\n", ticks, p->pid, p->queue, p->queue + 1);
+#endif
+            p->queue++;
+        }
+        else if ( ticks - p->last_tick >= 30 && p->queue > 0 )
+        {
+            p->last_tick = ticks;
+#ifdef YES
+            printf("[%d] queue for %d changed from %d to %d\n", ticks, p->pid, p->queue, p->queue - 1);
+#endif
+            p->queue--;
+        }
+        release(&p->lock);
+    }
+
+#endif
     update_time();
     wakeup(&ticks);
     release(&tickslock);
