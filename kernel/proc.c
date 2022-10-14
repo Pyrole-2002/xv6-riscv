@@ -331,6 +331,7 @@ userinit(void)
   p->mask = 0;
 
 #ifdef MLFQ
+  p->in_tick = ticks;
   p->queue = 0;
   p->last_tick = ticks;
   p->numTicks = 0;

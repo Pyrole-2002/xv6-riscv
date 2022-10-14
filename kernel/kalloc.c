@@ -69,17 +69,17 @@ kfree(void *pa)
 
     int index = PGROUNDDOWN((uint64)pa) - KERNBASE;
     index = index / PGSIZE;
-    // acquire(&reff);
+    acquire(&reff);
     if ( index < 0 || index > 32*1024 )
     {
-        // release(&reff);
+        release(&reff);
         return;
     }
 
     if( addressMap[index] <= 0 )
     {
         printf("Invalid Page Free Request.\n");
-        // release(&reff);
+        release(&reff);
         return;
     }
     else
@@ -99,14 +99,14 @@ kfree(void *pa)
         kmem.freelist = r;
         release(&kmem.lock);
     }
-    // release(&reff);
+    release(&reff);
 }
 
 void pageRef( void* page )
 {
     int index = PGROUNDDOWN( (uint64)page - KERNBASE );
     index = index / PGSIZE;
-    // acquire(&reff);
+    acquire(&reff);
     if ( index < 0 || index >= 32*1024 )
     {
         release(&reff);
@@ -114,7 +114,7 @@ void pageRef( void* page )
     }
 
     addressMap[index]++;
-    // release(&reff);
+    release(&reff);
     return ;
 }
 
